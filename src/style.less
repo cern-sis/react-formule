@@ -1,0 +1,92 @@
+@font-face {
+  font-family: "Titillium Web";
+  src: url("./fonts/Titillium-Web-Regular.woff") format("woff");
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Titillium Web";
+  src: url("./fonts/Titillium-Web-RegularItalic.woff") format("woff");
+  font-style: italic;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Titillium Web";
+  src: url("./fonts/Titillium-Web-Semibold.woff") format("woff");
+  font-style: normal;
+  font-weight: 600;
+}
+
+.__mainContent__{
+  overflow-x: hidden;
+}
+
+.__mainLayout__ {
+  height: 100vh !important;
+  overflow-x: hidden;
+  padding: 0 !important
+}
+
+.ant-layout-footer{
+  padding: 0;
+}
+
+.ant-layout-header {
+  height: fit-content;
+}
+
+.ant-select-single .ant-select-selector, .ant-select-dropdown, .ant-select-item-option-active, .ant-select-item-option-selected, .ant-notification-notice {
+  border-radius: 2px !important;
+}
+
+.ant-btn-primary {
+  box-shadow: none;
+}
+
+.ant-notification {
+  .ant-notification-notice-message {
+    font-size: 14px !important;
+  }
+  .ant-notification-notice-description {
+    font-size: 12px !important;
+  }
+}
+
+.rjsf{
+  height: 100%;
+}
+
+.hoverPointer:hover{
+  cursor: pointer;
+}
+
+.scrollableTabs .ant-tabs-content-holder {
+  overflow-y: scroll;
+}
+
+.ant-descriptions-view table {
+  margin-bottom: 0;
+}
+
+.no-bottom-border .ant-menu-item::after {
+    border-bottom: none !important;
+}
+
+.__mainHeader__ {
+  padding: 0 10px;
+  ul {
+    justify-content: flex-end;
+  }
+}
+
+.ant-select-item-option-selected {
+  font-weight: normal !important;
+}
+
+// Needed to make RJSF tooltip dialogs look the same as the rest
+.ant-tooltip .ant-tooltip-inner {
+  border-radius: 2px;
+  font-family: "Titillium Web",
+}

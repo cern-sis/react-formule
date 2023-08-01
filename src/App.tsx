@@ -1,14 +1,36 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import './App.css'
+import SchemaWizard from './admin/containers/SchemaWizard'
+import { Provider } from 'react-redux'
 
-function App() {
+import store, { history } from "./store/configureStore";
+import { ConnectedRouter } from 'connected-react-router'
+import AdminIndex from './admin/components/AdminIndex'
+import { ConfigProvider } from 'antd'
+import Admin from './admin/Admin'
+
+const PRIMARY_COLOR = "#006996";
+
+const App = () => {
   const [count, setCount] = useState(0)
 
   return (
-    <>
-      <div>
+    <Provider store={store}>
+      <ConfigProvider
+            theme={{
+              token: {
+                colorPrimary: PRIMARY_COLOR,
+                colorLink: PRIMARY_COLOR,
+                colorLinkHover: "#1a7fa3",
+                borderRadius: 2,
+                colorBgLayout: "#f0f2f5",
+                fontFamily: "Titillium Web",
+              },
+            }}
+          >
+    <ConnectedRouter history={history}>
+      {/* <div>
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
         </a>
@@ -27,8 +49,12 @@ function App() {
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
-      </p>
-    </>
+      </p> */}
+          {/* <SchemaWizard /> */}
+          <Admin />
+    </ConnectedRouter>
+    </ConfigProvider>
+      </Provider>
   )
 }
 
