@@ -59,7 +59,7 @@ const CodeDiffViewer = ({ left, right, lang, height }) => {
       parent: element.current,
       collapseUnchanged: {},
     });
-  }, [left, right]);
+  }, [left, right, lang]);
 
   return <div style={{ height: height }} ref={element} />;
 };

@@ -15,7 +15,7 @@ const SchemaWizard = ({ field, loader }) => {
       </Row>
     );
   return (
-    <DndProvider backend={HTML5Backend}>
+    <DndProvider backend={HTML5Backend} context={window}>
       <Row style={{ height: "100%" }}>
         <Col
           xs={10}

@@ -37,7 +37,7 @@ const CodeViewer = ({
       }),
       parent: element.current,
     });
-  }, [value, schema]);
+  }, [value, schema, lang, extraExtensions, isReadOnly]);
 
   return <div style={{ height: height }} ref={element} />;
 };

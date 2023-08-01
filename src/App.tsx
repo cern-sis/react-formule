@@ -1,19 +1,15 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import SchemaWizard from './admin/containers/SchemaWizard'
 import { Provider } from 'react-redux'
 
 import store, { history } from "./store/configureStore";
 import { ConnectedRouter } from 'connected-react-router'
-import AdminIndex from './admin/components/AdminIndex'
-import { ConfigProvider } from 'antd'
+import { ConfigProvider, Layout } from 'antd'
 import Admin from './admin/Admin'
+import Loading from './routes/Loading/Loading';
+import { Suspense } from 'react';
 
 const PRIMARY_COLOR = "#006996";
 
 const App = () => {
-  const [count, setCount] = useState(0)
 
   return (
     <Provider store={store}>
@@ -30,28 +26,13 @@ const App = () => {
             }}
           >
     <ConnectedRouter history={history}>
-      {/* <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p> */}
-          {/* <SchemaWizard /> */}
-          <Admin />
+    <Layout className="__mainLayout__">
+          <Layout.Content>
+            <Suspense fallback={<Loading pastDelay />}>
+            <Admin />
+            </Suspense>
+          </Layout.Content>
+        </Layout>
     </ConnectedRouter>
     </ConfigProvider>
       </Provider>

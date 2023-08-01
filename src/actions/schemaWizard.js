@@ -5,7 +5,7 @@ import { push } from "connected-react-router";
 import { notification } from "antd";
 import { CMS, CMS_NEW } from "../routes";
 import { slugify, _initSchemaStructure } from "../admin/utils";
-import { updateDepositGroups } from "./auth";
+// import { updateDepositGroups } from "./auth";  // TODO: Fix this, it breaks
 
 export const ADD_PROPERTY = "ADD_PROPERTY";
 export const ADD_PROPERTY_INIT = "ADD_PROPERTY_INIT";
@@ -551,7 +551,7 @@ export function saveSchemaChanges() {
             message: "New schema created",
             description: "schema successfully created",
           });
-          dispatch(updateDepositGroups());
+          // dispatch(updateDepositGroups());
           dispatch(
             push(`/admin/${config.get("name")}/${config.get("version")}`)
           );
