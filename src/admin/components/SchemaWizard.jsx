@@ -6,8 +6,10 @@ import PropertyEditor from "../containers/PropertyEditor";
 import SelectFieldType from "../containers/SelectFieldType";
 import SchemaPreview from "../containers/SchemaPreview";
 import FormPreview from "../containers/FormPreview";
+import { useEffect } from "react";
 
-const SchemaWizard = ({ field, loader }) => {
+const SchemaWizard = ({ field, loader, schemaInit }) => {
+  useEffect(() => {schemaInit()}, [])
   if (loader)
     return (
       <Row style={{ height: "100%" }} align="middle" justify="center">
