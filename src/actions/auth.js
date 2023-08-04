@@ -1,6 +1,6 @@
 import { history } from "../store/configureStore";
 import { notification } from "antd";
-import axios from "../axios";
+import axios from "../utils/axios";
 
 export const AUTHENTICATED = "AUTHENTICATED";
 export const UNAUTHENTICATED = "UNAUTHENTICATED";

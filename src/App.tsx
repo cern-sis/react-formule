@@ -3,9 +3,7 @@ import { Provider } from "react-redux";
 import store, { history } from "./store/configureStore";
 import { ConnectedRouter } from "connected-react-router";
 import { ConfigProvider, Layout } from "antd";
-import Loading from "./routes/Loading/Loading";
-import { Suspense } from "react";
-import AdminPanel from "./admin/containers/AdminPanel";
+import SchemaWizard from "./admin/containers/SchemaWizard";
 
 const PRIMARY_COLOR = "#006996";
 
@@ -27,9 +25,7 @@ const App = () => {
         <ConnectedRouter history={history}>
           <Layout className="__mainLayout__">
             <Layout.Content>
-              <Suspense fallback={<Loading pastDelay />}>
-                <AdminPanel />
-              </Suspense>
+                <SchemaWizard />
             </Layout.Content>
           </Layout>
         </ConnectedRouter>
