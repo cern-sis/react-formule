@@ -9,7 +9,6 @@ import RequiredWidget from "./containers/RequiredWidget";
 const widgets = {
   text: TextWidget,
   uri: UriWidget,
-  latex: RichEditorWidget,
   richeditor: RichEditorWidget,
   switch: SwitchWidget,
   checkbox: CheckboxWidget,

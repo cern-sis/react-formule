@@ -3,7 +3,7 @@ import HTML5Backend from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 import { Col, Row, Spin } from "antd";
 import PropertyEditor from "../containers/PropertyEditor";
-import SelectFieldType from "../containers/SelectFieldType";
+import SelectFieldType from "../components/SelectFieldType";
 import SchemaPreview from "../containers/SchemaPreview";
 import FormPreview from "../containers/FormPreview";
 import { useEffect } from "react";

@@ -6,7 +6,7 @@ export const SIZE_OPTIONS = {
   xlarge: 24,
 };
 
-export const slugify = text => {
+export const slugify = (text) => {
   return text
     .toString()
     .toLowerCase()
@@ -44,7 +44,7 @@ export const _addSchemaToLocalStorage = (_id, name, description) => {
 let _addErrors = (errors, path) => {
   errors.addError({ schema: path.schema, uiSchema: path.uiSchema });
 
-  Object.keys(errors).map(error => {
+  Object.keys(errors).map((error) => {
     if (error != "__errors" && error != "addError") {
       _addErrors(errors[error], {
         schema: [...path.schema, "properties", error],
@@ -58,7 +58,7 @@ export const _validate = function (formData, errors) {
   return _addErrors(errors, { schema: [], uiSchema: [] });
 };
 
-export const shoudDisplayGuideLinePopUp = schema => {
+export const shoudDisplayGuideLinePopUp = (schema) => {
   return schema.get("properties") && schema.get("properties").size === 0;
 };
 
@@ -66,4 +66,16 @@ export const isItTheArrayField = (schema, uiSchema) => {
   return (
     schema.type === "array" && !uiSchema["ui:field"] && !uiSchema["ui:widget"]
   );
+};
+
+export const combineFieldTypes = (fieldTypes, customFieldTypes) => {
+  let combined = {};
+  Object.entries(fieldTypes).map(([key, type]) => {
+    combined[key] = type;
+    combined[key]["fields"] = {
+      ...type.fields,
+      ...customFieldTypes[key],
+    };
+  });
+  return combined;
 };

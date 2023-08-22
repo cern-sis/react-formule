@@ -1,7 +1,9 @@
 import PropTypes from "prop-types";
 import Form from "../../forms/Form";
-import fieldTypes, { hiddenFields } from "../utils/fieldTypes";
+import { hiddenFields } from "../utils/fieldTypes";
 import widgets from "../formComponents/widgets";
+import { useContext } from "react";
+import CustomizationContext from "../../contexts/CustomizationContext";
 
 const PropertyKeyEditorForm = ({
   uiSchema = {},
@@ -11,6 +13,9 @@ const PropertyKeyEditorForm = ({
   optionsSchemaObject,
   optionsUiSchemaObject,
 }) => {
+
+  const customizationContext = useContext(CustomizationContext)
+
   let type;
 
   // in case we can not define the type of the element from the uiSchema,
@@ -35,9 +40,9 @@ const PropertyKeyEditorForm = ({
   // if there is no type then there is nothing to return
   if (!type) return;
   const objs = {
-    ...fieldTypes.collections.fields,
-    ...fieldTypes.simple.fields,
-    ...fieldTypes.advanced.fields,
+    ...customizationContext.allFieldTypes.collections.fields,
+    ...customizationContext.allFieldTypes.simple.fields,
+    ...customizationContext.allFieldTypes.advanced.fields,
     ...hiddenFields,
   };
 

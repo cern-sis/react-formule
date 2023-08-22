@@ -4,6 +4,12 @@ import store, { history } from "./store/configureStore";
 import { ConnectedRouter } from "connected-react-router";
 import { ConfigProvider, Layout } from "antd";
 import SchemaWizard from "./admin/containers/SchemaWizard";
+import CustomizationContext from "./contexts/CustomizationContext";
+import { customFieldTypes } from "./admin/utils/customFieldTypes";
+import customFields from "./CustomFields";
+import customWidgets from "./CustomWidgets";
+import fieldTypes from "./admin/utils/fieldTypes";
+import { combineFieldTypes } from "./admin/utils";
 
 const PRIMARY_COLOR = "#006996";
 
@@ -22,6 +28,7 @@ const App = () => {
           },
         }}
       >
+        <CustomizationContext.Provider value={{ allFieldTypes: combineFieldTypes(fieldTypes, customFieldTypes), customFields, customWidgets }}>
         <ConnectedRouter history={history}>
           <Layout className="__mainLayout__">
             <Layout.Content>
@@ -29,6 +36,7 @@ const App = () => {
             </Layout.Content>
           </Layout>
         </ConnectedRouter>
+        </CustomizationContext.Provider>
       </ConfigProvider>
     </Provider>
   );

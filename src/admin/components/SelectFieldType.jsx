@@ -1,8 +1,12 @@
 import { Col, Collapse, Row, Space, Typography } from "antd";
-import fields from "../utils/fieldTypes";
 import Draggable from "./Draggable";
+import { useContext } from "react";
+import CustomizationContext from "../../contexts/CustomizationContext";
 
 const SelectFieldType = () => {
+  
+  const customizationContext = useContext(CustomizationContext)
+
   return (
     <div style={{ width: "100%", padding: "0px 15px" }}>
       <Typography.Title
@@ -14,7 +18,7 @@ const SelectFieldType = () => {
       <Collapse
         defaultActiveKey={["simple", "collections"]}
         ghost
-        items={Object.entries(fields).map(([key, type]) => ({
+        items={Object.entries(customizationContext.allFieldTypes).map(([key, type]) => ({
           key: key,
           label: type.title,
           children: (

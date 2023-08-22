@@ -3,27 +3,14 @@ import { PropTypes } from "prop-types";
 import { selectProperty } from "../../actions/schemaWizard";
 
 import {
-  AimOutlined,
-  AppstoreOutlined,
-  BookOutlined,
-  BorderTopOutlined,
-  CalendarOutlined,
-  CheckSquareOutlined,
-  CloudDownloadOutlined,
-  ContainerOutlined,
   DownOutlined,
-  FileOutlined,
-  FontSizeOutlined,
-  LinkOutlined,
-  NumberOutlined,
   QuestionOutlined,
-  SwapOutlined,
-  TagOutlined,
-  UnorderedListOutlined,
   UpOutlined,
 } from "@ant-design/icons";
 import { Col, Row, Tag, Typography } from "antd";
 import { isItTheArrayField } from "../utils";
+import { useContext } from "react";
+import CustomizationContext from "../../contexts/CustomizationContext";
 
 const SchemaTreeItem = ({
   selectProperty,
@@ -33,6 +20,8 @@ const SchemaTreeItem = ({
   display,
   updateDisplay,
 }) => {
+  const customizationContext = useContext(CustomizationContext)
+
   // selects the item for the property editor
   const handleClick = () => {
     selectProperty(path);
@@ -70,7 +59,16 @@ const SchemaTreeItem = ({
       }
     }
 
-    return mapType2Icon[type];
+    const allFieldTypes = customizationContext.allFieldTypes
+
+    for (const category in allFieldTypes) {
+      for (const [key, value] of Object.entries(allFieldTypes[category].fields)) {
+        if (key === type) {
+          return value.icon;
+        }
+      }
+    }
+    return <QuestionOutlined />
   };
 
   return (
@@ -154,24 +152,3 @@ function mapDispatchToProps(dispatch) {
   };
 }
 export default connect(state => state, mapDispatchToProps)(SchemaTreeItem);
-
-let mapType2Icon = {
-  object: <div>&#123;&#32;&#125;</div>,
-  array: <UnorderedListOutlined />,
-  select: <AppstoreOutlined />,
-  text: <FontSizeOutlined />,
-  date: <CalendarOutlined />,
-  number: <NumberOutlined />,
-  integer: <NumberOutlined />,
-  checkbox: <CheckSquareOutlined />,
-  radio: <AimOutlined />,
-  switch: <SwapOutlined />,
-  textarea: <ContainerOutlined />,
-  CapFiles: <FileOutlined />,
-  tags: <TagOutlined />,
-  idFetcher: <CloudDownloadOutlined />,
-  accordionObjectField: <BorderTopOutlined />,
-  richeditor: <BookOutlined />,
-  uri: <LinkOutlined />,
-  unknown: <QuestionOutlined />,
-};

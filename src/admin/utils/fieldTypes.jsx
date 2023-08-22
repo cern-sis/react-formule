@@ -8,7 +8,6 @@ import {
   CheckSquareOutlined,
   CloudDownloadOutlined,
   ContainerOutlined,
-  FileOutlined,
   FontSizeOutlined,
   LayoutOutlined,
   LinkOutlined,
@@ -20,7 +19,7 @@ import {
 
 // COMMON / EXTRA PROPERTIES:
 
-const common = {
+export const common = {
   optionsSchema: {
     title: {
       type: "string",
@@ -61,7 +60,7 @@ const common = {
   },
 };
 
-const extra = {
+export const extra = {
   optionsSchema: {
     readOnly: {
       type: "boolean",
@@ -875,61 +874,6 @@ const advanced = {
       },
     },
   },
-  idFetcher: {
-    title: "ID fetcher",
-    icon: <CloudDownloadOutlined />,
-    description: "Fetch data from ZENODO, ORCiD or ROR",
-    child: {},
-    optionsSchema: {
-      type: "object",
-      title: "ID Fetcher Field Schema",
-      properties: {
-        ...common.optionsSchema,
-        readOnly: extra.optionsSchema.readOnly,
-        isRequired: extra.optionsSchema.isRequired,
-      },
-    },
-    optionsSchemaUiSchema: {
-      readOnly: extra.optionsSchemaUiSchema.readOnly,
-      isRequired: extra.optionsSchemaUiSchema.isRequired,
-    },
-    optionsUiSchema: {
-      type: "object",
-      title: "UI Schema",
-      properties: {
-        ...common.optionsUiSchema.properties,
-        "ui:servicesList": {
-          title: "Select the services you want to allow",
-          type: "array",
-          items: {
-            type: "string",
-            oneOf: [
-              { const: "orcid", title: "ORCiD" },
-              { const: "ror", title: "ROR" },
-              { const: "zenodo", title: "Zenodo" },
-            ],
-          },
-          uniqueItems: "true",
-        },
-      },
-    },
-    optionsUiSchemaUiSchema: {
-      ...common.optionsUiSchemaUiSchema,
-      "ui:servicesList": {
-        "ui:widget": "checkbox",
-      },
-    },
-    default: {
-      schema: {
-        type: "object",
-        properties: {},
-      },
-      uiSchema: {
-        "ui:servicesList": ["orcid", "ror", "zenodo"],
-        "ui:field": "idFetcher",
-      },
-    },
-  },
   tags: {
     title: "Tags",
     icon: <TagOutlined />,
@@ -974,39 +918,6 @@ const advanced = {
       },
       uiSchema: {
         "ui:field": "tags",
-      },
-    },
-  },
-  CapFiles: {
-    title: "File upload",
-    icon: <FileOutlined />,
-    description: "Upload Files",
-    child: {},
-    optionsSchema: {
-      type: "object",
-      title: "File upload widget",
-      properties: {
-        ...common.optionsSchema,
-        readOnly: extra.optionsSchema.readOnly,
-        isRequired: extra.optionsSchema.isRequired,
-      },
-    },
-    optionsSchemaUiSchema: {
-      readOnly: extra.optionsSchemaUiSchema.readOnly,
-      isRequired: extra.optionsSchemaUiSchema.isRequired,
-    },
-    optionsUiSchema: {
-      ...common.optionsUiSchema,
-    },
-    optionsUiSchemaUiSchema: {
-      ...common.optionsUiSchemaUiSchema,
-    },
-    default: {
-      schema: {
-        type: "string",
-      },
-      uiSchema: {
-        "ui:field": "CapFiles",
       },
     },
   },
@@ -1056,7 +967,7 @@ export const hiddenFields = {
   },
 };
 
-const fields = {
+const fieldTypes = {
   collections: {
     title: "Collections",
     description: "",
@@ -1075,4 +986,4 @@ const fields = {
   },
 };
 
-export default fields;
+export default fieldTypes;

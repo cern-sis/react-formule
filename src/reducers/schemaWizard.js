@@ -2,20 +2,13 @@ import { Map, fromJS } from "immutable";
 
 import {
   SCHEMA_INIT,
-  CURRENT_UPDATE_CONFIG,
   CURRENT_UPDATE_PATH,
   CURRENT_UPDATE_SCHEMA_PATH,
   CURRENT_UPDATE_UI_SCHEMA_PATH,
   PROPERTY_SELECT,
   CREATE_MODE_ENABLE,
   ADD_PROPERTY,
-  ADD_PROPERTY_INIT,
-  SCHEMA_ERROR,
   SCHEMA_INIT_REQUEST,
-  UPDATE_NOTIFICATION_BY_INDEX,
-  ADD_NEW_NOTIFICATION,
-  REMOVE_NOTIFICATION,
-  CREATE_NOTIFICATION_GROUP,
 } from "../actions/schemaWizard";
 
 const initialState = Map({
@@ -48,15 +41,6 @@ export default function schemaReducer(state = initialState, action) {
         .set("version", action.configs.version)
         .set("initialConfig", action.configs)
         .set("loader", false);
-
-    case SCHEMA_ERROR:
-      return state.set("error", action.payload).set("loader", false);
-
-    case ADD_PROPERTY_INIT:
-      return state.set(
-        "propKeyEditor",
-        Map({ path: action.path, type: "new" })
-      );
     case ADD_PROPERTY:
       return state
         .setIn(
@@ -94,16 +78,6 @@ export default function schemaReducer(state = initialState, action) {
         ["current", "uiSchema", ...action.path],
         fromJS(action.value)
       );
-    case CURRENT_UPDATE_CONFIG:
-      return state.set("config", fromJS(action.config));
-    case UPDATE_NOTIFICATION_BY_INDEX:
-      return state.setIn(action.payload.path, action.payload.value);
-    case ADD_NEW_NOTIFICATION:
-      return state.setIn(action.payload.path, action.payload.item);
-    case REMOVE_NOTIFICATION:
-      return state.setIn(action.payload.path, action.payload.notification);
-    case CREATE_NOTIFICATION_GROUP:
-      return state.setIn(action.path, []);
     default:
       return state;
   }
