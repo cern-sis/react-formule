@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import CustomizeField from "../components/Customize";
+import Customize from "../components/Customize";
 import {
   updateSchemaByPath,
   updateUiSchemaByPath
@@ -30,4 +30,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CustomizeField);
+)(Customize);

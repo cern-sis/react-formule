@@ -11,6 +11,7 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/cap-moses.js",
       "require": "./dist/cap-moses.umd.cjs"
     }
@@ -19,7 +20,9 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "link-local": "yarn link && cd node_modules/react && yarn link && cd ../react-dom && yarn link",
+    "unlink-local": "yarn unlink && cd node_modules/react && yarn unlink && cd ../react-dom && yarn unlink"
   },
   "dependencies": {
     "@ant-design/pro-layout": "^7.16.4",
@@ -50,7 +53,6 @@
     "react-dnd-html5-backend": "9.3.4",
     "react-dom": "^18.2.0",
     "react-input-mask": "3.0.0-alpha.2",
-    "react-joyride": "^2.5.5",
     "react-markdown-editor-lite": "^1.3.4",
     "react-redux": "7.0.0",
     "react-router": "^4.3.1",
@@ -59,8 +61,7 @@
     "redux": "^4.0.1",
     "redux-logger": "3.0.6",
     "redux-thunk": "2.3.0",
-    "sanitize-html": "^2.11.0",
-    "squirrelly": "^9.0.0"
+    "sanitize-html": "^2.11.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",

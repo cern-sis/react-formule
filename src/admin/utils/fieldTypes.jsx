@@ -6,7 +6,6 @@ import {
   BorderTopOutlined,
   CalendarOutlined,
   CheckSquareOutlined,
-  CloudDownloadOutlined,
   ContainerOutlined,
   FontSizeOutlined,
   LayoutOutlined,

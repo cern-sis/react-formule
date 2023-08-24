@@ -69,6 +69,9 @@ export const isItTheArrayField = (schema, uiSchema) => {
 };
 
 export const combineFieldTypes = (fieldTypes, customFieldTypes) => {
+  if (!customFieldTypes) {
+    return fieldTypes;
+  }
   let combined = {};
   Object.entries(fieldTypes).map(([key, type]) => {
     combined[key] = type;

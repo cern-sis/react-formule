@@ -6,7 +6,6 @@ import { Row, Col, Modal, Space, Tag, Checkbox, Table, theme } from "antd";
 import PlusCircleOutlined from "@ant-design/icons/PlusCircleOutlined";
 
 import ArrayFieldTemplateItem from "./ArrayFieldTemplateItem";
-import LayerArrayFieldTemplate from "./LayerArrayFieldTemplate";
 import EmptyArrayField from "./EmptyArrayField";
 import AccordionArrayFieldTemplate from "./AccordionArrayFieldTemplate";
 import PropTypes from "prop-types";
@@ -74,23 +73,9 @@ const NormalArrayFieldTemplate = ({
 
   let typeOfArrayToDisplay = "default";
   if ("ui:array" in uiSchema) typeOfArrayToDisplay = uiSchema["ui:array"];
-  else if (
-    schema &&
-    schema.items &&
-    ["array", "object"].includes(schema.items.type)
-  ) {
-    typeOfArrayToDisplay = "LayerArrayField";
-  }
 
   const getArrayContent = type => {
     const choices = {
-      LayerArrayField: (
-        <LayerArrayFieldTemplate
-          items={items}
-          formContext={formContext}
-          id={idSchema.$id}
-        />
-      ),
       AccordionArrayField: (
         <AccordionArrayFieldTemplate
           items={items}

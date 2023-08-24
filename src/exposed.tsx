@@ -7,12 +7,24 @@ import {
   slugify,
 } from "./admin/utils";
 import CustomizationContext from "./contexts/CustomizationContext";
-import { ConfigProvider } from "antd";
+import { ConfigProvider, ThemeConfig } from "antd";
 import { Provider } from "react-redux";
 import store from "./store/configureStore";
 import fieldTypes from "./admin/utils/fieldTypes";
+import { Store } from "redux";
+import { FC, ReactNode } from "react";
+import { RJSFSchema } from "@rjsf/utils";
 
-export const MosesContext = ({
+type MosesContextProps = {
+  children: ReactNode,
+  customFieldTypes?: object,
+  customFields?: object,
+  customWidgets?: object,
+  theme?: ThemeConfig,
+  customStore?: Store
+}
+
+export const MosesContext: FC<MosesContextProps> = ({
   children,
   customFieldTypes,
   customFields,
@@ -41,7 +53,7 @@ export const MosesContext = ({
   );
 };
 
-export const initMosesSchema = (schema) => {
+export const initMosesSchema = (schema?: RJSFSchema) => {
   if (schema) {
     const { id, deposit_schema, deposit_options, ...configs } = schema;
     store.dispatch(

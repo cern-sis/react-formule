@@ -10,4 +10,6 @@ const mapDispatchToProps = dispatch => ({
   updateRequired: (path, checked) => dispatch(updateRequired(path, checked)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(RequiredWidget);
+const ConnectedRequiredWidget = connect(mapStateToProps, mapDispatchToProps)(RequiredWidget)
+
+export default props => <ConnectedRequiredWidget {...props} />;
