@@ -1,6 +1,5 @@
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import { PropTypes } from "prop-types";
-import { selectProperty } from "../../actions/schemaWizard";
 
 import {
   DownOutlined,
@@ -11,9 +10,9 @@ import { Col, Row, Tag, Typography } from "antd";
 import { isItTheArrayField } from "../utils";
 import { useContext } from "react";
 import CustomizationContext from "../../contexts/CustomizationContext";
+import { selectProperty } from "../../store/schemaWizard";
 
 const SchemaTreeItem = ({
-  selectProperty,
   path,
   uiSchema = {},
   schema,
@@ -22,9 +21,11 @@ const SchemaTreeItem = ({
 }) => {
   const customizationContext = useContext(CustomizationContext)
 
+  const dispatch = useDispatch()
+
   // selects the item for the property editor
   const handleClick = () => {
-    selectProperty(path);
+    dispatch(selectProperty({path}));
   };
 
   const handleUpdateDisplay = e => {
@@ -136,7 +137,6 @@ SchemaTreeItem.propTypes = {
   schema: PropTypes.object,
   id: PropTypes.string,
   path: PropTypes.array,
-  selectProperty: PropTypes.func,
   addProperty: PropTypes.func,
   addItem: PropTypes.func,
   type: PropTypes.string,
@@ -146,9 +146,4 @@ SchemaTreeItem.propTypes = {
   uiSchema: PropTypes.object,
 };
 
-function mapDispatchToProps(dispatch) {
-  return {
-    selectProperty: path => dispatch(selectProperty(path)),
-  };
-}
-export default connect(state => state, mapDispatchToProps)(SchemaTreeItem);
+export default SchemaTreeItem

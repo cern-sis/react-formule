@@ -55,11 +55,12 @@ let _addErrors = (errors, path) => {
   return errors;
 };
 export const _validate = function (formData, errors) {
+  console.log("VALIDATE WITH", formData, errors);
   return _addErrors(errors, { schema: [], uiSchema: [] });
 };
 
 export const shoudDisplayGuideLinePopUp = (schema) => {
-  return schema.get("properties") && schema.get("properties").size === 0;
+  return schema.properties && schema.properties.size === 0;
 };
 
 export const isItTheArrayField = (schema, uiSchema) => {

@@ -2,8 +2,6 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import SchemaTreeItem from "./SchemaTreeItem";
 import Form from "../../forms/Form";
-import { connect } from "react-redux";
-import { addByPath } from "../../actions/schemaWizard";
 import ObjectFieldTemplate from "./ObjectFieldTemplate";
 import FieldTemplate from "./FieldTemplate";
 import { _validate } from "../utils";
@@ -78,13 +76,5 @@ ArrayFieldTemplate.propTypes = {
   uiSchema: PropTypes.object,
   id: PropTypes.string,
 };
-function mapDispatchToProps(dispatch) {
-  return {
-    addProperty: (path, data) => dispatch(addByPath(path, data)),
-  };
-}
 
-export default connect(
-  state => state,
-  mapDispatchToProps
-)(ArrayFieldTemplate);
+export default ArrayFieldTemplate

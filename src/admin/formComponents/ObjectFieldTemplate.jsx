@@ -2,11 +2,13 @@ import { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import RenderSortable from "./RenderSortable";
 import update from "immutability-helper";
-import { connect } from "react-redux";
-import { updateUiSchemaByPath } from "../../actions/schemaWizard";
+import { useDispatch } from "react-redux";
+import { updateUiSchemaByPath } from "../../store/schemaWizard";
 
 const ObjectFieldTemplate = function(props) {
   const [cards, setCards] = useState([]);
+
+  const dispatch = useDispatch()
 
   useEffect(
     () => {
@@ -84,13 +86,13 @@ const ObjectFieldTemplate = function(props) {
 
       uiCards = uiProperties.length < uiCards.length ? uiProperties : uiCards;
 
-      props.onUiSchemaChange(
-        props.formContext.uiSchema.length > 0 ? props.formContext.uiSchema : [],
-        {
+      dispatch(updateUiSchemaByPath({
+        path: props.formContext.uiSchema.length > 0 ? props.formContext.uiSchema : [],
+        value: {
           ...rest,
           "ui:order": [...uiCards, "*"],
         }
-      );
+      }));
     },
     [props.properties, cards]
   );
@@ -142,14 +144,5 @@ ObjectFieldTemplate.propTypes = {
   uiSchema: PropTypes.object,
 };
 
-function mapDispatchToProps(dispatch) {
-  return {
-    onUiSchemaChange: (path, schema) =>
-      dispatch(updateUiSchemaByPath(path, schema)),
-  };
-}
 
-export default connect(
-  state => state,
-  mapDispatchToProps
-)(ObjectFieldTemplate);
+export default ObjectFieldTemplate

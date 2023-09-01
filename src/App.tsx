@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import store, { history } from "./store/configureStore";
 import { ConnectedRouter } from "connected-react-router";
 import { ConfigProvider, Layout } from "antd";
-import SchemaWizard from "./admin/containers/SchemaWizard";
+import SchemaWizard from "./admin/components/SchemaWizard";
 import CustomizationContext from "./contexts/CustomizationContext";
 import { customFieldTypes } from "./admin/utils/customFieldTypes";
 import customFields from "./CustomFields";

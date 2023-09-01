@@ -1,6 +1,5 @@
 import { DndProvider } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
-import { schemaInit } from "./actions/schemaWizard";
 import {
   _initSchemaStructure,
   combineFieldTypes,
@@ -14,6 +13,7 @@ import fieldTypes from "./admin/utils/fieldTypes";
 import { Store } from "redux";
 import { FC, ReactNode } from "react";
 import { RJSFSchema } from "@rjsf/utils";
+import { schemaInit } from "./store/schemaWizard";
 
 type MosesContextProps = {
   children: ReactNode,
@@ -57,21 +57,25 @@ export const initMosesSchema = (schema?: RJSFSchema) => {
   if (schema) {
     const { id, deposit_schema, deposit_options, ...configs } = schema;
     store.dispatch(
-      schemaInit(
-        id || "Schema Name",
-        { schema: deposit_schema, uiSchema: deposit_options },
-        configs
-      )
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      schemaInit({
+        id: id || "Schema Name",
+        data: { schema: deposit_schema, uiSchema: deposit_options },
+        configs: configs,
+      })
     );
   } else {
     store.dispatch(
-      schemaInit(
-        slugify(Math.random().toString() + "_" + "name"),
-        _initSchemaStructure(),
-        {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      schemaInit({
+        id: slugify(Math.random().toString() + "_" + "name"),
+        data: _initSchemaStructure(),
+        configs: {
           fullname: name,
-        }
-      )
+        },
+      })
     );
   }
 };

@@ -4,20 +4,25 @@ import PropertyKeyEditorForm from "./PropKeyEditorForm";
 
 import { Radio, Space, Tabs, Typography } from "antd";
 import { SIZE_OPTIONS } from "../utils";
+import { useDispatch, useSelector } from "react-redux";
+import { updateSchemaByPath, updateUiSchemaByPath } from "../../store/schemaWizard";
+
+import { get } from "lodash-es"
 
 const JUSTIFY_OPTIONS = ["start", "center", "end"];
 
 const Customize = ({
-  schema,
-  uiSchema,
-  onSchemaChange,
-  onUiSchemaChange,
   path,
-  _path,
-  _uiPath,
 }) => {
   const [justify, setJustify] = useState(() => "start");
   const [size, setSize] = useState("xlarge");
+
+  const dispatch = useDispatch()
+  const _path = useSelector((state) => state.schemaWizard.field.path)
+  const _uiPath = useSelector((state) => state.schemaWizard.field.uiPath)
+  
+  const schema = useSelector((state) => _path ? get(state.schemaWizard, ["current", "schema", ..._path]) : undefined)
+  let uiSchema = useSelector((state) => _path ? get(state.schemaWizard, ["current", "uiSchema", ..._path]) : undefined)
 
   useEffect(() => {
     if (uiSchema && Object.hasOwn(uiSchema.toJS(), "ui:options")) {
@@ -27,10 +32,10 @@ const Customize = ({
   }, [uiSchema]);
 
   const _onSchemaChange = data => {
-    onSchemaChange(path.get("path").toJS(), data.formData);
+    dispatch(updateSchemaByPath({path: path.path, value: data.formData}));
   };
   const _onUiSchemaChange = data => {
-    onUiSchemaChange(path.get("uiPath").toJS(), data.formData);
+    dispatch(updateUiSchemaByPath({path: path.uiPath, value: data.formData}));
   };
   const sizeChange = newSize => {
     uiSchema = uiSchema ? uiSchema.toJS() : {};
@@ -41,10 +46,10 @@ const Customize = ({
     size = newSize;
     let _uiOptions = { size, ...restUIOptions };
 
-    onUiSchemaChange(path.get("uiPath").toJS(), {
+    dispatch(updateUiSchemaByPath({path: path.uiPath, value: {
       ...rest,
       "ui:options": _uiOptions,
-    });
+    }}));
   };
 
   const alignChange = newAlign => {
@@ -56,10 +61,10 @@ const Customize = ({
     justify = newAlign;
     let _uiOptions = { justify, ...restUIOptions };
 
-    onUiSchemaChange(path.get("uiPath").toJS(), {
+    dispatch(updateUiSchemaByPath({path: path.uiPath, value: {
       ...rest,
       "ui:options": _uiOptions,
-    });
+    }}));
   };
 
   return (
@@ -73,9 +78,9 @@ const Customize = ({
           label: "Schema Settings",
           children: (
             <PropertyKeyEditorForm
-              schema={schema && schema.toJS()}
-              uiSchema={uiSchema && uiSchema.toJS()}
-              formData={schema && schema.toJS()}
+              schema={schema && schema}
+              uiSchema={uiSchema && uiSchema}
+              formData={schema && schema}
               onChange={_onSchemaChange}
               optionsSchemaObject="optionsSchema"
               optionsUiSchemaObject="optionsSchemaUiSchema"
@@ -88,9 +93,9 @@ const Customize = ({
           children:
             _path.size != 0 ? (
               <PropertyKeyEditorForm
-                schema={schema && schema.toJS()}
-                uiSchema={uiSchema && uiSchema.toJS()}
-                formData={uiSchema && uiSchema.toJS()}
+                schema={schema && schema}
+                uiSchema={uiSchema && uiSchema}
+                formData={uiSchema && uiSchema}
                 onChange={_onUiSchemaChange}
                 optionsSchemaObject="optionsUiSchema"
                 optionsUiSchemaObject="optionsUiSchemaUiSchema"
@@ -135,12 +140,7 @@ const Customize = ({
 };
 
 Customize.propTypes = {
-  schema: PropTypes.object,
-  uiSchema: PropTypes.object,
-  onSchemaChange: PropTypes.func,
-  onUiSchemaChange: PropTypes.func,
   path: PropTypes.object,
-  _path: PropTypes.object,
 };
 
 export default Customize;

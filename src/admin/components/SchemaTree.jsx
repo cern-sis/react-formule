@@ -1,16 +1,23 @@
-import PropTypes from "prop-types";
 import Form from "../../forms/Form";
 import { transformSchema } from "../../partials/Utils/schema";
 import ObjectFieldTemplate from "../formComponents/ObjectFieldTemplate";
 import ArrayFieldTemplate from "../formComponents/ArrayFieldTemplate";
 import FieldTemplate from "../formComponents/FieldTemplate";
 import { _validate } from "../utils";
+import { useSelector } from "react-redux";
 
-const SchemaTree = ({ schema, uiSchema }) => {
+const SchemaTree = () => {
+
+  const schema = useSelector((state) => state.schemaWizard.current.schema)
+  const uiSchema = useSelector((state) => state.schemaWizard.current.uiSchema)
+
+  console.log("SCHEMA", schema)
+  console.log("UI SCHEMA", uiSchema)
+
   return (
     <Form
-      schema={transformSchema(schema.toJS())}
-      uiSchema={uiSchema.toJS()}
+      schema={transformSchema(schema)}
+      uiSchema={uiSchema}
       formData={{}}
       ObjectFieldTemplate={ObjectFieldTemplate}
       ArrayFieldTemplate={ArrayFieldTemplate}
@@ -21,11 +28,6 @@ const SchemaTree = ({ schema, uiSchema }) => {
       formContext={{ schema: [], uiSchema: [] }}
     />
   );
-};
-
-SchemaTree.propTypes = {
-  schema: PropTypes.object,
-  uiSchema: PropTypes.object,
 };
 
 export default SchemaTree;

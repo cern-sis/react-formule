@@ -5,10 +5,10 @@ import SchemaTreeItem from "./SchemaTreeItem";
 import Form from "../../forms/Form";
 import ArrayFieldTemplate from "./ArrayFieldTemplate";
 import ObjectFieldTemplate from "./ObjectFieldTemplate";
-import { connect } from "react-redux";
-import { addByPath } from "../../actions/schemaWizard";
+import { useDispatch } from "react-redux";
 import { isItTheArrayField, _validate } from "../utils/index";
 import DropArea from "./DropArea";
+import { addByPath } from "../../store/schemaWizard";
 
 const FieldTemplate = props => {
   const {
@@ -18,10 +18,12 @@ const FieldTemplate = props => {
     children,
     formContext,
     id,
-    addProperty,
   } = props;
 
+  const dispatch = useDispatch()
+
   const [display, setDisplay] = useState(false);
+  
   let path = {
     schema: [
       ...formContext.schema,
@@ -32,6 +34,10 @@ const FieldTemplate = props => {
       ...(rawErrors.find(e => typeof e === "object").uiSchema || []),
     ],
   };
+
+  console.log("FORMCONTEXT", formContext)
+  console.log("RAWERRORS", rawErrors)
+  console.log("PATH", path)
 
   const shouldBoxHideChildren = uiSchema => {
     return uiSchema["ui:field"] !== undefined;
@@ -53,7 +59,7 @@ const FieldTemplate = props => {
       return (
         <HoverBox
           allowsChildren
-          addProperty={addProperty}
+          addProperty={(path, value) => dispatch(addByPath({path, value}))}
           key={id}
           path={path}
           shouldHideChildren={shouldBoxHideChildren(uiSchema)}
@@ -85,7 +91,7 @@ const FieldTemplate = props => {
               schema={schema}
               uiSchema={uiSchema}
               formData={{}}
-              FieldTemplate={_FieldTemplate}
+              FieldTemplate={FieldTemplate}
               ObjectFieldTemplate={ObjectFieldTemplate}
               ArrayFieldTemplate={ArrayFieldTemplate}
               liveValidate={true}
@@ -106,7 +112,7 @@ const FieldTemplate = props => {
       // The HoverBox wrapper here is needed to allow dropping items into objects
       // or arrays directly without having to expand them first
       <HoverBox
-        addProperty={addProperty}
+        addProperty={(path, value) => dispatch(addByPath({path, value}))}
         key={id}
         path={path}
         shouldHideChildren={shouldBoxHideChildren(uiSchema)}
@@ -126,15 +132,6 @@ FieldTemplate.propTypes = {
   rawErrors: PropTypes.array,
   uiSchema: PropTypes.object,
   schema: PropTypes.object,
-  addProperty: PropTypes.func,
 };
 
-function mapDispatchToProps(dispatch) {
-  return {
-    addProperty: (path, data) => dispatch(addByPath(path, data)),
-  };
-}
-
-let _FieldTemplate = connect(state => state, mapDispatchToProps)(FieldTemplate);
-
-export default _FieldTemplate;
+export default FieldTemplate

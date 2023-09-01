@@ -1,21 +1,30 @@
-import PropTypes from "prop-types";
 import HTML5Backend from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 import { Col, Row, Spin } from "antd";
-import PropertyEditor from "../containers/PropertyEditor";
+import PropertyEditor from "../components/PropertyEditor";
 import SelectFieldType from "../components/SelectFieldType";
-import SchemaPreview from "../containers/SchemaPreview";
-import FormPreview from "../containers/FormPreview";
+import SchemaPreview from "../components/SchemaPreview";
+import FormPreview from "../components/FormPreview";
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { schemaInit } from "../../store/schemaWizard";
 
-const SchemaWizard = ({ field, loader, schemaInit }) => {
-  useEffect(() => {schemaInit()}, [])
+const SchemaWizard = () => {
+
+  const field = useSelector((state) => state.schemaWizard.field)
+  const loader = useSelector((state) => state.schemaWizard.loader)
+
+  const dispatch = useDispatch()
+
+  useEffect(() => { dispatch(schemaInit()) }, [])
+
   if (loader)
     return (
       <Row style={{ height: "100%" }} align="middle" justify="center">
         <Spin size="large" />
       </Row>
     );
+
   return (
     <DndProvider backend={HTML5Backend} context={window}>
       <Row style={{ height: "100%" }}>
@@ -55,11 +64,6 @@ const SchemaWizard = ({ field, loader, schemaInit }) => {
       </Row>
     </DndProvider>
   );
-};
-
-SchemaWizard.propTypes = {
-  loader: PropTypes.bool,
-  field: PropTypes.object,
 };
 
 export default SchemaWizard;

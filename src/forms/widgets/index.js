@@ -4,7 +4,7 @@ import SwitchWidget from "./SwitchWidget";
 import CheckboxWidget from "./CheckboxWidget";
 import UriWidget from "./UriWidget";
 import DateWidget from "./DateWidget";
-import RequiredWidget from "./containers/RequiredWidget";
+import RequiredWidget from "./RequiredWidget";
 
 const widgets = {
   text: TextWidget,

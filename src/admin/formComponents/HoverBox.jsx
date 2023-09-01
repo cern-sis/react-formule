@@ -1,6 +1,5 @@
 import { useDrop } from "react-dnd";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
 
 function getStyle(isOverCurrent) {
   const style = {
@@ -56,8 +55,5 @@ HoverBox.propTypes = {
   schema: PropTypes.object,
 };
 
-const mapStateToProps = state => ({
-  schema: state.schemaWizard.getIn(["current", "schema"]),
-});
 
-export default connect(mapStateToProps, null)(HoverBox);
+export default HoverBox

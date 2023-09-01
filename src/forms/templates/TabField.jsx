@@ -11,11 +11,14 @@ import {
   Grid,
   Select,
 } from "antd";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 
 import TabFieldMenu from "./TabFieldMenu";
 
-const TabField = ({ uiSchema, properties, formErrors }) => {
+const TabField = ({ uiSchema, properties }) => {
+
+  const formErrors = useSelector((state) => state.draftItem.get("formErrors"))
+
   let options = uiSchema["ui:options"] || {};
 
   // fetch tabs either from view object or from properties
@@ -151,11 +154,6 @@ const TabField = ({ uiSchema, properties, formErrors }) => {
 TabField.propTypes = {
   uiSchema: PropTypes.object,
   properties: PropTypes.object,
-  formErrors: PropTypes.object,
 };
 
-const mapStateToProps = state => ({
-  formErrors: state.draftItem.get("formErrors"),
-});
-
-export default connect(mapStateToProps, null)(TabField);
+export default TabField

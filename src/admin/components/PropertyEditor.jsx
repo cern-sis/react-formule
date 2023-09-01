@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import PropTypes from "prop-types";
 import {
   Breadcrumb,
   Button,
@@ -10,8 +9,10 @@ import {
   Typography,
 } from "antd";
 import { PageHeader } from "@ant-design/pro-layout";
-import Customize from "../containers/Customize";
+import Customize from "../components/Customize";
 import { DeleteOutlined } from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteByPath, enableCreateMode, renameIdByPath } from "../../store/schemaWizard";
 
 const { useBreakpoint } = Grid;
 
@@ -20,7 +21,7 @@ const renderPath = pathToUpdate => {
   let content;
   const breadcrumbItems = [];
 
-  let path = pathToUpdate.getIn(["path"]).toJS();
+  let path = pathToUpdate.path;
 
   path &&
     path.map(item => {
@@ -44,36 +45,40 @@ const renderPath = pathToUpdate => {
 
   return <Breadcrumb items={breadcrumbItems} />;
 };
-const PropertyEditor = ({ path, renameId, enableCreateMode, deleteByPath }) => {
+const PropertyEditor = () => {
   const [name, setName] = useState();
   const screens = useBreakpoint();
 
+  const pathObj = useSelector((state) => state.schemaWizard.field)
+
+  const dispatch = useDispatch()
+
   useEffect(() => {
-    if (path) {
-      const p = path.getIn(["path"]).toJS();
+    if (pathObj) {
+      const p = pathObj.path;
       if (p.length) {
         setName(p.findLast(item => item !== "properties" && item != "items"));
       } else {
         setName("root");
       }
     }
-  }, [path]);
+  }, [pathObj]);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
       <PageHeader
-        onBack={enableCreateMode}
-        title={(screens.xl || path.get("path").size == 0) && "Field settings"}
+        onBack={() => dispatch(enableCreateMode())}
+        title={(screens.xl || pathObj.path.length == 0) && "Field settings"}
         extra={
-          path.get("path").size > 0 && (
+          pathObj.path.length > 0 && (
             <Popconfirm
               title="Delete field"
               okType="danger"
               okText="Delete"
               cancelText="Cancel"
               onConfirm={() => {
-                deleteByPath(path.toJS());
-                enableCreateMode();
+                dispatch(deleteByPath({path: pathObj}));
+                dispatch(enableCreateMode());
               }}
             >
               <Button danger icon={<DeleteOutlined />} />
@@ -83,14 +88,14 @@ const PropertyEditor = ({ path, renameId, enableCreateMode, deleteByPath }) => {
       />
       <Row justify="center">
         <Col xs={22} style={{ paddingBottom: "10px", textAlign: "center" }}>
-          {renderPath(path)}
+          {renderPath(pathObj)}
         </Col>
         <Col xs={18}>
           <Typography.Title
             level={5}
             editable={{
               text: name,
-              onChange: value => renameId(path.toJS(), value),
+              onChange: value => dispatch(renameIdByPath({path: pathObj, newName: value})),
             }}
             style={{ textAlign: "center" }}
           >
@@ -98,16 +103,9 @@ const PropertyEditor = ({ path, renameId, enableCreateMode, deleteByPath }) => {
           </Typography.Title>
         </Col>
       </Row>
-      <Customize path={path} />
+      <Customize path={pathObj} />
     </div>
   );
-};
-
-PropertyEditor.propTypes = {
-  path: PropTypes.object,
-  renameId: PropTypes.func,
-  enableCreateMode: PropTypes.func,
-  deleteByPath: PropTypes.func,
 };
 
 export default PropertyEditor;
