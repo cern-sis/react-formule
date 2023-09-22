@@ -1,5 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
+import { resolve } from 'path'
+
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -7,4 +9,10 @@ export default defineConfig({
   define: {
     "process.env": {},
   },
+  // Enables hmr in development without having to rebuild the library
+  resolve: {
+    alias: {
+      "cap-moses": resolve(__dirname, '../src/index.ts'),
+    }
+  }
 })

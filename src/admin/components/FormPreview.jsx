@@ -3,11 +3,11 @@ import { transformSchema } from "../../partials/Utils/schema";
 import { shoudDisplayGuideLinePopUp } from "../utils";
 import { Row, Empty, Space, Typography, Col } from "antd";
 import { useSelector } from "react-redux";
-import { get } from "lodash-es"
 
 const FormPreview = () => {
-const schema = useSelector((state) => get(state.schemaWizard, ["current", "schema"]))
-const uiSchema = useSelector((state) => get(state.schemaWizard, ["current", "uiSchema"]))
+const schema = useSelector((state) => state.schemaWizard.current.schema)
+const uiSchema = useSelector((state) => state.schemaWizard.current.uiSchema)
+
 
   return (
     <div

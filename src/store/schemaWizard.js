@@ -186,16 +186,6 @@ const createReducers = () => ({
     updatedSchema[newName] = updatedSchema[itemToDelete];
     delete updatedSchema[itemToDelete];
 
-    // uiSchema:
-    if (!updatedUiSchema["ui:order"]) {
-      updatedUiSchema["ui:order"] = [];
-    }
-    // update the uiOrder array
-    let pos = updatedUiSchema["ui:order"].indexOf(uiItemToDelete);
-    if (pos > -1) {
-      updatedUiSchema["ui:order"][pos] = newName;
-    }
-
     if (updatedUiSchema[uiItemToDelete]) {
       updatedUiSchema[newName] = updatedUiSchema[uiItemToDelete];
     }
@@ -218,9 +208,6 @@ const createReducers = () => ({
       },
     });
   },
-  selectContentType() {
-    // TODO
-  },
 });
 
 const reducers = createReducers();
@@ -241,7 +228,6 @@ export const {
   addByPath,
   deleteByPath,
   renameIdByPath,
-  selectContentType,
 } = schemaWizard.actions;
 
 export default schemaWizard.reducer;

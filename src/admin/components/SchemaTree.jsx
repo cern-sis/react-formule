@@ -11,9 +11,6 @@ const SchemaTree = () => {
   const schema = useSelector((state) => state.schemaWizard.current.schema)
   const uiSchema = useSelector((state) => state.schemaWizard.current.uiSchema)
 
-  console.log("SCHEMA", schema)
-  console.log("UI SCHEMA", uiSchema)
-
   return (
     <Form
       schema={transformSchema(schema)}

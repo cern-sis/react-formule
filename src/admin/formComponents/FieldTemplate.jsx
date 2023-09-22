@@ -23,7 +23,7 @@ const FieldTemplate = props => {
   const dispatch = useDispatch()
 
   const [display, setDisplay] = useState(false);
-  
+
   let path = {
     schema: [
       ...formContext.schema,
@@ -34,10 +34,6 @@ const FieldTemplate = props => {
       ...(rawErrors.find(e => typeof e === "object").uiSchema || []),
     ],
   };
-
-  console.log("FORMCONTEXT", formContext)
-  console.log("RAWERRORS", rawErrors)
-  console.log("PATH", path)
 
   const shouldBoxHideChildren = uiSchema => {
     return uiSchema["ui:field"] !== undefined;
@@ -122,7 +118,7 @@ const FieldTemplate = props => {
     );
   }
 
-  return <SchemaTreeItem type="other" {...props} path={path} />;
+  return <SchemaTreeItem {...props} path={path} />;
 };
 
 FieldTemplate.propTypes = {

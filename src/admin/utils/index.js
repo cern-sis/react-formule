@@ -55,7 +55,6 @@ let _addErrors = (errors, path) => {
   return errors;
 };
 export const _validate = function (formData, errors) {
-  console.log("VALIDATE WITH", formData, errors);
   return _addErrors(errors, { schema: [], uiSchema: [] });
 };
 
