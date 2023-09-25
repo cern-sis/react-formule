@@ -124,13 +124,6 @@ const createReducers = () => ({
     let updatedUiSchema = { ...uiSchema };
     delete updatedUiSchema[uiItemToDelete];
 
-    if (updatedUiSchema["ui:order"]) {
-      // remove the itemToDelete from the ui:order
-      updatedUiSchema["ui:order"] = updatedUiSchema["ui:order"].filter(
-        (item) => item !== uiItemToDelete
-      );
-    }
-
     // Update changes:
     _updateByPath(state, {
       payload: {

@@ -43,6 +43,8 @@ const ObjectFieldTemplate = ({properties, uiSchema, formContext, idSchema}) => {
           }
         });
 
+        const newCards = [...cards]
+
         // the different variable will define if there was a change in the prop keys or there is just a re ordering
         if (different) {
           let diffIndex;
@@ -60,10 +62,13 @@ const ObjectFieldTemplate = ({properties, uiSchema, formContext, idSchema}) => {
             name: different,
             prop: itemProps,
           };
-          const newCards = [...cards]
           newCards[diffIndex] = item
-          setCards(newCards);
+        } else {
+          newCards.map((card, index) => {
+            card.prop = properties[index];
+          });
         }
+        setCards(newCards)
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
