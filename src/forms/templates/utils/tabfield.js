@@ -1,8 +1,8 @@
 export const _filterTabs = (tabs, idsList, options, properties) => {
   if (tabs) {
-    options.tabs.map(tab => {
+    options.tabs.map((tab) => {
       tab.idsList = [];
-      properties.map(item => {
+      properties.map((item) => {
         if (tab.content.includes(item.name)) {
           idsList.push(item.content.props.idSchema.$id);
           tab.idsList.push(item.content.props.idSchema.$id);
@@ -12,7 +12,7 @@ export const _filterTabs = (tabs, idsList, options, properties) => {
     return options.tabs;
   }
   return properties.filter(
-    item => !_checkIfHidden(item.name) && item.name !== "analysis_reuse_mode"
+    (item) => !_checkIfHidden(item.name) && item.name !== "analysis_reuse_mode"
   );
 };
 
@@ -30,12 +30,12 @@ export const isTabContainsError = (id, errors) => {
   //  this is the parent of an erronous field
   let isCurrentErrored;
   if (Array.isArray(id)) {
-    isCurrentErrored = errors.some(error => {
-      return id.filter(ids => error.startsWith(ids)).length > 0;
+    isCurrentErrored = errors.some((error) => {
+      return id.filter((ids) => error.startsWith(ids)).length > 0;
     });
   } else {
-    isCurrentErrored = errors.filter(error => error.startsWith(id));
+    isCurrentErrored = errors.filter((error) => error.startsWith(id));
   }
 
-  return isCurrentErrored.size > 0;
+  return isCurrentErrored.length > 0;
 };

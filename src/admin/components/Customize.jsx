@@ -25,9 +25,9 @@ const Customize = ({
   let uiSchema = useSelector((state) => _path ? get(state.schemaWizard, ["current", "uiSchema", ..._path]) : undefined)
 
   useEffect(() => {
-    if (uiSchema && Object.hasOwn(uiSchema.toJS(), "ui:options")) {
-      setSize(uiSchema.toJS()["ui:options"].size);
-      setJustify(uiSchema.toJS()["ui:options"].justify);
+    if (uiSchema && Object.hasOwn(uiSchema, "ui:options")) {
+      setSize(uiSchema["ui:options"].size);
+      setJustify(uiSchema["ui:options"].justify);
     }
   }, [uiSchema]);
 
@@ -38,7 +38,7 @@ const Customize = ({
     dispatch(updateUiSchemaByPath({path: path.uiPath, value: data.formData}));
   };
   const sizeChange = newSize => {
-    uiSchema = uiSchema ? uiSchema.toJS() : {};
+    uiSchema = uiSchema ? uiSchema : {};
 
     let { "ui:options": uiOptions = {}, ...rest } = uiSchema;
     let { size, ...restUIOptions } = uiOptions;
@@ -53,7 +53,7 @@ const Customize = ({
   };
 
   const alignChange = newAlign => {
-    uiSchema = uiSchema ? uiSchema.toJS() : {};
+    uiSchema = uiSchema ? uiSchema : {};
 
     let { "ui:options": uiOptions = {}, ...rest } = uiSchema;
     let { justify, ...restUIOptions } = uiOptions;
@@ -91,7 +91,7 @@ const Customize = ({
           key: "2",
           label: "UI Schema Settings",
           children:
-            _path.size != 0 ? (
+            _path.length != 0 ? (
               <PropertyKeyEditorForm
                 schema={schema && schema}
                 uiSchema={uiSchema && uiSchema}
