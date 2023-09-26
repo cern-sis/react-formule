@@ -205,7 +205,6 @@ const createReducers = () => ({
     });
   },
   updateRequired(state, action) {
-    console.log(action);
     const { path, isRequired } = action.payload;
 
     const parentPath = findParentPath(path);

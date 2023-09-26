@@ -1,5 +1,5 @@
 import { Input } from "antd";
-import InputMask from "@mona-health/react-input-mask";
+import InputMask from "react-input-mask";
 
 const MAPPINGS = {
   a: /[a-z]/,

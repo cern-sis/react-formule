@@ -84,7 +84,6 @@ export const combineFieldTypes = (fieldTypes, customFieldTypes) => {
 };
 
 export const findParentPath = (schemaPath) => {
-  // Objects have to be required always for validation to work inside
   let isObj;
   for (let i = schemaPath.length - 1; i >= 0; i--) {
     // If we find a properties, it means we're inside an object (and not an array)
