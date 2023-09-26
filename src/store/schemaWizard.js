@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { notification } from "antd";
 import { set, get } from "lodash-es";
+import { findParentPath } from "../admin/utils";
 
 const initialState = {
   current: {
@@ -32,6 +33,11 @@ const _selectProperty = (state, action) => {
   };
 };
 
+const _updateSchemaByPath = (state, action) => {
+  const { path = [], value } = action.payload;
+  set(state, ["current", "schema", ...path], value);
+};
+
 const _updateByPath = (state, action) => {
   const { path, value } = action.payload;
   set(state, ["current", "schema", ...path.schema], value.schema);
@@ -53,11 +59,8 @@ const createReducers = () => ({
   },
   enableCreateMode: _enableCreateMode,
   selectProperty: _selectProperty,
-  updateSchemaByPath(state, action) {
-    const { path = [], value } = action.payload;
-    set(state, ["current", "schema", ...path], value);
-  },
-  updateUiSchemaByPath(state, action) {
+  updateSchemaByPath: _updateSchemaByPath,
+  updateUiSchemaByPath: (state, action) => {
     const { path = [], value } = action.payload;
     set(state, ["current", "uiSchema", ...path], value);
   },
@@ -201,6 +204,35 @@ const createReducers = () => ({
       },
     });
   },
+  updateRequired(state, action) {
+    console.log(action);
+    const { path, isRequired } = action.payload;
+
+    const parentPath = findParentPath(path);
+    const fieldName = path[path.length - 1];
+
+    let schema = get(state, ["current", "schema", ...parentPath]);
+
+    let required = schema.required || [];
+
+    if (isRequired) {
+      if (!required.includes(fieldName)) {
+        required.push(fieldName);
+      }
+    } else {
+      required = required.filter((e) => e !== fieldName);
+    }
+
+    let updatedSchema = { ...schema, required: required };
+
+    if (!required.length) {
+      delete updatedSchema.required;
+    }
+
+    _updateSchemaByPath(state, {
+      payload: { path: parentPath, value: updatedSchema },
+    });
+  },
 });
 
 const reducers = createReducers();
@@ -221,6 +253,7 @@ export const {
   addByPath,
   deleteByPath,
   renameIdByPath,
+  updateRequired,
 } = schemaWizard.actions;
 
 export default schemaWizard.reducer;

@@ -1,6 +1,6 @@
 import { Switch } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-// import { updateRequired } from "../../store/schemaWizard";
+import { updateRequired } from "../../store/schemaWizard";
 
 const RequiredWidget = ({ value, onChange }) => {
 
@@ -10,7 +10,7 @@ const RequiredWidget = ({ value, onChange }) => {
 
   const handleChange = checked => {
     onChange(checked);
-    // dispatch(updateRequired(path.get("path").toJS(), checked)); TODO
+    dispatch(updateRequired({path: path.path, isRequired: checked}));
   };
 
   return (
