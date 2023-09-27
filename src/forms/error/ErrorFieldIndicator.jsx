@@ -3,7 +3,8 @@ import { useSelector } from "react-redux";
 
 const ErrorFieldIndicator = ({ id, children }) => {
 
-  const formErrors = useSelector((state) => state.draftItem.get("formErrors"))
+  // This will only apply when passing a custom store and populating formErrors from the host app
+  const formErrors = useSelector((state) => state.schemaWizard.formErrors) || []
 
   const isFieldWithError = formErrors.some(item => item.startsWith(id));
   if (!isFieldWithError) return children;

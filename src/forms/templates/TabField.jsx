@@ -17,7 +17,11 @@ import TabFieldMenu from "./TabFieldMenu";
 
 const TabField = ({ uiSchema, properties }) => {
 
-  const formErrors = useSelector((state) => state.draftItem.get("formErrors"))
+  // This will only apply when passing a custom store and populating formErrors from the host app
+  const formErrors = useSelector((state) => state.schemaWizard.formErrors) || []
+
+  const { useBreakpoint } = Grid;
+  const screens = useBreakpoint();
 
   let options = uiSchema["ui:options"] || {};
 
@@ -73,9 +77,6 @@ const TabField = ({ uiSchema, properties }) => {
       setActive(act);
     }
   }, []);
-
-  const { useBreakpoint } = Grid;
-  const screens = useBreakpoint();
 
   return (
     <Layout style={{ height: "100%", padding: 0 }}>
