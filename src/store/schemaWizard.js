@@ -44,6 +44,36 @@ const _updateByPath = (state, action) => {
   set(state, ["current", "uiSchema", ...path.uiSchema], value.uiSchema);
 };
 
+const _updateRequired = (state, action) => {
+  console.log(action.payload);
+  const { path, isRequired } = action.payload;
+
+  const parentPath = findParentPath(path);
+  const fieldName = path[path.length - 1];
+
+  let schema = get(state, ["current", "schema", ...parentPath]);
+
+  let required = schema.required || [];
+
+  if (isRequired) {
+    if (!required.includes(fieldName)) {
+      required.push(fieldName);
+    }
+  } else {
+    required = required.filter((e) => e !== fieldName);
+  }
+
+  let updatedSchema = { ...schema, required: required };
+
+  if (!required.length) {
+    delete updatedSchema.required;
+  }
+
+  _updateSchemaByPath(state, {
+    payload: { path: parentPath, value: updatedSchema },
+  });
+};
+
 const createReducers = () => ({
   schemaInitRequest() {
     initialState["loader"] = true;
@@ -106,7 +136,9 @@ const createReducers = () => ({
     const { path } = action.payload;
     const { path: schemaPath, uiPath: uiSchemaPath } = path;
 
-    // updateRequired(schemaPath, false));  // TODO
+    _updateRequired(state, {
+      payload: { path: schemaPath, isRequired: false },
+    });
 
     // Schema:
     let newSchemaPath = [...schemaPath];
@@ -204,34 +236,7 @@ const createReducers = () => ({
       },
     });
   },
-  updateRequired(state, action) {
-    const { path, isRequired } = action.payload;
-
-    const parentPath = findParentPath(path);
-    const fieldName = path[path.length - 1];
-
-    let schema = get(state, ["current", "schema", ...parentPath]);
-
-    let required = schema.required || [];
-
-    if (isRequired) {
-      if (!required.includes(fieldName)) {
-        required.push(fieldName);
-      }
-    } else {
-      required = required.filter((e) => e !== fieldName);
-    }
-
-    let updatedSchema = { ...schema, required: required };
-
-    if (!required.length) {
-      delete updatedSchema.required;
-    }
-
-    _updateSchemaByPath(state, {
-      payload: { path: parentPath, value: updatedSchema },
-    });
-  },
+  updateRequired: _updateRequired,
 });
 
 const reducers = createReducers();
