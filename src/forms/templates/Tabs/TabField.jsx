@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { isTabContainsError, _filterTabs } from "./utils/tabfield";
 import {
   Col,
   Layout,
@@ -11,15 +10,10 @@ import {
   Grid,
   Select,
 } from "antd";
-import { useSelector } from "react-redux";
-
 import TabFieldMenu from "./TabFieldMenu";
+import { _filterTabs, isFieldContainsError } from "../utils";
 
 const TabField = ({ uiSchema, properties }) => {
-
-  // This will only apply when passing a custom store and populating formErrors from the host app
-  const formErrors = useSelector((state) => state.schemaWizard.formErrors) || []
-
   const { useBreakpoint } = Grid;
   const screens = useBreakpoint();
 
@@ -30,7 +24,7 @@ const TabField = ({ uiSchema, properties }) => {
 
   // check if there is analysis_reuse_mode
   let analysis_mode = fetched_tabs.filter(
-    item => item.name === "analysis_reuse_mode"
+    (item) => item.name === "analysis_reuse_mode"
   );
 
   let idsList = [];
@@ -47,9 +41,9 @@ const TabField = ({ uiSchema, properties }) => {
   // remove from the tab list the analysis_reuse_mode if exists
   let tabs = _filterTabs(options.tabs, idsList, options, properties);
 
-  let active_tab = tabs.filter(prop => prop.name == active);
+  let active_tab = tabs.filter((prop) => prop.name == active);
   if (options.tabs) {
-    active_tabs_content = properties.filter(prop => {
+    active_tabs_content = properties.filter((prop) => {
       return (
         active_tab[0].content && active_tab[0].content.indexOf(prop.name) > -1
       );
@@ -89,9 +83,7 @@ const TabField = ({ uiSchema, properties }) => {
             active={active}
             showReuseMode
             setActive={setActive}
-            formErrors={formErrors}
             setAnalysisChecked={setAnalysisChecked}
-            optionsTabs={options.tabs}
           />
         </Layout.Sider>
       ) : (
@@ -106,7 +98,7 @@ const TabField = ({ uiSchema, properties }) => {
                 <Switch
                   disabled={analysis_mode[0].content.props.readonly}
                   checked={analysisChecked}
-                  onChange={checked => {
+                  onChange={(checked) => {
                     analysis_mode[0].content.props.onChange(
                       checked ? "true" : undefined
                     );
@@ -117,24 +109,14 @@ const TabField = ({ uiSchema, properties }) => {
             )}
             <Select
               value={active}
-              onChange={val => setActive(val)}
+              onChange={(val) => setActive(val)}
               style={{ width: 220 }}
-            >
-              {tabs.map(item => (
-                <Select.Option
-                  value={item.name}
-                  key={item.name}
-                  className={
-                    isTabContainsError(
-                      item.content.props.idSchema.$id,
-                      formErrors
-                    ) && "ant-select-item-error"
-                  }
-                >
-                  {item.title || item.content.props.schema.title}
-                </Select.Option>
-              ))}
-            </Select>
+              options={tabs.map((tab) => ({
+                value: tab.name,
+                label: tab.title || tab.content.props.schema.title || tab.name,
+                className: isFieldContainsError(tab) && "tabItemError",
+              }))}
+            />
           </Space>
         </Row>
       )}
@@ -144,7 +126,7 @@ const TabField = ({ uiSchema, properties }) => {
       >
         <Row justify="center">
           <Col span={16} style={{ padding: "10px 0" }}>
-            {active_tabs_content.map(item => item.content)}
+            {active_tabs_content.map((item) => item.content)}
           </Col>
         </Row>
       </Layout.Content>
@@ -157,4 +139,4 @@ TabField.propTypes = {
   properties: PropTypes.object,
 };
 
-export default TabField
+export default TabField;

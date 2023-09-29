@@ -30,17 +30,6 @@ export const _initSchemaStructure = (
   uiSchema: {},
 });
 
-export const _addSchemaToLocalStorage = (_id, name, description) => {
-  let availableSchemas = localStorage.getItem("availableSchemas") || "{}";
-  let newAvailableSchemas = Object.assign(availableSchemas, {
-    [_id]: _initSchemaStructure(name, description),
-  });
-
-  localStorage.setItem("availableSchemas", JSON.stringify(newAvailableSchemas));
-
-  return newAvailableSchemas;
-};
-
 let _addErrors = (errors, path) => {
   errors.addError({ schema: path.schema, uiSchema: path.uiSchema });
 
@@ -81,19 +70,4 @@ export const combineFieldTypes = (fieldTypes, customFieldTypes) => {
     };
   });
   return combined;
-};
-
-export const findParentPath = (schemaPath) => {
-  let isObj;
-  for (let i = schemaPath.length - 1; i >= 0; i--) {
-    // If we find a properties, it means we're inside an object (and not an array)
-    if (schemaPath[i] === "properties") {
-      isObj = true;
-    } else if (isObj) {
-      return schemaPath.slice(0, i + 1);
-    } else {
-      isObj = false;
-    }
-  }
-  return [];
 };

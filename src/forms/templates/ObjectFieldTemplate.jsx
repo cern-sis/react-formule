@@ -3,7 +3,7 @@ import { isObject, isNumber } from "lodash-es";
 import { canExpand } from "@rjsf/utils";
 import { Button, Col, Row } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
-import TabField from "./TabField";
+import TabField from "./Tabs/TabField";
 import PropTypes from "prop-types";
 import FieldHeader from "./Field/FieldHeader";
 

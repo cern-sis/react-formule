@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { notification } from "antd";
 import { set, get } from "lodash-es";
-import { findParentPath } from "../admin/utils";
+import { findParentPath } from "../utils";
 
 const initialState = {
   current: {

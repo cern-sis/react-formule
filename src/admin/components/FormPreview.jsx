@@ -5,9 +5,8 @@ import { Row, Empty, Space, Typography, Col } from "antd";
 import { useSelector } from "react-redux";
 
 const FormPreview = () => {
-const schema = useSelector((state) => state.schemaWizard.current.schema)
-const uiSchema = useSelector((state) => state.schemaWizard.current.uiSchema)
-
+  const schema = useSelector((state) => state.schemaWizard.current.schema)
+  const uiSchema = useSelector((state) => state.schemaWizard.current.uiSchema)
 
   return (
     <div

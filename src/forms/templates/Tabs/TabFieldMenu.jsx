@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { Menu, Switch, Typography, Row } from "antd";
-import { isTabContainsError } from "./utils/tabfield";
+import { isFieldContainsError } from "../utils";
 
 const TabFieldMenu = ({
   tabs,
@@ -10,8 +10,6 @@ const TabFieldMenu = ({
   analysisChecked,
   setAnalysisChecked,
   setActive,
-  formErrors,
-  optionsTabs,
 }) => {
   return (
     <Menu
@@ -39,14 +37,11 @@ const TabFieldMenu = ({
             ),
           },
       ].concat(
-        tabs.map(item => ({
-          key: item.name,
-          label: item.title || item.content.props.schema.title,
-          onClick: () => setActive(item.name),
-          danger: isTabContainsError(
-            optionsTabs ? item.idsList : item.content.props.idSchema.$id,
-            formErrors
-          ),
+        tabs.map(tab => ({
+          key: tab.name,
+          label: tab.title || tab.content.props.schema.title || tab.name,
+          onClick: () => setActive(tab.name),
+          danger: isFieldContainsError(tab)
         }))
       )}
     />
@@ -54,7 +49,6 @@ const TabFieldMenu = ({
 };
 
 TabFieldMenu.propTypes = {
-  formErrors: PropTypes.array,
   setActive: PropTypes.func,
   setActiveLabel: PropTypes.func,
   setAnalysisChecked: PropTypes.func,
@@ -63,7 +57,6 @@ TabFieldMenu.propTypes = {
   analysis_mode: PropTypes.array,
   showReuseMode: PropTypes.bool,
   analysisChecked: PropTypes.bool,
-  optionsTabs: PropTypes.object,
 };
 
 export default TabFieldMenu;

@@ -1,30 +1,27 @@
 import PropTypes from "prop-types";
 import { Collapse } from "antd";
 import ArrayFieldTemplateItem from "./ArrayFieldTemplateItem";
-import ErrorFieldIndicator from "../../error/ErrorFieldIndicator";
+import { isFieldContainsError } from "../utils";
 
 const AccordionArrayFieldTemplate = ({ items = [], formContext, id }) => {
   if (items.length < 1) return null;
 
   return (
-    <ErrorFieldIndicator id={id}>
-      <Collapse
-        expandIconPosition="right"
-        items={[
-          {
-            key: "1",
-            label: `${items.length} item(s)`,
-            children: items.map((itemProps, idx) => (
-              <ArrayFieldTemplateItem
-                key={id + idx}
-                {...itemProps}
-                formContext={formContext}
-              />
-            )),
-          },
-        ]}
-      />
-    </ErrorFieldIndicator>
+    <Collapse
+      expandIconPosition="right"
+      items={items.map((item, index) => ({
+        key: index,
+        label: `Item #${index + 1}`,
+        children: (
+          <ArrayFieldTemplateItem
+            key={id + index}
+            {...item}
+            formContext={formContext}
+          />
+        ),
+        className: isFieldContainsError(item) && "collapseItemError",
+      }))}
+    />
   );
 };
 
