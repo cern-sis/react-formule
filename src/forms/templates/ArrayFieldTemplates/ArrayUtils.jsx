@@ -15,7 +15,7 @@ const ArrayUtils = ({
   hasRemove,
 }) => {
   return !readonly ? (
-    <Col flex="none" style={{ padding: 0, margin: 0 }}>
+    <Col flex="none" style={{ padding: 0, margin: 0 }} data-cy="arrayUtils">
       <Row gutter={4}>
         {(hasMoveUp || hasMoveDown) && (
           <Col>

@@ -22,7 +22,7 @@ const RJSFForm = ({
   onChange,
   formContext,
   readonly,
-  className = [],
+  className,
   ObjectFieldTemplate: Objects,
   ArrayFieldTemplate: Arrays,
   FieldTemplate: Fields,
@@ -67,7 +67,7 @@ const RJSFForm = ({
 
   return (
     <Form
-      className={["__Form__", ...className].join(" ")}
+      className={["__Form__", className].join(" ")}
       ref={formRef}
       schema={schema}
       uiSchema={uiSchema}
@@ -111,7 +111,7 @@ RJSFForm.propTypes = {
   mode: PropTypes.string,
   draftEditor: PropTypes.bool,
   readonly: PropTypes.bool,
-  className: PropTypes.array,
+  className: PropTypes.string,
   liveValidate: PropTypes.bool,
   showErrorList: PropTypes.bool,
   FieldTemplate: PropTypes.node,

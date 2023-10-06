@@ -12,7 +12,7 @@ const SchemaPreview = () => {
   const dispatch = useDispatch()
 
   return (
-    <div style={{ height: "80%" }}>
+    <div style={{ height: "80%" }} data-cy="schemaTree">
       <Row justify="center">
         <Col span={24}>
           <Typography.Title
@@ -29,7 +29,7 @@ const SchemaPreview = () => {
         align="middle"
         style={{ padding: "0 10px" }}
       >
-        <Typography.Title level={5} style={{ margin: 0 }} ellipsis>
+        <Typography.Title level={5} style={{ margin: 0 }} ellipsis data-cy="rootTitle">
           {(schema && schema.title) || "root"}
         </Typography.Title>
         <Button
@@ -38,10 +38,11 @@ const SchemaPreview = () => {
           icon={<SettingOutlined />}
           onClick={() => dispatch(selectProperty({ path: { schema: [], uiSchema: [] }}))}
           className="tour-root-settings"
+          data-cy="rootSettings"
         />
       </Row>
       <Row style={{ padding: "0 10px" }}>
-        <Typography.Text type="secondary" level={5}>
+        <Typography.Text type="secondary" level={5} data-cy="rootDescription">
           {schema && schema.description}
         </Typography.Text>
       </Row>

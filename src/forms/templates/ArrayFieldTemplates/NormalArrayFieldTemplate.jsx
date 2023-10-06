@@ -72,26 +72,18 @@ const NormalArrayFieldTemplate = ({
     uiEmailDefaults = uiSchema["ui:options"].emailDefaults || [];
   }
 
-  let typeOfArrayToDisplay = "default";
-  if ("ui:array" in uiSchema) typeOfArrayToDisplay = uiSchema["ui:array"];
-  else if (
-    schema &&
-    schema.items &&
-    ["array", "object"].includes(schema.items.type)
-  ) {
-    typeOfArrayToDisplay = "LayerArrayField";
-  }
+  let typeOfArrayToDisplay = uiSchema && uiSchema.items && uiSchema.items["ui:object"] ? uiSchema.items["ui:object"] : "default";
 
   const getArrayContent = type => {
     const choices = {
-      LayerArrayField: (
+      layerObjectField: (
         <LayerArrayFieldTemplate
           items={items}
           formContext={formContext}
           id={idSchema.$id}
         />
       ),
-      AccordionArrayField: (
+      accordionObjectField: (
         <AccordionArrayFieldTemplate
           items={items}
           formContext={formContext}
@@ -348,6 +340,7 @@ const NormalArrayFieldTemplate = ({
                     backgroundColor: token.colorPrimary,
                     fontFamily: token.fontFamily,
                   }}
+                  data-cy="addItemButton"
                 >
                   <PlusCircleOutlined /> Add{" "}
                   {options && options.addLabel ? options.addLabel : `Item`}

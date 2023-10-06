@@ -59,13 +59,13 @@ function SortableBox({ parent, children, id, index, moveCard }) {
 
   const [{ isDragging }, drag] = useDrag({
     item: {
-      type: `RE-${parent}`,
       index,
       id,
     },
     collect: monitor => ({
       isDragging: monitor.isDragging(),
     }),
+    type: `RE-${parent}`,
   });
 
   const opacity = isDragging ? 0 : 1;

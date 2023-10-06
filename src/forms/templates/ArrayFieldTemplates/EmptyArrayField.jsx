@@ -25,6 +25,7 @@ const EmptyArrayField = ({
           onClick={onAddClick}
           type="primary"
           icon={<PlusCircleOutlined />}
+          data-cy="addItemButton"
         >
           Add {options && options.addLabel ? options.addLabel : `Item`}
         </Button>

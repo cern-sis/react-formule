@@ -11,6 +11,7 @@ import { isItTheArrayField } from "../utils";
 import { useContext } from "react";
 import CustomizationContext from "../../contexts/CustomizationContext";
 import { selectProperty } from "../../store/schemaWizard";
+import { hiddenFields } from "../utils/fieldTypes";
 
 const SchemaTreeItem = ({
   path,
@@ -60,7 +61,7 @@ const SchemaTreeItem = ({
       }
     }
 
-    const allFieldTypes = customizationContext.allFieldTypes
+    const allFieldTypes = {...customizationContext.allFieldTypes, hidden: {fields: hiddenFields}}
 
     for (const category in allFieldTypes) {
       for (const [key, value] of Object.entries(allFieldTypes[category].fields)) {
@@ -86,6 +87,7 @@ const SchemaTreeItem = ({
           0.5,
         backgroundColor: "white",
       }}
+      data-cy="treeItem"
     >
       <Row gutter={8} onClick={handleClick} align="middle" wrap={false}>
         <Col flex="none">{getIconByType(uiSchema, schema)}</Col>

@@ -57,7 +57,7 @@ const DateWidget = ({
         current &&
         ((schema.minDate && current < dayjs(schema.minDate, DATE_ISO_FORMAT)) ||
           (schema.maxDate &&
-            current > dayjs(schema.maxDate, DATE_ISO_FORMAT).add(1, "d")))
+            current >= dayjs(schema.maxDate, DATE_ISO_FORMAT).add(1, "d")))
       }
       autoFocus={autofocus}
       disabled={disabled || (readonlyAsDisabled && readonly)}

@@ -1,4 +1,4 @@
-import HTML5Backend from "react-dnd-html5-backend";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 import { Col, Row, Spin } from "antd";
 import PropertyEditor from "../components/PropertyEditor";

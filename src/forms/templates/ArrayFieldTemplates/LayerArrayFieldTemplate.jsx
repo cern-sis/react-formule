@@ -112,6 +112,7 @@ const LayerArrayFieldTemplate = ({ items = [] }) => {
           setItemToDisplay(null);
         }}
         width={720}
+        data-cy="layerModal"
       >
         {itemToDisplay && itemToDisplay.children}
       </Modal>

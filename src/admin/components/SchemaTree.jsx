@@ -23,6 +23,7 @@ const SchemaTree = () => {
       validate={_validate}
       liveValidate
       formContext={{ schema: [], uiSchema: [] }}
+      className="schemaTree"
     />
   );
 };

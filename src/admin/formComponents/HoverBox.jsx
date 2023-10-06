@@ -40,7 +40,7 @@ function HoverBox({
   });
 
   return (
-    <div ref={drop} style={getStyle(isOverCurrent)}>
+    <div ref={drop} style={getStyle(isOverCurrent)} data-cy="hoverBox">
       {children}
     </div>
   );

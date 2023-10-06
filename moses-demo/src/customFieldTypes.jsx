@@ -1,4 +1,4 @@
-import { common, extra } from "./fieldTypes";
+import { common, extra } from "../../src/admin/utils/fieldTypes";
 
 import { FileOutlined } from "@ant-design/icons";
 

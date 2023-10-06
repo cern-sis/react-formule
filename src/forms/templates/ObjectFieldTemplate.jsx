@@ -98,7 +98,7 @@ const ObjectFieldTemplate = ({
             {properties
               .filter(e => !e.hidden)
               .map(element => (
-                <Col key={element.name} span={calculateColSpan(element)}>
+                <Col key={element.name} span={calculateColSpan(element)} data-cy="spanColWrapper">
                   {element.content}
                 </Col>
               ))}

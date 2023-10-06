@@ -25,7 +25,7 @@ const SelectFieldType = () => {
             <Row gutter={[16, 8]}>
               {Object.entries(type.fields).map(([key, type], index) => (
                 <Col xs={22} xl={12} key={key} style={{ width: "100%" }}>
-                  <Draggable key={index} data={type}>
+                  <Draggable key={index} data={type} type={key}>
                     <Space style={{ padding: "2px 5px" }}>
                       {type.icon}
                       {type.title}

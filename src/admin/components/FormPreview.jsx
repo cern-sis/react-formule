@@ -15,6 +15,7 @@ const FormPreview = () => {
         flexDirection: "column",
         height: "100%",
       }}
+      data-cy="formPreview"
     >
       <Typography.Title
         level={4}

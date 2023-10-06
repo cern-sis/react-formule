@@ -9,6 +9,10 @@ export default defineConfig({
   define: {
     "process.env": {},
   },
+  server: {
+    // Needed for cypress to be able to access the dev server
+    host: true
+  },
   // Enables hmr in development without having to rebuild the library
   resolve: {
     alias: {

@@ -21,8 +21,8 @@ const Customize = ({
   const _path = useSelector((state) => state.schemaWizard.field.path)
   const _uiPath = useSelector((state) => state.schemaWizard.field.uiPath)
   
-  const schema = useSelector((state) => _path ? get(state.schemaWizard, ["current", "schema", ..._path]) : undefined)
-  let uiSchema = useSelector((state) => _path ? get(state.schemaWizard, ["current", "uiSchema", ..._path]) : undefined)
+  const schema = useSelector((state) => _path && get(state.schemaWizard, ["current", "schema", ..._path]))
+  const uiSchema = useSelector((state) => _uiPath && get(state.schemaWizard, ["current", "uiSchema", ..._uiPath]))
 
   useEffect(() => {
     if (uiSchema && Object.hasOwn(uiSchema, "ui:options")) {
@@ -38,32 +38,20 @@ const Customize = ({
     dispatch(updateUiSchemaByPath({path: path.uiPath, value: data.formData}));
   };
   const sizeChange = newSize => {
-    uiSchema = uiSchema ? uiSchema : {};
-
     let { "ui:options": uiOptions = {}, ...rest } = uiSchema;
-    let { size, ...restUIOptions } = uiOptions;
-
-    size = newSize;
-    let _uiOptions = { size, ...restUIOptions };
 
     dispatch(updateUiSchemaByPath({path: path.uiPath, value: {
       ...rest,
-      "ui:options": _uiOptions,
+      "ui:options": { ...uiOptions, size: newSize },
     }}));
   };
 
   const alignChange = newAlign => {
-    uiSchema = uiSchema ? uiSchema : {};
-
     let { "ui:options": uiOptions = {}, ...rest } = uiSchema;
-    let { justify, ...restUIOptions } = uiOptions;
-
-    justify = newAlign;
-    let _uiOptions = { justify, ...restUIOptions };
 
     dispatch(updateUiSchemaByPath({path: path.uiPath, value: {
       ...rest,
-      "ui:options": _uiOptions,
+      "ui:options": { ...uiOptions, justify: newAlign },
     }}));
   };
 

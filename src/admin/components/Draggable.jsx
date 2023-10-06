@@ -7,19 +7,19 @@ const style = {
   padding: "0.1rem",
   cursor: "move",
 };
-const Draggable = ({ data, children }) => {
-  const type = "FIELD_TYPE";
+const Draggable = ({ data, type, children }) => {
   const [{ isDragging }, drag] = useDrag({
-    item: { type, data },
+    item: { data },
     collect: monitor => ({
       isDragging: monitor.isDragging(),
       handlerId: monitor.getHandlerId(),
     }),
+    type: "FIELD_TYPE"
   });
   const opacity = isDragging ? 0.4 : 1;
 
   return (
-    <div ref={drag} style={{ ...style, opacity }} className={data.className}>
+    <div ref={drag} style={{ ...style, opacity }} className={data.className} data-cy={`field-${type}`}>
       {children}
     </div>
   );
@@ -28,6 +28,7 @@ const Draggable = ({ data, children }) => {
 Draggable.propTypes = {
   children: PropTypes.node,
   data: PropTypes.object,
+  type: PropTypes.string,
 };
 
 export default Draggable;

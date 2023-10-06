@@ -838,6 +838,9 @@ const advanced = {
         type: "string",
         format: "uri",
       },
+      uiSchema: {
+        "ui:widget": "uri",
+      },
     },
   },
   richeditor: {

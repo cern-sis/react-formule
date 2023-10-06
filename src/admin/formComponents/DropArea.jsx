@@ -12,7 +12,7 @@ const DropArea = () => (
       margin: "1px 0",
     }}
   >
-    <Typography.Text style={{ color: "grey" }}>Drop items here</Typography.Text>
+    <Typography.Text style={{ color: "grey" }} data-cy="dropArea">Drop items here</Typography.Text>
     <DownloadOutlined />
   </Space>
 );

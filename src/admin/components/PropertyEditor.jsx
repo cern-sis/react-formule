@@ -65,7 +65,7 @@ const PropertyEditor = () => {
   }, [pathObj]);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
+    <div style={{ display: "flex", flexDirection: "column", width: "100%" }} data-cy="fieldSettings">
       <PageHeader
         onBack={() => dispatch(enableCreateMode())}
         title={(screens.xl || pathObj.path.length == 0) && "Field settings"}
@@ -90,7 +90,7 @@ const PropertyEditor = () => {
         <Col xs={22} style={{ paddingBottom: "10px", textAlign: "center" }}>
           {renderPath(pathObj)}
         </Col>
-        <Col xs={18}>
+        <Col xs={18} data-cy="editFieldId">
           <Typography.Title
             level={5}
             editable={{
