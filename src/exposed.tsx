@@ -1,28 +1,24 @@
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import {
-  _initSchemaStructure,
-  combineFieldTypes,
-  slugify,
-} from "./admin/utils";
+import { initSchemaStructure, combineFieldTypes } from "./admin/utils";
 import CustomizationContext from "./contexts/CustomizationContext";
 import { ConfigProvider, ThemeConfig } from "antd";
 import { Provider } from "react-redux";
 import store from "./store/configureStore";
 import fieldTypes from "./admin/utils/fieldTypes";
-import { Store } from "redux";
 import { FC, ReactNode } from "react";
 import { RJSFSchema } from "@rjsf/utils";
 import { schemaInit } from "./store/schemaWizard";
+import StateSynchronizer from "./StateSynchronizer";
 
 type MosesContextProps = {
-  children: ReactNode,
-  customFieldTypes?: object,
-  customFields?: object,
-  customWidgets?: object,
-  theme?: ThemeConfig,
-  customStore?: Store
-}
+  children: ReactNode;
+  customFieldTypes?: object;
+  customFields?: object;
+  customWidgets?: object;
+  theme?: ThemeConfig;
+  synchronizeState?: (state: string) => void;
+};
 
 export const MosesContext: FC<MosesContextProps> = ({
   children,
@@ -30,10 +26,17 @@ export const MosesContext: FC<MosesContextProps> = ({
   customFields,
   customWidgets,
   theme,
-  customStore
+  synchronizeState,
 }) => {
+  const content = synchronizeState ? (
+    <StateSynchronizer synchronizeState={synchronizeState}>
+      {children}
+    </StateSynchronizer>
+  ) : (
+    children
+  );
   return (
-    <Provider store={customStore || store}>
+    <Provider store={store}>
       {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
       {/* @ts-ignore */}
       <DndProvider backend={HTML5Backend} context={window}>
@@ -45,7 +48,7 @@ export const MosesContext: FC<MosesContextProps> = ({
               customWidgets,
             }}
           >
-            {children}
+            {content}
           </CustomizationContext.Provider>
         </ConfigProvider>
       </DndProvider>
@@ -53,31 +56,22 @@ export const MosesContext: FC<MosesContextProps> = ({
   );
 };
 
-export const initMosesSchema = (schema?: RJSFSchema) => {
-  if (schema) {
-    const { id, deposit_schema, deposit_options, ...configs } = schema;
-    store.dispatch(
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      schemaInit({
-        id: id || "Schema Name",
-        data: { schema: deposit_schema, uiSchema: deposit_options },
-        configs: configs,
-      })
-    );
-  } else {
-    store.dispatch(
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      schemaInit({
-        id: slugify(Math.random().toString() + "_" + "name"),
-        data: _initSchemaStructure(),
-        configs: {
-          fullname: name,
-        },
-      })
-    );
-  }
+// TODO: Review typing (here and in the actions file)
+export const initMosesSchema = (
+  data?: RJSFSchema,
+  name?: string,
+  description?: string
+) => {
+  const { deposit_schema, deposit_options, ...configs } = data || {};
+  store.dispatch(
+    schemaInit({
+      data:
+        deposit_schema && deposit_options
+          ? { schema: deposit_schema, uiSchema: deposit_options }
+          : initSchemaStructure(name, description),
+      configs: configs || { fullname: name },
+    })
+  );
 };
 
 export const getMosesState = () => {

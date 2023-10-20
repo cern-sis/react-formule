@@ -12,6 +12,8 @@ import { Form } from "@rjsf/antd";
 import validator from "@rjsf/validator-ajv8";
 import CustomizationContext from "../contexts/CustomizationContext";
 import { useContext } from "react";
+import { Provider } from "react-redux";
+import store from "../store/configureStore";
 
 const RJSFForm = ({
   formRef,
@@ -66,34 +68,36 @@ const RJSFForm = ({
   };
 
   return (
-    <Form
-      className={["__Form__", className].join(" ")}
-      ref={formRef}
-      schema={schema}
-      uiSchema={uiSchema}
-      tagName={tagName}
-      formData={formData}
-      fields={{ ...CAPFields, ...customizationContext.customFields, ...fields }}
-      widgets={{ ...CAPWidgets, ...customizationContext.customWidgets, ...widgets }}
-      templates={templates}
-      liveValidate={liveValidate}
-      showErrorList={showErrorList}
-      noHtml5Validate={true}
-      onError={() => {}}
-      onBlur={() => {}}
-      customValidate={validate}
-      validator={validator}
-      extraErrors={extraErrors}
-      onChange={onChange}
-      readonly={readonly}
-      transformErrors={transformErrors}
-      formContext={{
-        formRef: formRef,
-        ...formContext,
-      }}
-    >
-      <span />
-    </Form>
+    <Provider store={store}>
+      <Form
+        className={["__Form__", className].join(" ")}
+        ref={formRef}
+        schema={schema}
+        uiSchema={uiSchema}
+        tagName={tagName}
+        formData={formData}
+        fields={{ ...CAPFields, ...customizationContext.customFields, ...fields }}
+        widgets={{ ...CAPWidgets, ...customizationContext.customWidgets, ...widgets }}
+        templates={templates}
+        liveValidate={liveValidate}
+        showErrorList={showErrorList}
+        noHtml5Validate={true}
+        onError={() => {}}
+        onBlur={() => {}}
+        customValidate={validate}
+        validator={validator}
+        extraErrors={extraErrors}
+        onChange={onChange}
+        readonly={readonly}
+        transformErrors={transformErrors}
+        formContext={{
+          formRef: formRef,
+          ...formContext,
+        }}
+      >
+        <span />
+      </Form>
+    </Provider>
   );
 };
 

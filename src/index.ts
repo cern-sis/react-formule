@@ -8,4 +8,6 @@ export { default as SchemaPreview } from "./admin/components/SchemaPreview";
 export { default as FormPreview } from "./admin/components/FormPreview";
 export { default as SelectOrEdit } from "./admin/components/SelectOrEdit";
 
+export { default as MosesForm } from "./forms/Form";
+
 export { common, extra } from "./admin/utils/fieldTypes"

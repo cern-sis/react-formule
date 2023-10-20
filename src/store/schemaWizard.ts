@@ -2,11 +2,14 @@ import { createSlice } from "@reduxjs/toolkit";
 import { notification } from "antd";
 import { set, get } from "lodash-es";
 import { findParentPath } from "../utils";
+import type { PayloadAction } from '@reduxjs/toolkit'
+
 
 const initialState = {
   current: {
     schema: {},
     uiSchema: {},
+    formData: {},
   },
   initial: {
     schema: {},
@@ -51,7 +54,7 @@ const _updateRequired = (state, action) => {
   const parentPath = findParentPath(path);
   const fieldName = path[path.length - 1];
 
-  let schema = get(state, ["current", "schema", ...parentPath]);
+  const schema = get(state, ["current", "schema", ...parentPath]);
 
   let required = schema.required || [];
 
@@ -63,7 +66,7 @@ const _updateRequired = (state, action) => {
     required = required.filter((e) => e !== fieldName);
   }
 
-  let updatedSchema = { ...schema, required: required };
+  const updatedSchema = { ...schema, required: required };
 
   if (!required.length) {
     delete updatedSchema.required;
@@ -78,7 +81,8 @@ const createReducers = () => ({
   schemaInitRequest() {
     initialState["loader"] = true;
   },
-  schemaInit(state, action) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  schemaInit(state, action: PayloadAction<any>) {
     const { data, configs } = action.payload;
     state["current"] = data;
     state["initial"] = data;
@@ -106,12 +110,12 @@ const createReducers = () => ({
   addByPath(state, action) {
     const { path, value } = action.payload;
     const { schema: schemaPath, uiSchema: uiSchemaPath } = path;
-    let schema = get(state, ["current", "schema", ...schemaPath]);
+    const schema = get(state, ["current", "schema", ...schemaPath]);
 
     let _path = schemaPath;
     let _uiPath = uiSchemaPath;
 
-    let random_name = `item_${Math.random().toString(36).substring(2, 8)}`;
+    const random_name = `item_${Math.random().toString(36).substring(2, 8)}`;
 
     if (schema.type) {
       if (schema.type == "object") {
@@ -141,22 +145,22 @@ const createReducers = () => ({
     });
 
     // Schema:
-    let newSchemaPath = [...schemaPath];
+    const newSchemaPath = [...schemaPath];
     let itemToDelete = newSchemaPath.pop();
     // if the last item is items then pop again since it is an array, in order to fetch the proper id
     itemToDelete =
       itemToDelete === "items" ? newSchemaPath.pop() : itemToDelete;
 
     const schema = get(state, ["current", "schema", ...newSchemaPath]);
-    let updatedSchema = { ...schema };
+    const updatedSchema = { ...schema };
     delete updatedSchema[itemToDelete];
 
     // uiSchema:
-    let newUiSchemaPath = [...uiSchemaPath];
+    const newUiSchemaPath = [...uiSchemaPath];
     const uiItemToDelete = newUiSchemaPath.pop();
 
     const uiSchema = get(state, ["current", "uiSchema", ...newUiSchemaPath]);
-    let updatedUiSchema = { ...uiSchema };
+    const updatedUiSchema = { ...uiSchema };
     delete updatedUiSchema[uiItemToDelete];
 
     // Update changes:
@@ -172,24 +176,24 @@ const createReducers = () => ({
     const { path, newName } = action.payload;
     const { path: schemaPath, uiPath: uiSchemaPath } = path;
 
-    let newSchemaPath = [...schemaPath];
+    const newSchemaPath = [...schemaPath];
     let itemToDelete = newSchemaPath.pop();
     // if the last item is items then pop again since it is an array, in order to fetch the proper id
     itemToDelete =
       itemToDelete === "items" ? newSchemaPath.pop() : itemToDelete;
 
-    let newUiSchemaPath = [...uiSchemaPath];
+    const newUiSchemaPath = [...uiSchemaPath];
     const uiItemToDelete = newUiSchemaPath.pop();
     // check if the new id is empty or exact same with the current id
     if (newName === itemToDelete || newName === "") {
       notification.warning({
-        description: "Make sure that the new id is different and not empty",
+        message: "Make sure that the new id is different and not empty",
       });
       return;
     }
 
     if (newName.indexOf(" ") >= 0) {
-      notification.warning({ description: "An id cannot contain spaces" });
+      notification.warning({ message: "An id cannot contain spaces" });
       return;
     }
 
@@ -197,15 +201,15 @@ const createReducers = () => ({
     const schema = get(state, ["current", "schema", ...newSchemaPath]);
     const uiSchema = get(state, ["current", "uiSchema", ...newUiSchemaPath]);
 
-    let updatedSchema = { ...schema };
-    let updatedUiSchema = { ...uiSchema };
+    const updatedSchema = { ...schema };
+    const updatedUiSchema = { ...uiSchema };
 
     // Schema:
-    let keys = Object.keys(schema);
+    const keys = Object.keys(schema);
     // make sure that the new name is unique among sibling widgets
     if (keys.includes(newName)) {
       notification.error({
-        description: "The id should be unique, this name already exists",
+        message: "The id should be unique, this name already exists",
       });
       return;
     }
@@ -237,6 +241,11 @@ const createReducers = () => ({
     });
   },
   updateRequired: _updateRequired,
+  updateFormData(state, action) {
+    const { value } = action.payload;
+    console.log("UPDATE FORM DATA", value);
+    state.current["formData"] = value;
+  },
 });
 
 const reducers = createReducers();
@@ -258,6 +267,7 @@ export const {
   deleteByPath,
   renameIdByPath,
   updateRequired,
+  updateFormData,
 } = schemaWizard.actions;
 
 export default schemaWizard.reducer;
