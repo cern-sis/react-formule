@@ -68,3 +68,5 @@ export const combineFieldTypes = (fieldTypes, customFieldTypes) => {
   });
   return combined;
 };
+
+export const timer = (ms) => new Promise((res) => setTimeout(res, ms));

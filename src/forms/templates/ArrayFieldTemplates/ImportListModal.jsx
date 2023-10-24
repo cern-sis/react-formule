@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Checkbox, Input, List, Modal, Tabs, Typography } from "antd";
 import axios from "../../../utils/axios";
+import { timer } from "../../../admin/utils";
 
 const ImportListModal = ({
   open,
@@ -60,8 +61,31 @@ const ImportListModal = ({
       setFetchedResults(data);
       updateAll(data, true);
     } catch (err) {
-      // setError(error);
+      //
     }
+  };
+
+  const populateItems = async (values, type) => {
+    for (let [index, value] of values.entries()) {
+      let _index = formData.length + index;
+      if (type == "object" && to) {
+        value = { [to]: value };
+      }
+      setCurrentIndex({
+        index: _index,
+        value,
+      });
+      await timer(1);
+    }
+  };
+
+  const addItem = async (values, type) => {
+    // eslint-disable-next-line no-unused-vars
+    for (const _ of values) {
+      onAddClick();
+      await timer(1);
+    }
+    populateItems(values, type);
   };
 
   const _batchImport = () => {
@@ -82,27 +106,8 @@ const ImportListModal = ({
     let { items: { type } = {} } = schema;
 
     if (Array.isArray(values)) {
-      setTimeout(() => {
-        values.map(() => {
-          onAddClick();
-        });
-      }, 1);
+      addItem(values, type);
     }
-
-    setTimeout(
-      () =>
-        values.map((value, index) => {
-          let _index = formData.length + index;
-          if (type == "object" && to) {
-            value = { [to]: value };
-          }
-          setCurrentIndex({
-            index: _index,
-            value,
-          });
-        }),
-      1
-    );
 
     onCancel();
   };
@@ -136,7 +141,7 @@ const ImportListModal = ({
               <>
                 <Input.Search
                   enterButton="Fetch"
-                  placeHolder="Insert your pattern e.x /dataset/*"
+                  placeholder="Insert your pattern e.x /dataset/*"
                   onChange={e => {
                     e.target.value == "" &&
                       fetchedResults &&
@@ -182,8 +187,7 @@ const ImportListModal = ({
             children: (
               <>
                 <Typography.Title level={5}>
-                  {description} || Paste your list here. Insert one item per
-                  line:
+                  {description || "Paste your list here. Insert one item per line:"}
                 </Typography.Title>
                 <Input.TextArea
                   rows={15}
