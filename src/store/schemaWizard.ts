@@ -48,7 +48,6 @@ const _updateByPath = (state, action) => {
 };
 
 const _updateRequired = (state, action) => {
-  console.log(action.payload);
   const { path, isRequired } = action.payload;
 
   const parentPath = findParentPath(path);
@@ -78,9 +77,6 @@ const _updateRequired = (state, action) => {
 };
 
 const createReducers = () => ({
-  schemaInitRequest() {
-    initialState["loader"] = true;
-  },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   schemaInit(state, action: PayloadAction<any>) {
     const { data, configs } = action.payload;
@@ -243,7 +239,6 @@ const createReducers = () => ({
   updateRequired: _updateRequired,
   updateFormData(state, action) {
     const { value } = action.payload;
-    console.log("UPDATE FORM DATA", value);
     state.current["formData"] = value;
   },
 });

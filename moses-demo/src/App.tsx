@@ -5,13 +5,26 @@ import { initMosesSchema } from "cap-moses";
 import { useEffect } from "react";
 import { Row, Col } from "antd";
 
+import "./style.css"
+
+const PRIMARY_COLOR = "#006996";
+
 function App() {
   useEffect(() => {
     initMosesSchema();
   }, []);
 
   return (
-    <MosesContext>
+    <MosesContext theme={{
+      token: {
+        colorPrimary: PRIMARY_COLOR,
+        colorLink: PRIMARY_COLOR,
+        colorLinkHover: "#1a7fa3",
+        borderRadius: 2,
+        colorBgLayout: "#f0f2f5",
+        fontFamily: "Titillium Web",
+      },
+    }}>
       <Row style={{ height: "100%" }}>
         <Col
           xs={10}
@@ -30,7 +43,6 @@ function App() {
           sm={5}
           style={{
             overflowX: "hidden",
-            height: "100%",
             padding: "0px 15px",
             backgroundColor: "#F6F7F8",
           }}

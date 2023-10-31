@@ -1,0 +1,20 @@
+@font-face {
+  font-family: "Titillium Web";
+  src: url("./fonts/Titillium-Web-Regular.woff") format("woff");
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Titillium Web";
+  src: url("./fonts/Titillium-Web-RegularItalic.woff") format("woff");
+  font-style: italic;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Titillium Web";
+  src: url("./fonts/Titillium-Web-Semibold.woff") format("woff");
+  font-style: normal;
+  font-weight: 600;
+}
