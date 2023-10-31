@@ -31,7 +31,9 @@ export const isFieldContainsError = (item) => {
       return true;
     } else if (Object.keys(item).length) {
       for (const child of Object.keys(item)) {
-        return findErrorsRecursively(item[child]);
+        if (item[child]) {
+          return findErrorsRecursively(item[child]);
+        }
       }
     } else {
       return false;
