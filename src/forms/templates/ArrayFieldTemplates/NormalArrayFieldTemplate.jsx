@@ -10,7 +10,7 @@ import EmptyArrayField from "./EmptyArrayField";
 import AccordionArrayFieldTemplate from "./AccordionArrayFieldTemplate";
 import LayerArrayFieldTemplate from "./LayerArrayFieldTemplate";
 import PropTypes from "prop-types";
-import axios from "../../../utils/axios";
+import axios from "axios";
 import ImportListModal from "./ImportListModal";
 import { CheckOutlined, CopyOutlined } from "@ant-design/icons";
 import CodeViewer from "../../../utils/CodeViewer";
