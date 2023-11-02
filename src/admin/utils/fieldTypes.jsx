@@ -810,7 +810,7 @@ const advanced = {
     child: {},
     optionsSchema: {
       type: "object",
-      title: "Uri Schema",
+      title: "URI Schema",
       properties: {
         ...common.optionsSchema,
         readOnly: extra.optionsSchema.readOnly,
@@ -853,13 +853,13 @@ const advanced = {
     },
   },
   richeditor: {
-    title: "Rich editor",
+    title: "Rich/LaTeX editor",
     icon: <BookOutlined />,
-    description: "Rich Editor Field",
+    description: "Rich/LaTeX Editor Field",
     child: {},
     optionsSchema: {
       type: "object",
-      title: "Rich Editor Schema",
+      title: "Rich/LaTeX Editor Schema",
       properties: {
         ...common.optionsSchema,
         readOnly: extra.optionsSchema.readOnly,

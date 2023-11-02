@@ -10,10 +10,11 @@ const widgets = {
   text: TextWidget,
   uri: UriWidget,
   richeditor: RichEditorWidget,
+  latex: RichEditorWidget,
+  required: RequiredWidget,
   switch: SwitchWidget,
   checkbox: CheckboxWidget,
   date: DateWidget,
-  required: RequiredWidget,
 };
 
 export default widgets;
