@@ -10,4 +10,4 @@ export { default as SelectOrEdit } from "./admin/components/SelectOrEdit";
 
 export { default as MosesForm } from "./forms/Form";
 
-export { common, extra } from "./admin/utils/fieldTypes"
+export { common as commonFields, extra as extraFields } from "./admin/utils/fieldTypes"
