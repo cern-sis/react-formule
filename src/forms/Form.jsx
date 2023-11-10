@@ -12,8 +12,10 @@ import { Form } from "@rjsf/antd";
 import validator from "@rjsf/validator-ajv8";
 import CustomizationContext from "../contexts/CustomizationContext";
 import { useContext } from "react";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import store from "../store/configureStore";
+import { updateFormData } from "../store/schemaWizard";
+import { debounce } from "lodash-es";
 
 const RJSFForm = ({
   formRef,
@@ -37,6 +39,8 @@ const RJSFForm = ({
 }) => {
 
   const customizationContext = useContext(CustomizationContext)
+  
+  const dispatch = useDispatch()
 
   // mainly this is used for the drafts forms
   // we want to allow forms to be saved even without required fields
@@ -60,6 +64,11 @@ const RJSFForm = ({
 
     return errors;
   };
+
+  const handleChange = (change) => {
+    onChange && onChange(change)
+    dispatch(updateFormData({ value: change.formData }))
+  }
 
   const templates = {
     FieldTemplate: Fields || FieldTemplate,
@@ -87,7 +96,7 @@ const RJSFForm = ({
         customValidate={validate}
         validator={validator}
         extraErrors={extraErrors}
-        onChange={onChange}
+        onChange={debounce(handleChange, 150)}
         readonly={readonly}
         transformErrors={transformErrors}
         formContext={{

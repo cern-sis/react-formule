@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 const FormPreview = () => {
   const schema = useSelector((state) => state.schemaWizard.current.schema)
   const uiSchema = useSelector((state) => state.schemaWizard.current.uiSchema)
+  const formData = useSelector((state) => state.schemaWizard.formData)
 
   return (
     <div
@@ -49,7 +50,7 @@ const FormPreview = () => {
             <Form
               schema={transformSchema(schema)}
               uiSchema={uiSchema}
-              formData={{}}
+              formData={formData || {}}
               onChange={() => {}}
             />
           </Col>

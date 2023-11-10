@@ -9,7 +9,6 @@ const initialState = {
   current: {
     schema: {},
     uiSchema: {},
-    formData: {},
   },
   initial: {
     schema: {},
@@ -18,6 +17,7 @@ const initialState = {
   initialConfig: {},
   config: {},
   field: null,
+  formData: {},
   propKeyEditor: null,
   error: null,
   loader: false,
@@ -239,7 +239,7 @@ const createReducers = () => ({
   updateRequired: _updateRequired,
   updateFormData(state, action) {
     const { value } = action.payload;
-    state.current["formData"] = value;
+    state["formData"] = value;
   },
 });
 
