@@ -1,19 +1,22 @@
 import Form from "../../forms/Form";
-import { transformSchema } from "../../partials/Utils/schema";
 import ObjectFieldTemplate from "../formComponents/ObjectFieldTemplate";
 import ArrayFieldTemplate from "../formComponents/ArrayFieldTemplate";
 import FieldTemplate from "../formComponents/FieldTemplate";
 import { _validate } from "../utils";
 import { useSelector } from "react-redux";
+import CustomizationContext from "../../contexts/CustomizationContext";
+import { useContext } from "react";
 
 const SchemaTree = () => {
 
   const schema = useSelector((state) => state.schemaWizard.current.schema)
   const uiSchema = useSelector((state) => state.schemaWizard.current.uiSchema)
 
+  const customizationContext = useContext(CustomizationContext)
+
   return (
     <Form
-      schema={transformSchema(schema)}
+      schema={customizationContext.transformSchema(schema)}
       uiSchema={uiSchema}
       formData={{}}
       ObjectFieldTemplate={ObjectFieldTemplate}

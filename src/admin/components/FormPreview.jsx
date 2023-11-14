@@ -1,13 +1,16 @@
+import { useContext } from "react";
 import Form from "../../forms/Form";
-import { transformSchema } from "../../partials/Utils/schema";
 import { shoudDisplayGuideLinePopUp } from "../utils";
 import { Row, Empty, Space, Typography, Col } from "antd";
 import { useSelector } from "react-redux";
+import CustomizationContext from "../../contexts/CustomizationContext";
 
 const FormPreview = () => {
   const schema = useSelector((state) => state.schemaWizard.current.schema)
   const uiSchema = useSelector((state) => state.schemaWizard.current.uiSchema)
   const formData = useSelector((state) => state.schemaWizard.formData)
+
+  const customizationContext = useContext(CustomizationContext)
 
   return (
     <div
@@ -48,7 +51,7 @@ const FormPreview = () => {
         <Row justify="center">
           <Col xs={22} sm={20}>
             <Form
-              schema={transformSchema(schema)}
+              schema={customizationContext.transformSchema(schema)}
               uiSchema={uiSchema}
               formData={formData || {}}
               onChange={() => {}}

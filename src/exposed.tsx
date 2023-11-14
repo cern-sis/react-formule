@@ -18,6 +18,7 @@ type MosesContextProps = {
   customWidgets?: object;
   theme?: ThemeConfig;
   synchronizeState?: (state: string) => void;
+  transformSchema: (schema: object) => object;
 };
 
 export const MosesContext: FC<MosesContextProps> = ({
@@ -27,6 +28,7 @@ export const MosesContext: FC<MosesContextProps> = ({
   customWidgets,
   theme,
   synchronizeState,
+  transformSchema = (schema) => schema,
 }) => {
   const content = synchronizeState ? (
     <StateSynchronizer synchronizeState={synchronizeState}>
@@ -46,6 +48,7 @@ export const MosesContext: FC<MosesContextProps> = ({
               allFieldTypes: combineFieldTypes(fieldTypes, customFieldTypes),
               customFields,
               customWidgets,
+              transformSchema,
             }}
           >
             {content}
