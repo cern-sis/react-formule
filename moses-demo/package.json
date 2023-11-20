@@ -7,14 +7,14 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "link-local-lib": "yarn link cap-moses && yarn link react && yarn unlink react-dom && yarn add link:..",
-    "unlink-local-lib": "yarn remove cap-moses && yarn unlink cap-moses && yarn unlink react && yarn unlink react-dom",
+    "link-local-lib": "yarn link cap-moses && yarn link react && yarn link react-dom",
+    "unlink-local-lib": "yarn unlink cap-moses && yarn unlink react && yarn unlink react-dom",
     "test:e2e": "cypress open",
     "test:e2e:run": "cypress run --headless --browser chrome"
   },
   "dependencies": {
-    "react": "link:../node_modules/react",
-    "react-dom": "link:../node_modules/react-dom"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
@@ -23,7 +23,6 @@
     "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-react-swc": "^3.3.2",
     "antd": "^5.7.3",
-    "cap-moses": "link:..",
     "cypress": "^13.3.0",
     "cypress-vite": "^1.4.2",
     "eslint": "^8.45.0",

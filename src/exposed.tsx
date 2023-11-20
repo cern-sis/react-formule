@@ -18,7 +18,7 @@ type MosesContextProps = {
   customWidgets?: object;
   theme?: ThemeConfig;
   synchronizeState?: (state: string) => void;
-  transformSchema: (schema: object) => object;
+  transformSchema?: (schema: object) => object;
 };
 
 export const MosesContext: FC<MosesContextProps> = ({
