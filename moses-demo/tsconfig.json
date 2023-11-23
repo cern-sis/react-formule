@@ -4,7 +4,7 @@
     "useDefineForClassFields": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
-    "skipLibCheck": true,
+    "skipLibCheck": true, // FIXME: We can remove this once we change moduleResolution to bundler
 
     /* Bundler mode */
     // FIXME: change back to bundler once a new version of cypress fixes the "your configFile is invalid" issue
