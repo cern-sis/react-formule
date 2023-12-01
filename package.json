@@ -1,19 +1,21 @@
 {
-  "name": "cap-moses",
+  "name": "react-formule",
   "private": false,
   "version": "0.1.0",
+  "author": "CERN",
+  "license": "MIT",
   "type": "module",
   "files": [
     "dist"
   ],
-  "main": "./dist/cap-moses.umd.cjs",
-  "module": "./dist/cap-moses.js",
+  "main": "./dist/react-formule.umd.cjs",
+  "module": "./dist/react-formule.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/cap-moses.js",
-      "require": "./dist/cap-moses.umd.cjs"
+      "import": "./dist/react-formule.js",
+      "require": "./dist/react-formule.umd.cjs"
     }
   },
   "scripts": {

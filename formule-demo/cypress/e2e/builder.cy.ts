@@ -138,7 +138,7 @@ describe("test basic functionality", () => {
     cy.get("@myfield").clearTypeBlur("NWW5j34r")
     cy.get("@myfield").should("have.value", "BN-53/r")
 
-    // TODO test also suggestion endpoint, after that feature is migrated to moses
+    // TODO test also suggestion endpoint, after that feature is migrated to formule
   });
 
   it("tests number field", () => {

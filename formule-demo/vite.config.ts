@@ -16,7 +16,7 @@ export default defineConfig({
   // Enables hmr in development without having to rebuild the library
   resolve: {
     alias: {
-      "cap-moses": resolve(__dirname, '../src/index.ts'),
+      "react-formule": resolve(__dirname, '../src/index.ts'),
     }
   }
 })

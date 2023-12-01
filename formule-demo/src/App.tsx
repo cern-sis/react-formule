@@ -1,7 +1,7 @@
-import { MosesContext, SelectOrEdit } from "cap-moses";
-import { SchemaPreview } from "cap-moses";
-import { FormPreview } from "cap-moses";
-import { initMosesSchema } from "cap-moses";
+import { FormuleContext, SelectOrEdit } from "react-formule";
+import { SchemaPreview } from "react-formule";
+import { FormPreview } from "react-formule";
+import { initFormuleSchema } from "react-formule";
 import { useEffect } from "react";
 import { Row, Col } from "antd";
 
@@ -11,11 +11,11 @@ const PRIMARY_COLOR = "#006996";
 
 function App() {
   useEffect(() => {
-    initMosesSchema();
+    initFormuleSchema();
   }, []);
 
   return (
-    <MosesContext theme={{
+    <FormuleContext theme={{
       token: {
         colorPrimary: PRIMARY_COLOR,
         colorLink: PRIMARY_COLOR,
@@ -60,7 +60,7 @@ function App() {
         </Col>
       </Row>
       
-    </MosesContext>
+    </FormuleContext>
   );
 }
 

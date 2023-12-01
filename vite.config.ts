@@ -18,9 +18,9 @@ export default defineConfig({
     lib: {
       // Could also be a dictionary or array of multiple entry points
       entry: resolve(__dirname, "src/index.ts"),
-      name: "CAP Moses",
+      name: "Formule",
       // the proper extensions will be added
-      fileName: "cap-moses",
+      fileName: "react-formule",
     },
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled
