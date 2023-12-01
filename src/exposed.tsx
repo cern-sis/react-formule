@@ -11,7 +11,7 @@ import { RJSFSchema } from "@rjsf/utils";
 import { schemaInit } from "./store/schemaWizard";
 import StateSynchronizer from "./StateSynchronizer";
 
-type MosesContextProps = {
+type FormuleContextProps = {
   children: ReactNode;
   customFieldTypes?: object;
   customFields?: object;
@@ -21,7 +21,7 @@ type MosesContextProps = {
   transformSchema?: (schema: object) => object;
 };
 
-export const MosesContext: FC<MosesContextProps> = ({
+export const FormuleContext: FC<FormuleContextProps> = ({
   children,
   customFieldTypes,
   customFields,
@@ -60,7 +60,7 @@ export const MosesContext: FC<MosesContextProps> = ({
 };
 
 // TODO: Review typing (here and in the actions file)
-export const initMosesSchema = (
+export const initFormuleSchema = (
   data?: RJSFSchema,
   name?: string,
   description?: string
@@ -77,6 +77,6 @@ export const initMosesSchema = (
   );
 };
 
-export const getMosesState = () => {
+export const getFormuleState = () => {
   return store.getState().schemaWizard;
 };
