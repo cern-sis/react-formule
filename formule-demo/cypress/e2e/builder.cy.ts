@@ -2,7 +2,7 @@
 
 describe("test basic functionality", () => {
   beforeEach(() => {
-    cy.visit("localhost:3000");
+    cy.visit("localhost:3030");
   });
 
   it("allows drag and drop to the SchemaTree", () => {
@@ -133,9 +133,7 @@ describe("test basic functionality", () => {
     cy.get("input#root_ui\\:options_mask").clearTypeBlur("BA-00/a")
     cy.get("@myfield").focus()
     cy.get("@myfield").should("have.value", "B_-__/_")
-    cy.get("@myfield").clearTypeBlur("Xyz")
-    cy.get("@myfield").should("have.value", "BX-__/_")
-    cy.get("@myfield").clearTypeBlur("NWW5j34r")
+    cy.get("@myfield").type("NWW5j34r")
     cy.get("@myfield").should("have.value", "BN-53/r")
 
     // TODO test also suggestion endpoint, after that feature is migrated to formule

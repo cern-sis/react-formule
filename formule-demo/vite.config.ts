@@ -11,7 +11,8 @@ export default defineConfig({
   },
   server: {
     // Needed for cypress to be able to access the dev server
-    host: true
+    host: true,
+    port: 3030,
   },
   // Enables hmr in development without having to rebuild the library
   resolve: {
