@@ -5,7 +5,7 @@ import { Row, Empty, Space, Typography, Col } from "antd";
 import { useSelector } from "react-redux";
 import CustomizationContext from "../../contexts/CustomizationContext";
 
-const FormPreview = () => {
+const FormPreview = ({liveValidate}) => {
   const schema = useSelector((state) => state.schemaWizard.current.schema)
   const uiSchema = useSelector((state) => state.schemaWizard.current.uiSchema)
   const formData = useSelector((state) => state.schemaWizard.formData)
@@ -55,6 +55,7 @@ const FormPreview = () => {
               uiSchema={uiSchema}
               formData={formData || {}}
               onChange={() => {}}
+              liveValidate={liveValidate}
             />
           </Col>
         </Row>

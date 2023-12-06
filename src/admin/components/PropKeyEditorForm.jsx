@@ -15,10 +15,12 @@ const PropertyKeyEditorForm = ({
 }) => {
   const customizationContext = useContext(CustomizationContext);
 
+  const updatedFormData = {...formData}
+
   let type;
 
   const cleanupSelect = () =>
-    schema.type === "array" ? delete formData.enum : delete formData.items;
+    schema.type === "array" ? delete updatedFormData.enum : delete updatedFormData.items;
 
   // in case we can not define the type of the element from the uiSchema,
   // extract the type from the schema
@@ -30,7 +32,7 @@ const PropertyKeyEditorForm = ({
   } else {
     if (uiSchema["ui:widget"]) {
       type = uiSchema["ui:widget"];
-      if (uiSchema["ui:widget"] === "select") {
+      if (type === "select") {
         cleanupSelect();
       }
     }
@@ -56,7 +58,7 @@ const PropertyKeyEditorForm = ({
       schema={objs[type][`${optionsSchemaObject}`] || {}}
       uiSchema={objs[type][`${optionsUiSchemaObject}`] || {}}
       widgets={widgets}
-      formData={formData}
+      formData={updatedFormData}
       onChange={onChange}
       liveValidate
     />

@@ -56,7 +56,7 @@ function App() {
           style={{ overflowX: "hidden", height: "100%", padding: "0px 15px" }}
           className="tour-form-preview"
         >
-          <FormPreview />
+          <FormPreview liveValidate={true} />
         </Col>
       </Row>
       
