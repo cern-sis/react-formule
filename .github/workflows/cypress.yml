@@ -1,0 +1,26 @@
+name: Cypress
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install formule dependencies
+        run: yarn install --frozen-lockfile
+      - name: Link
+        run: yarn link-local && cd formule-demo && yarn link-local-lib
+      - name: Install formule-demo dependencies
+        working-directory: ./formule-demo
+        run: yarn install --frozen-lockfile
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: ./formule-demo
+          install: false
+          start: yarn dev
