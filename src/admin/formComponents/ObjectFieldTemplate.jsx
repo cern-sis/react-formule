@@ -92,8 +92,8 @@ const ObjectFieldTemplate = ({properties, uiSchema, formContext, idSchema}) => {
           "ui:order": [...uiCards, "*"],
         }
       }));
-    },
-    [properties, cards, dispatch, formContext, uiSchema]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [cards]
   );
 
   // create a new array to keep track of the changes in the order

@@ -7,7 +7,7 @@
     "skipLibCheck": true, // FIXME: We can remove this once we change moduleResolution to bundler
 
     /* Bundler mode */
-    // FIXME: change back to bundler once a new version of cypress fixes the "your configFile is invalid" issue
+    // FIXME: change back to bundler once a new version of cypress fixes this https://github.com/cypress-io/cypress/issues/27731
     "moduleResolution": "node",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
