@@ -19,6 +19,9 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
+    // TODO: Remove when antd fixes https://github.com/ant-design/pro-components/issues/7850
+    "skipLibCheck": true,
+
     "allowJs": true,
     "noImplicitAny": false  // TODO: Remove eventually
   },
