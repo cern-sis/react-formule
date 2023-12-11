@@ -6,7 +6,7 @@ This is a small application that serves as a playground to test react-formule.
 
 ### The easy way
 
-Run `yarn link-local` in react-formule, then run `yarn link-local-lib` and `yarn install` in formule-demo. To run the playground app, execute `yarn dev`. You will see any changes in react-formule immediately in the playground app.
+Run `yarn link-local` in react-formule, then run `yarn link-local-lib` and `yarn install` in formule-demo. To run the playground app, execute `yarn dev` and visit `localhost:3030`. You will see any changes in react-formule immediately in the playground app.
 
 ### The advanced way
 
