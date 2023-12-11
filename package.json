@@ -4,6 +4,10 @@
   "version": "0.1.0",
   "author": "CERN",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cern-sis/react-formule.git"
+  },
   "type": "module",
   "files": [
     "dist"
