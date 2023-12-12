@@ -93,7 +93,7 @@ const PropertyEditor = () => {
         <Col xs={18} data-cy="editFieldId">
           <Typography.Title
             level={5}
-            editable={{
+            editable={pathObj.path.length && {
               text: name,
               onChange: value => dispatch(renameIdByPath({path: pathObj, newName: value})),
             }}
