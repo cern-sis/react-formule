@@ -15,7 +15,6 @@ import { useContext } from "react";
 import { Provider, useDispatch } from "react-redux";
 import store from "../store/configureStore";
 import { updateFormData } from "../store/schemaWizard";
-import { debounce } from "lodash-es";
 
 const RJSFForm = ({
   formRef,
@@ -96,7 +95,7 @@ const RJSFForm = ({
         customValidate={validate}
         validator={validator}
         extraErrors={extraErrors}
-        onChange={debounce(handleChange, 150)}
+        onChange={handleChange}
         readonly={readonly}
         transformErrors={transformErrors}
         formContext={{
