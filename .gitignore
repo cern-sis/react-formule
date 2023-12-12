@@ -25,3 +25,5 @@ dist-ssr
 
 # ESLint
 .eslintcache
+
+bundle-stats.html
