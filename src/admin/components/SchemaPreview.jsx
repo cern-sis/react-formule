@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Button, Col, Row, Typography } from "antd";
+import { Button, Col, Row, Tooltip, Typography } from "antd";
 import SchemaTree from "../components/SchemaTree";
 import { SettingOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -32,6 +32,7 @@ const SchemaPreview = () => {
         <Typography.Title level={5} style={{ margin: 0 }} ellipsis data-cy="rootTitle">
           {(schema && schema.title) || "root"}
         </Typography.Title>
+        <Tooltip title="Edit root settings">
         <Button
           type="link"
           shape="circle"
@@ -40,6 +41,7 @@ const SchemaPreview = () => {
           className="tour-root-settings"
           data-cy="rootSettings"
         />
+        </Tooltip>
       </Row>
       <Row style={{ padding: "0 10px" }}>
         <Typography.Text type="secondary" level={5} data-cy="rootDescription">
