@@ -3,6 +3,7 @@ import { resolve } from "path";
 import react from "@vitejs/plugin-react-swc";
 import dts from "vite-plugin-dts";
 import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
+import { visualizer } from "rollup-plugin-visualizer";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -12,6 +13,10 @@ export default defineConfig({
       insertTypesEntry: true,
     }),
     cssInjectedByJsPlugin(),
+    visualizer({
+      filename: "bundle-stats.html",
+      gzipSize: true,
+    }),
   ],
 
   build: {
@@ -25,7 +30,7 @@ export default defineConfig({
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled
       // into your library
-      external: ["react", "./docs"],
+      external: ["react", "react-dom", "./docs"],
     },
   },
 
