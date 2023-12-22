@@ -94,7 +94,7 @@
     "react-dom": ">=18.2.0"
   },
   "lint-staged": {
-    "*.{ts,tsx}": "eslint --cache --fix",
-    "*.{js,css,md}": "prettier --write"
+    "*.{ts,tsx,js,jsx}": "eslint --cache --fix",
+    "*.{ts,tsx,js,jsx,css,less,md,html}": "prettier --write"
   }
 }
