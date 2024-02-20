@@ -195,11 +195,40 @@ const collections = {
     },
     optionsSchemaUiSchema: {},
     optionsUiSchema: {
-      ...common.optionsUiSchema,
+      type: "object",
+      title: "UI Schema",
+      properties: {
+        "ui:options": {
+          type: "object",
+          title: "UI Options",
+          properties: {
+            ...common.optionsUiSchema.properties["ui:options"].properties,
+            itemsDisplayTitle: {
+              type: "string",
+              title: "Items Display Title",
+              description:
+                "You can set a fixed value or you can reference child fields between `{{` and `}}`",
+            },
+          },
+        },
+      },
     },
     optionsUiSchemaUiSchema: {
       ...common.optionsUiSchemaUiSchema,
+      "ui:options": {
+        itemsDisplayTitle: {
+          "ui:widget": "itemsDisplayTitle",
+          "ui:options": {
+            descriptionIsMarkdown: true,
+            showAsModal: true,
+            modal: {
+              buttonInNewLine: true,
+            },
+          },
+        },
+      },
     },
+
     default: {
       schema: {
         type: "array",
