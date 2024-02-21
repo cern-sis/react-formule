@@ -1,0 +1,27 @@
+name: Build and deploy demo
+on: [push]
+permissions:
+  contents: write
+jobs:
+  build-and-deploy-demo:
+    name: Build and deploy demo
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./formule-demo
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18.x
+
+      - name: Install
+        run: yarn
+
+      - name: Build
+        run: yarn build
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: formule-demo/dist
