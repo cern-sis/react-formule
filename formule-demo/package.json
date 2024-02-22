@@ -2,7 +2,7 @@
   "name": "formule-demo",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://cern-sis.github.io/react-formule",
+  "type": "module",
   "scripts": {
     "dev": "vite --config vite.config.local.ts",
     "build": "tsc && vite build",
