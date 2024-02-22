@@ -18,3 +18,11 @@
   font-style: normal;
   font-weight: 600;
 }
+
+body {
+  margin: 0;
+}
+
+div#root {
+  height: 100vh;
+}

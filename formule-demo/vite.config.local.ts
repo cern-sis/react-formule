@@ -7,5 +7,6 @@ viteConfig.resolve = {
     "react-formule": resolve(__dirname, "../src/index.ts"),
   },
 };
+viteConfig.base = undefined;
 
 export default viteConfig;
