@@ -1,35 +1,44 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Button, Col, List, Modal, Row, Typography } from "antd";
-
-import * as Sqrl from "squirrelly";
-
+import { render } from "squirrelly";
 import ArrowUpOutlined from "@ant-design/icons/ArrowUpOutlined";
 import ArrowDownOutlined from "@ant-design/icons/ArrowDownOutlined";
 import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
 import { isFieldContainsError } from "../utils";
 
-const LayerArrayFieldTemplate = ({ items = [] }) => {
+const LayerArrayFieldTemplate = ({ items = [], uiSchema }) => {
   const [itemToDisplay, setItemToDisplay] = useState(null);
   const [visible, setVisible] = useState(false);
 
+  // FIXME: stringifyTmpl and stringify are deprecated and will be removed in favor of itemsDisplayTitle
   const stringifyItem = (options, item) => {
-    let stringifyTmpl = options ? options.stringifyTmpl : null;
-    if (stringifyTmpl) {
+    const itemsDisplayTitle = uiSchema?.["ui:options"]?.itemsDisplayTitle;
+
+    /**
+     * @deprecated
+     */
+    const stringifyTmpl = options ? options.stringifyTmpl : null;
+    if (itemsDisplayTitle || stringifyTmpl) {
       try {
-        let str = Sqrl.render(stringifyTmpl, item);
+        const str = render(itemsDisplayTitle || stringifyTmpl, item, {
+          useWith: true,
+        });
         return str;
       } catch (_err) {
         return null;
       }
     }
 
+    /**
+     * @deprecated
+     */
     const stringify = options ? options.stringify : [],
       reducer = (acc, val) => (item[val] ? `${acc} ${item[val]}` : acc);
 
     return stringify ? stringify.reduce(reducer, "") : null;
   };
-  
+
   useEffect(() => {
     if (items && itemToDisplay)
       setItemToDisplay({
@@ -140,7 +149,7 @@ const LayerArrayFieldTemplate = ({ items = [] }) => {
                 <Typography.Text ellipsis>
                   {stringifyItem(
                     item?.children?.props?.uiSchema?.["ui:options"] ?? null,
-                    item.children.props.formData
+                    item.children.props.formData,
                   ) || `Item #${item.index + 1}`}
                 </Typography.Text>
               }
