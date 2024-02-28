@@ -1,8 +1,11 @@
 name: Build and deploy demo
 
 on:
-  push:
-    branches: [master] # It will also trigger on PR merges to master
+  workflow_run:
+    workflows: ["Publish"]
+    types:
+      - completed
+  workflow_dispatch:
 
 permissions:
   contents: write
