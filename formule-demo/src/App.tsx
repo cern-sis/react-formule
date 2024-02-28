@@ -67,8 +67,7 @@ function App() {
         >
           <Space direction="horizontal" size="middle">
             <Typography.Text style={{ color: "rgba(255, 255, 255, 0.65)" }}>
-              Running react-formule v{import.meta.env.REACT_FORMULE_VERSION}{" "}
-              deployed from master
+              Running react-formule v{import.meta.env.REACT_FORMULE_VERSION}
             </Typography.Text>
           </Space>
         </Row>
