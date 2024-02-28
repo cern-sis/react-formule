@@ -17,6 +17,7 @@ type FormuleContextProps = {
   customFields?: object;
   customWidgets?: object;
   theme?: ThemeConfig;
+  dnd: boolean;
   synchronizeState?: (state: string) => void;
   transformSchema?: (schema: object) => object;
 };
@@ -27,6 +28,7 @@ export const FormuleContext: FC<FormuleContextProps> = ({
   customFields,
   customWidgets,
   theme,
+  dnd = true,
   synchronizeState,
   transformSchema = (schema) => schema,
 }) => {
@@ -49,6 +51,7 @@ export const FormuleContext: FC<FormuleContextProps> = ({
               customFields,
               customWidgets,
               transformSchema,
+              dnd,
             }}
           >
             {content}
@@ -63,7 +66,7 @@ export const FormuleContext: FC<FormuleContextProps> = ({
 export const initFormuleSchema = (
   data?: RJSFSchema,
   name?: string,
-  description?: string
+  description?: string,
 ) => {
   const { deposit_schema, deposit_options, ...configs } = data || {};
   store.dispatch(
@@ -73,7 +76,7 @@ export const initFormuleSchema = (
           ? { schema: deposit_schema, uiSchema: deposit_options }
           : initSchemaStructure(name, description),
       configs: configs || { fullname: name },
-    })
+    }),
   );
 };
 

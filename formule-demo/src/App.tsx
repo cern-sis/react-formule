@@ -5,7 +5,7 @@ import { initFormuleSchema } from "react-formule";
 import { useEffect } from "react";
 import { Row, Col } from "antd";
 
-import "./style.css"
+import "./style.css";
 
 const PRIMARY_COLOR = "#006996";
 
@@ -15,16 +15,18 @@ function App() {
   }, []);
 
   return (
-    <FormuleContext theme={{
-      token: {
-        colorPrimary: PRIMARY_COLOR,
-        colorLink: PRIMARY_COLOR,
-        colorLinkHover: "#1a7fa3",
-        borderRadius: 2,
-        colorBgLayout: "#f0f2f5",
-        fontFamily: "Titillium Web",
-      },
-    }}>
+    <FormuleContext
+      theme={{
+        token: {
+          colorPrimary: PRIMARY_COLOR,
+          colorLink: PRIMARY_COLOR,
+          colorLinkHover: "#1a7fa3",
+          borderRadius: 2,
+          colorBgLayout: "#f0f2f5",
+          fontFamily: "Titillium Web",
+        },
+      }}
+    >
       <Row style={{ height: "100%" }}>
         <Col
           xs={10}
@@ -33,6 +35,7 @@ function App() {
             overflowX: "hidden",
             height: "100%",
             display: "flex",
+            padding: "0px 15px",
           }}
           className="tour-field-types"
         >
@@ -59,7 +62,6 @@ function App() {
           <FormPreview liveValidate={true} />
         </Col>
       </Row>
-      
     </FormuleContext>
   );
 }

@@ -1,17 +1,15 @@
 import { useDispatch } from "react-redux";
 import { PropTypes } from "prop-types";
 
-import {
-  DownOutlined,
-  QuestionOutlined,
-  UpOutlined,
-} from "@ant-design/icons";
+import { DownOutlined, QuestionOutlined, UpOutlined } from "@ant-design/icons";
 import { Col, Row, Tag, Typography } from "antd";
 import { isItTheArrayField } from "../utils";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import CustomizationContext from "../../contexts/CustomizationContext";
 import { selectProperty } from "../../store/schemaWizard";
 import { hiddenFields } from "../utils/fieldTypes";
+import PlusOutlined from "@ant-design/icons/PlusOutlined";
+import SelectFieldModal from "../components/SelectFieldModal";
 
 const SchemaTreeItem = ({
   path,
@@ -20,21 +18,28 @@ const SchemaTreeItem = ({
   display,
   updateDisplay,
 }) => {
-  const customizationContext = useContext(CustomizationContext)
+  const customizationContext = useContext(CustomizationContext);
 
-  const dispatch = useDispatch()
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const dispatch = useDispatch();
 
   // selects the item for the property editor
   const handleClick = () => {
-    dispatch(selectProperty({path}));
+    dispatch(selectProperty({ path }));
   };
 
-  const handleUpdateDisplay = e => {
+  const handleUpdateDisplay = (e) => {
     e.stopPropagation();
     updateDisplay();
   };
 
-  const shouldBoxAcceptChildren = uiSchema => {
+  const handleAddField = (e) => {
+    !display && handleUpdateDisplay(e);
+    setModalVisible(true);
+  };
+
+  const shouldBoxAcceptChildren = (uiSchema) => {
     return uiSchema["ui:field"] !== undefined;
   };
 
@@ -61,77 +66,106 @@ const SchemaTreeItem = ({
       }
     }
 
-    const allFieldTypes = {...customizationContext.allFieldTypes, hidden: {fields: hiddenFields}}
+    const allFieldTypes = {
+      ...customizationContext.allFieldTypes,
+      hidden: { fields: hiddenFields },
+    };
 
     for (const category in allFieldTypes) {
-      for (const [key, value] of Object.entries(allFieldTypes[category].fields)) {
+      for (const [key, value] of Object.entries(
+        allFieldTypes[category].fields,
+      )) {
         if (key === type) {
           return value.icon;
         }
       }
     }
-    return <QuestionOutlined />
+    return <QuestionOutlined />;
   };
 
   return (
-    <Tag
-      style={{
-        width: "100%",
-        marginTop: "1px",
-        marginBottom: "1px",
-        padding: "5px 10px",
-        opacity:
-          uiSchema &&
-          uiSchema["ui:options"] &&
-          uiSchema["ui:options"].hidden &&
-          0.5,
-        backgroundColor: "white",
-      }}
-      data-cy="treeItem"
-    >
-      <Row gutter={8} onClick={handleClick} align="middle" wrap={false}>
-        <Col flex="none">{getIconByType(uiSchema, schema)}</Col>
-        <Col flex="auto">
-          <Row
-            style={{ width: "100%", marginTop: schema.title ? "-9px" : "0" }}
-            justify="space-between"
-            wrap={false}
-            gutter={8}
-          >
-            <Col>
-              <Typography.Text style={{ fontSize: "14px" }} ellipsis>
-                {path.schema[path.schema.length - 1]}
-              </Typography.Text>
-            </Col>
-          </Row>
-          {schema.title && (
+    <>
+      <SelectFieldModal
+        visible={modalVisible}
+        setVisible={setModalVisible}
+        insertInPath={path}
+      />
+      <Tag
+        style={{
+          width: "100%",
+          marginTop: "1px",
+          marginBottom: "1px",
+          padding: "5px 10px",
+          opacity:
+            uiSchema &&
+            uiSchema["ui:options"] &&
+            uiSchema["ui:options"].hidden &&
+            0.5,
+          backgroundColor: "white",
+          cursor: !customizationContext.dnd && "pointer",
+        }}
+        data-cy="treeItem"
+      >
+        <Row gutter={8} onClick={handleClick} align="middle" wrap={false}>
+          <Col flex="none">{getIconByType(uiSchema, schema)}</Col>
+          <Col flex="auto">
             <Row
-              style={{ width: "100%", marginTop: "-9px", marginBottom: "-9px" }}
+              style={{ width: "100%", marginTop: schema.title ? "-9px" : "0" }}
+              justify="space-between"
+              wrap={false}
+              gutter={8}
             >
               <Col>
-                <Typography.Text
-                  type="secondary"
-                  style={{ fontSize: "12px" }}
-                  ellipsis
-                >
-                  {schema.title}
+                <Typography.Text style={{ fontSize: "14px" }} ellipsis>
+                  {path.schema[path.schema.length - 1]}
                 </Typography.Text>
               </Col>
             </Row>
-          )}
-        </Col>
-        <Col>
+            {schema.title && (
+              <Row
+                style={{
+                  width: "100%",
+                  marginTop: "-9px",
+                  marginBottom: "-9px",
+                }}
+              >
+                <Col>
+                  <Typography.Text
+                    type="secondary"
+                    style={{ fontSize: "12px" }}
+                    ellipsis
+                  >
+                    {schema.title}
+                  </Typography.Text>
+                </Col>
+              </Row>
+            )}
+          </Col>
           {schema &&
             ((schema.type == "object" && !shouldBoxAcceptChildren(uiSchema)) ||
-              isItTheArrayField(schema, uiSchema)) &&
-            (display ? (
-              <UpOutlined onClick={handleUpdateDisplay} />
-            ) : (
-              <DownOutlined onClick={handleUpdateDisplay} />
-            ))}
-        </Col>
-      </Row>
-    </Tag>
+              isItTheArrayField(schema, uiSchema)) && (
+              <>
+                <Col>
+                  {display ? (
+                    <UpOutlined onClick={handleUpdateDisplay} />
+                  ) : (
+                    <DownOutlined onClick={handleUpdateDisplay} />
+                  )}
+                </Col>
+                {!customizationContext.dnd && (
+                  <Col>
+                    <PlusOutlined
+                      onClick={handleAddField}
+                      type="link"
+                      size="small"
+                    />
+                  </Col>
+                )}
+              </>
+            )}
+        </Row>
+      </Tag>
+    </>
   );
 };
 
@@ -148,4 +182,4 @@ SchemaTreeItem.propTypes = {
   uiSchema: PropTypes.object,
 };
 
-export default SchemaTreeItem
+export default SchemaTreeItem;

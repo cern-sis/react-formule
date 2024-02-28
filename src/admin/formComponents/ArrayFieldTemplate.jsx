@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import PropTypes from "prop-types";
 import SchemaTreeItem from "./SchemaTreeItem";
 import Form from "../../forms/Form";
@@ -6,14 +6,17 @@ import ObjectFieldTemplate from "./ObjectFieldTemplate";
 import FieldTemplate from "./FieldTemplate";
 import { _validate } from "../utils";
 import DropArea from "./DropArea";
+import CustomizationContext from "../../contexts/CustomizationContext";
 
-const ArrayFieldTemplate = props => {
+const ArrayFieldTemplate = (props) => {
   const [display, setDisplay] = useState(false);
+
+  const customizationContext = useContext(CustomizationContext);
 
   let schemaPath = [];
   let uiSchemaPath = [];
   if (props.rawErrors) {
-    let _rawErrors = props.rawErrors.filter(i => (i.schema ? i : false));
+    let _rawErrors = props.rawErrors.filter((i) => (i.schema ? i : false));
     let { schema, uiSchema } = _rawErrors[0];
     schemaPath = schema;
     uiSchemaPath = uiSchema;
@@ -41,7 +44,8 @@ const ArrayFieldTemplate = props => {
 
       {display && (
         <div style={{ marginLeft: "10px" }}>
-          {Object.keys(props.schema.items).length == 0 ? (
+          {Object.keys(props.schema.items).length == 0 &&
+          customizationContext.dnd ? (
             <DropArea />
           ) : (
             <Form
@@ -77,4 +81,4 @@ ArrayFieldTemplate.propTypes = {
   id: PropTypes.string,
 };
 
-export default ArrayFieldTemplate
+export default ArrayFieldTemplate;
