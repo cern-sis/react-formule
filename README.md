@@ -2,6 +2,8 @@
 
 <h3 align="center"> 🕹️ <a href="https://cern-sis.github.io/react-formule/">DEMO</a> </h2>
 
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+
 ## :horse: What is Formule?
 
 Formule is a **powerful, user-friendly, extensible and mobile-friendly form building library** based on [JSON Schema](https://json-schema.org/) and [RJSF](https://github.com/rjsf-team/react-jsonschema-form), which aims to make form creation easier for both technical and non-technical people.
