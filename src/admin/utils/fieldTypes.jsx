@@ -297,7 +297,7 @@ const simple = {
             mask: {
               type: "string",
               title: "Input mask",
-              description:
+              tooltip:
                 "Add a mask to visualize and limit the format of the input. Use the following format: `0` (number), `a` (lowercase letter), `A` (uppercase letter), `*` (letter or number). You can escape all these with `\\`. The rest of the characters will be treated as constants",
             },
           },
@@ -312,6 +312,7 @@ const simple = {
           "ui:placeholder": "BN-000/aa",
           "ui:options": {
             descriptionIsMarkdown: true,
+            tooltipIsMarkdown: true,
           },
         },
       },
@@ -756,7 +757,9 @@ const simple = {
           type: "string",
           title: "Format",
           description:
-            "Define the date format ([help](https://day.js.org/docs/en/display/format#list-of-all-available-formats)). Remember to include the time in the format if you have selected `date-time` as type",
+            "Define the date format ([help](https://day.js.org/docs/en/display/format#list-of-all-available-formats))",
+          tooltip:
+            "Remember to include the time in the format if you have selected `date-time` as type",
         },
         minDate: {
           type: "string",
@@ -775,6 +778,7 @@ const simple = {
         "ui:placeholder": "DD/MM/YYYY",
         "ui:options": {
           descriptionIsMarkdown: true,
+          tooltipIsMarkdown: true,
         },
       },
       minDate: {
@@ -988,7 +992,6 @@ const advanced = {
       },
     },
   },
-
 };
 
 // HIDDEN FIELDS (not directly selectable by the user):

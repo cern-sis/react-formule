@@ -1,8 +1,11 @@
 name: Publish
 
 on:
-  release:
-    types: [published]
+  workflow_dispatch:
+    inputs:
+      semanticReleaseParams:
+        description: semantic-release params (e.g. --dry-run)
+        type: string
 
 jobs:
   build:
@@ -10,9 +13,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
       - uses: actions/setup-node@v4
         with:
-          node-version: 18.x
+          node-version: 20.x
+
+      - name: Install semantic-release extra plugins
+        run: npm install --save-dev @semantic-release/changelog @semantic-release/git
 
       - name: Install
         run: yarn
@@ -21,6 +31,7 @@ jobs:
         run: yarn build
 
       - name: Publish
-        uses: JS-DevTools/npm-publish@v3
-        with:
-          token: ${{ secrets.CERN_SIS_NPM }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.CERN_SIS_NPM }}
+        run: npx semantic-release ${{ inputs.semanticReleaseParams }}
