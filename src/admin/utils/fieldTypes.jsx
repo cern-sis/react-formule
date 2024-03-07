@@ -47,6 +47,28 @@ export const common = {
             values: [6, 8, 12, 16, 18, 24],
             labels: ["25%", "33%", "50%", "66%", "75%", "100%"],
           },
+          isModal: {
+            title: "Display as Modal",
+            type: "boolean",
+          },
+        },
+        dependencies: {
+          isModal: {
+            properties: {
+              modal: {
+                properties: {
+                  btnText: { type: "string" },
+                  okText: { type: "string" },
+                  modalWidth: { type: "string" },
+                  headerDirection: {
+                    type: "string",
+                    enum: ["horizontal", "vertical"],
+                  },
+                },
+              },
+            },
+            required: ["modal"],
+          },
         },
       },
     },
@@ -105,6 +127,8 @@ const collections = {
         "ui:options": {
           type: "object",
           title: "UI Options",
+          dependencies:
+            common.optionsUiSchema.properties["ui:options"].dependencies,
           properties: {
             ...common.optionsUiSchema.properties["ui:options"].properties,
             hidden: {
@@ -228,10 +252,36 @@ const collections = {
     },
     optionsSchemaUiSchema: {},
     optionsUiSchema: {
-      ...common.optionsUiSchema,
+      type: "object",
+      title: "UI Schema",
+      properties: {
+        "ui:options": {
+          type: "object",
+          title: "UI Options",
+          dependencies:
+            common.optionsUiSchema.properties["ui:options"].dependencies,
+          properties: {
+            ...common.optionsUiSchema.properties["ui:options"].properties,
+            itemsDisplayTitle: {
+              type: "string",
+              title: "Items Display Title",
+              description:
+                "You can set a fixed value or you can reference child fields between `{{` and `}}`",
+            },
+          },
+        },
+      },
     },
     optionsUiSchemaUiSchema: {
       ...common.optionsUiSchemaUiSchema,
+      "ui:options": {
+        itemsDisplayTitle: {
+          "ui:widget": "itemsDisplayTitle",
+          "ui:options": {
+            descriptionIsMarkdown: true,
+          },
+        },
+      },
     },
     default: {
       schema: {
@@ -283,6 +333,8 @@ const simple = {
         "ui:options": {
           type: "object",
           title: "UI Options",
+          dependencies:
+            common.optionsUiSchema.properties["ui:options"].dependencies,
           properties: {
             ...common.optionsUiSchema.properties["ui:options"].properties,
             suggestions: {
@@ -351,6 +403,8 @@ const simple = {
         "ui:options": {
           type: "object",
           title: "UI Options",
+          dependencies:
+            common.optionsUiSchema.properties["ui:options"].dependencies,
           properties: {
             ...common.optionsUiSchema.properties["ui:options"].properties,
             rows: {
@@ -554,6 +608,8 @@ const simple = {
         "ui:options": {
           type: "object",
           title: "UI Options",
+          dependencies:
+            common.optionsUiSchema.properties["ui:options"].dependencies,
           properties: {
             ...common.optionsUiSchema.properties["ui:options"].properties,
             falseToUndefined: {
@@ -833,6 +889,8 @@ const advanced = {
         "ui:options": {
           type: "object",
           title: "UI Options",
+          dependencies:
+            common.optionsUiSchema.properties["ui:options"].dependencies,
           properties: {
             ...common.optionsUiSchema.properties["ui:options"].properties,
             suggestions: {
