@@ -5,7 +5,6 @@ import FieldHeader from "./FieldHeader";
 import { Col, Row } from "antd";
 import { SIZE_OPTIONS } from "../../../admin/utils";
 import WrapIfAdditional from "./WrapIfAdditional";
-
 import FieldModal from "./FieldModal";
 
 const VERTICAL_LABEL_COL = { span: 24 };
@@ -49,8 +48,10 @@ const FieldTemplate = ({
 
   const { ["ui:options"]: uiOptions = {} } = uiSchema;
 
+  const shouldShowAsModal = uiOptions?.showAsModal === true;
+
   let _children;
-  if (uiOptions?.isModal) {
+  if (shouldShowAsModal) {
     _children = (
       <FieldModal
         label={
@@ -96,7 +97,7 @@ const FieldTemplate = ({
           help={(!!rawHelp && help) || (!!rawErrors && renderFieldErrors())}
           htmlFor={id}
           label={
-            !uiOptions?.isModal &&
+            !shouldShowAsModal &&
             (displayLabel || uiSchema["ui:field"]) &&
             label && (
               <FieldHeader

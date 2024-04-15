@@ -1,58 +1,43 @@
 import { useState } from "react";
-
-import { Button, Divider, Modal, Space } from "antd";
-
-import "../../Form.less";
-
+import { Button, Modal, Space } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 
-function FieldModal(props) {
-  const [modalOpen, setmodalOpen] = useState(false);
-  const { label, content, options } = props;
+const FieldModal = ({ label, content, options }) => {
+  const [modalOpen, setModalOpen] = useState(false);
+
   return (
     <>
       <Space
-        align={options?.headerDirection == "horizontal" ? "center" : "start"}
+        align={options?.buttonInNewLine ? "start" : "center"}
         size="small"
-        split={
-          options?.headerDirection != "vertical" && <Divider type="vertical" />
-        }
-        direction={
-          ["horizontal", "vertical"].indexOf(options?.headerDirection) > -1
-            ? options.headerDirection
-            : "horizontal"
-        }
+        direction={options?.buttonInNewLine ? "vertical" : "horizontal"}
         style={{
           display: "flex",
           flex: 1,
-          width: "100%",
-          backgdround: "blue",
-          justifyCodntent: "space-between",
+          justifyContent: "space-between",
         }}
       >
         {label}
         <Button
           size="small"
           icon={<EditOutlined />}
-          onClick={() => setmodalOpen(!modalOpen)}
+          onClick={() => setModalOpen(true)}
         >
-          {options?.btnText || "Open"}
+          {options?.buttonText || "Open"}
         </Button>
       </Space>
       <Modal
-        centered
         getContainer={false}
         open={modalOpen}
-        okText={options?.okText}
-        onCancel={() => setmodalOpen(false)}
+        onCancel={() => setModalOpen(false)}
         footer={null}
         className="formule-field-modal"
-        width={options?.modalWidth ? options?.modalWidth : 416}
+        width={options?.modalWidth ? options?.modalWidth : 400}
       >
         {content}
       </Modal>
     </>
   );
-}
+};
 
 export default FieldModal;

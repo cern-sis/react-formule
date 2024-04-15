@@ -47,26 +47,42 @@ export const common = {
             values: [6, 8, 12, 16, 18, 24],
             labels: ["25%", "33%", "50%", "66%", "75%", "100%"],
           },
-          isModal: {
+          showAsModal: {
             title: "Display as Modal",
             type: "boolean",
           },
         },
+
         dependencies: {
-          isModal: {
-            properties: {
-              modal: {
+          showAsModal: {
+            oneOf: [
+              {
                 properties: {
-                  btnText: { type: "string" },
-                  okText: { type: "string" },
-                  modalWidth: { type: "string" },
-                  headerDirection: {
-                    type: "string",
-                    enum: ["horizontal", "vertical"],
+                  showAsModal: {
+                    enum: [false],
                   },
                 },
               },
-            },
+              {
+                properties: {
+                  showAsModal: {
+                    enum: [true],
+                  },
+                  modal: {
+                    title: "Modal settings",
+                    type: "object",
+                    properties: {
+                      buttonText: { title: "Button title", type: "string" },
+                      modalWidth: { title: "Modal width", type: "integer" },
+                      buttonInNewLine: {
+                        title: "Button in new line",
+                        type: "boolean",
+                      },
+                    },
+                  },
+                },
+              },
+            ],
             required: ["modal"],
           },
         },
@@ -78,6 +94,18 @@ export const common = {
       span: {
         "ui:widget": "slider",
       },
+      modal: {
+        "ui:options": {
+          showAsModal: true,
+          modal: {
+            buttonInNewLine: true,
+          },
+        },
+      },
+      showAsModal: {
+        "ui:widget": "switch",
+      },
+      "ui:order": ["showAsModal", "modal", "*"],
     },
   },
 };
@@ -252,36 +280,10 @@ const collections = {
     },
     optionsSchemaUiSchema: {},
     optionsUiSchema: {
-      type: "object",
-      title: "UI Schema",
-      properties: {
-        "ui:options": {
-          type: "object",
-          title: "UI Options",
-          dependencies:
-            common.optionsUiSchema.properties["ui:options"].dependencies,
-          properties: {
-            ...common.optionsUiSchema.properties["ui:options"].properties,
-            itemsDisplayTitle: {
-              type: "string",
-              title: "Items Display Title",
-              description:
-                "You can set a fixed value or you can reference child fields between `{{` and `}}`",
-            },
-          },
-        },
-      },
+      ...common.optionsUiSchema,
     },
     optionsUiSchemaUiSchema: {
       ...common.optionsUiSchemaUiSchema,
-      "ui:options": {
-        itemsDisplayTitle: {
-          "ui:widget": "itemsDisplayTitle",
-          "ui:options": {
-            descriptionIsMarkdown: true,
-          },
-        },
-      },
     },
     default: {
       schema: {
@@ -1029,7 +1031,7 @@ const advanced = {
               { const: "zenodo", title: "Zenodo" },
             ],
           },
-          uniqueItems: "true",
+          uniqueItems: true,
         },
       },
     },
