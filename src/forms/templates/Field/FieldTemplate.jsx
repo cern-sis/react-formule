@@ -2,9 +2,10 @@ import Form from "antd/lib/form";
 import PropTypes from "prop-types";
 import FieldHeader from "./FieldHeader";
 
-import WrapIfAdditional from "./WrapIfAdditional";
 import { Col, Row } from "antd";
 import { SIZE_OPTIONS } from "../../../admin/utils";
+import WrapIfAdditional from "./WrapIfAdditional";
+import FieldModal from "./FieldModal";
 
 const VERTICAL_LABEL_COL = { span: 24 };
 const VERTICAL_WRAPPER_COL = { span: 24 };
@@ -41,11 +42,37 @@ const FieldTemplate = ({
   }
 
   const renderFieldErrors = () =>
-    [...new Set(rawErrors)].map(error => (
+    [...new Set(rawErrors)].map((error) => (
       <div key={`field-${id}-error-${error}`}>{error}</div>
     ));
 
   const { ["ui:options"]: uiOptions = {} } = uiSchema;
+
+  const shouldShowAsModal = uiOptions?.showAsModal === true;
+
+  let _children;
+  if (shouldShowAsModal) {
+    _children = (
+      <FieldModal
+        label={
+          label && (
+            <FieldHeader
+              label={label}
+              description={rawDescription}
+              uiSchema={uiSchema}
+              idSchema={{ $id: id }}
+            />
+          )
+        }
+        content={children}
+        options={{
+          ...uiOptions?.modal,
+        }}
+      />
+    );
+  } else {
+    _children = children;
+  }
 
   let content = (
     <WrapIfAdditional
@@ -62,7 +89,7 @@ const FieldTemplate = ({
       isTabView={uiSchema["ui:object"] == "tabView"}
     >
       {id === "root" ? (
-        children
+        _children
       ) : (
         <Form.Item
           colon={colon}
@@ -70,6 +97,7 @@ const FieldTemplate = ({
           help={(!!rawHelp && help) || (!!rawErrors && renderFieldErrors())}
           htmlFor={id}
           label={
+            !shouldShowAsModal &&
             (displayLabel || uiSchema["ui:field"]) &&
             label && (
               <FieldHeader
@@ -87,7 +115,7 @@ const FieldTemplate = ({
           wrapperCol={wrapperCol}
           tooltip={schema.tooltip}
         >
-          {children}
+          {_children}
         </Form.Item>
       )}
     </WrapIfAdditional>

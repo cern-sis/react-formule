@@ -47,6 +47,44 @@ export const common = {
             values: [6, 8, 12, 16, 18, 24],
             labels: ["25%", "33%", "50%", "66%", "75%", "100%"],
           },
+          showAsModal: {
+            title: "Display as Modal",
+            type: "boolean",
+          },
+        },
+
+        dependencies: {
+          showAsModal: {
+            oneOf: [
+              {
+                properties: {
+                  showAsModal: {
+                    enum: [false],
+                  },
+                },
+              },
+              {
+                properties: {
+                  showAsModal: {
+                    enum: [true],
+                  },
+                  modal: {
+                    title: "Modal settings",
+                    type: "object",
+                    properties: {
+                      buttonText: { title: "Button title", type: "string" },
+                      modalWidth: { title: "Modal width", type: "integer" },
+                      buttonInNewLine: {
+                        title: "Button in new line",
+                        type: "boolean",
+                      },
+                    },
+                  },
+                },
+              },
+            ],
+            required: ["modal"],
+          },
         },
       },
     },
@@ -56,6 +94,18 @@ export const common = {
       span: {
         "ui:widget": "slider",
       },
+      modal: {
+        "ui:options": {
+          showAsModal: true,
+          modal: {
+            buttonInNewLine: true,
+          },
+        },
+      },
+      showAsModal: {
+        "ui:widget": "switch",
+      },
+      "ui:order": ["showAsModal", "modal", "*"],
     },
   },
 };
@@ -105,6 +155,8 @@ const collections = {
         "ui:options": {
           type: "object",
           title: "UI Options",
+          dependencies:
+            common.optionsUiSchema.properties["ui:options"].dependencies,
           properties: {
             ...common.optionsUiSchema.properties["ui:options"].properties,
             hidden: {
@@ -283,6 +335,8 @@ const simple = {
         "ui:options": {
           type: "object",
           title: "UI Options",
+          dependencies:
+            common.optionsUiSchema.properties["ui:options"].dependencies,
           properties: {
             ...common.optionsUiSchema.properties["ui:options"].properties,
             suggestions: {
@@ -351,6 +405,8 @@ const simple = {
         "ui:options": {
           type: "object",
           title: "UI Options",
+          dependencies:
+            common.optionsUiSchema.properties["ui:options"].dependencies,
           properties: {
             ...common.optionsUiSchema.properties["ui:options"].properties,
             rows: {
@@ -554,6 +610,8 @@ const simple = {
         "ui:options": {
           type: "object",
           title: "UI Options",
+          dependencies:
+            common.optionsUiSchema.properties["ui:options"].dependencies,
           properties: {
             ...common.optionsUiSchema.properties["ui:options"].properties,
             falseToUndefined: {
@@ -833,6 +891,8 @@ const advanced = {
         "ui:options": {
           type: "object",
           title: "UI Options",
+          dependencies:
+            common.optionsUiSchema.properties["ui:options"].dependencies,
           properties: {
             ...common.optionsUiSchema.properties["ui:options"].properties,
             suggestions: {
@@ -971,7 +1031,7 @@ const advanced = {
               { const: "zenodo", title: "Zenodo" },
             ],
           },
-          uniqueItems: "true",
+          uniqueItems: true,
         },
       },
     },
