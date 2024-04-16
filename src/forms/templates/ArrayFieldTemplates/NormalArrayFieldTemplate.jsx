@@ -48,15 +48,15 @@ const NormalArrayFieldTemplate = ({
   const [emailModal, setEmailModal] = useState(false);
   const [selectedEmailList, setSelectedEmailList] = useState(
     uiSchema["ui:options"] && uiSchema["ui:options"].email
-      ? formData.map(user => user?.profile?.email)
-      : []
+      ? formData.map((user) => user?.profile?.email)
+      : [],
   );
   const [copy, setCopy] = useState(false);
   const [importModal, setImportModal] = useState(false);
   const labelClsBasic = `${prefixCls}-item-label`;
   const labelColClassName = classNames(
     labelClsBasic,
-    labelAlign === "left" && `${labelClsBasic}-left`
+    labelAlign === "left" && `${labelClsBasic}-left`,
   );
   const { token } = useToken();
 
@@ -72,14 +72,17 @@ const NormalArrayFieldTemplate = ({
     uiEmailDefaults = uiSchema["ui:options"].emailDefaults || [];
   }
 
-  let typeOfArrayToDisplay = uiSchema && uiSchema.items && uiSchema.items["ui:object"] ? uiSchema.items["ui:object"] : "default";
+  let typeOfArrayToDisplay =
+    uiSchema && uiSchema.items && uiSchema.items["ui:object"]
+      ? uiSchema.items["ui:object"]
+      : "default";
 
-  const getArrayContent = type => {
+  const getArrayContent = (type) => {
     const choices = {
       layerObjectField: (
         <LayerArrayFieldTemplate
           items={items}
-          formContext={formContext}
+          uiSchema={uiSchema}
           id={idSchema.$id}
         />
       ),
@@ -107,7 +110,7 @@ const NormalArrayFieldTemplate = ({
     let { to } = uiImport;
     let data = formData;
 
-    if (type == "object" && to) data = formData.map(item => item[to] || "");
+    if (type == "object" && to) data = formData.map((item) => item[to] || "");
 
     if (!latexData) {
       axios
@@ -127,12 +130,12 @@ const NormalArrayFieldTemplate = ({
     }
   };
 
-  const updateEmailSelectedList = email => {
+  const updateEmailSelectedList = (email) => {
     selectedEmailList.includes(email)
-      ? setSelectedEmailList(selectedEmailList =>
-          selectedEmailList.filter(item => item != email)
+      ? setSelectedEmailList((selectedEmailList) =>
+          selectedEmailList.filter((item) => item != email),
         )
-      : setSelectedEmailList(selectedEmailList => [
+      : setSelectedEmailList((selectedEmailList) => [
           ...selectedEmailList,
           email,
         ]);
@@ -140,12 +143,12 @@ const NormalArrayFieldTemplate = ({
   const updateEmailSelectedListAll = () => {
     formData.length === selectedEmailList.length
       ? setSelectedEmailList([])
-      : setSelectedEmailList(formData.map(user => user?.profile?.email));
+      : setSelectedEmailList(formData.map((user) => user?.profile?.email));
   };
 
   useEffect(() => {
     if (emailModal && formData.length != selectedEmailList.length)
-      setSelectedEmailList(formData.map(user => user?.profile?.email));
+      setSelectedEmailList(formData.map((user) => user?.profile?.email));
   }, [emailModal]);
 
   return (
@@ -162,30 +165,12 @@ const NormalArrayFieldTemplate = ({
             setShowModal(false);
             setLatexData(null);
           }}
-          footer={
-            <Row justify="end">
-              <Space>
-                <Button
-                  onClick={() => {
-                    setShowModal(false);
-                    setLatexData(null);
-                  }}
-                >
-                  Close
-                </Button>
-                <Button
-                  type="primary"
-                  onClick={() => {
-                    navigator.clipboard.writeText(decodeURI(latexData));
-                    setCopy(true);
-                  }}
-                  icon={copy ? <CheckOutlined /> : <CopyOutlined />}
-                >
-                  {copy ? "Copied" : "Copy to clipboard"}
-                </Button>
-              </Space>
-            </Row>
-          }
+          okText={copy ? "Copied" : "Copy to clipboard"}
+          okButtonProps={{ icon: copy ? <CheckOutlined /> : <CopyOutlined /> }}
+          onOk={() => {
+            navigator.clipboard.writeText(decodeURI(latexData));
+            setCopy(true);
+          }}
         >
           <CodeViewer
             value={latexData}
@@ -233,14 +218,14 @@ const NormalArrayFieldTemplate = ({
               <Col>
                 Default email recepients:{" "}
                 <Space>
-                  {uiEmailDefaults.map(i => (
+                  {uiEmailDefaults.map((i) => (
                     <Tag key={i}>{i}</Tag>
                   ))}
                 </Space>
               </Col>
             ) : null}
             <Table
-              dataSource={formData.map(i => i.profile || i)}
+              dataSource={formData.map((i) => i.profile || i)}
               columns={[
                 {
                   title: "Email User",
@@ -261,13 +246,13 @@ const NormalArrayFieldTemplate = ({
                   title: "Email",
                   dataIndex: "email",
                   key: "email",
-                  render: txt => <Tag color="geekblue">{txt}</Tag>,
+                  render: (txt) => <Tag color="geekblue">{txt}</Tag>,
                 },
                 {
                   title: "Department",
                   dataIndex: "department",
                   key: "department",
-                  render: txt => <Tag color="blue">{txt}</Tag>,
+                  render: (txt) => <Tag color="blue">{txt}</Tag>,
                 },
               ]}
             />

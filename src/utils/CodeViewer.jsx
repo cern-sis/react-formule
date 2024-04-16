@@ -1,7 +1,8 @@
-import { useEffect, useRef } from "react";
-import { basicSetup } from "codemirror";
+import { useEffect, useMemo, useRef } from "react";
+import { basicSetup, minimalSetup } from "codemirror";
 import { EditorState } from "@codemirror/state";
 import { EditorView } from "@codemirror/view";
+import { theme } from "antd";
 
 const CodeViewer = ({
   value,
@@ -10,36 +11,52 @@ const CodeViewer = ({
   extraExtensions = [],
   height,
   schema,
+  reset,
+  minimal,
 }) => {
-  const element = useRef(null);
+  const editorRef = useRef(null);
 
-  useEffect(() => {
-    element.current.innerHTML = "";
+  const { token } = theme.useToken();
 
-    let extensions = [
-      basicSetup,
+  const extensions = useMemo(
+    () => [
+      minimal ? minimalSetup : basicSetup,
       EditorState.readOnly.of(isReadOnly),
       EditorView.theme({
         "&": {
           width: "100%",
           height: "100%",
+          border: `1px solid ${token.colorBorder}`,
+        },
+        "&.cm-focused": {
+          outline: "none",
+          borderColor: token.colorPrimary,
         },
       }),
-    ];
-    if (lang) {
-      extensions.push(lang());
+      lang ? lang() : [],
+      ...extraExtensions,
+    ],
+    [extraExtensions, isReadOnly, lang, minimal, token],
+  );
+
+  useEffect(() => {
+    if (reset) {
+      // Needed for cap schema viewer
+      editorRef.current.innerHTML = "";
     }
+    if (editorRef.current && editorRef.current.children.length < 1) {
+      new EditorView({
+        state: EditorState.create({
+          doc: value,
+          extensions: extensions,
+        }),
+        parent: editorRef.current,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value, schema, reset]);
 
-    new EditorView({
-      state: EditorState.create({
-        doc: value,
-        extensions: [...extensions, ...extraExtensions],
-      }),
-      parent: element.current,
-    });
-  }, [value, schema, lang, extraExtensions, isReadOnly]);
-
-  return <div style={{ height: height }} ref={element} />;
+  return <div style={{ height }} ref={editorRef} />;
 };
 
 export default CodeViewer;
