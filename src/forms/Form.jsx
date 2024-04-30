@@ -5,8 +5,6 @@ import FieldTemplate from "./templates/Field/FieldTemplate";
 import CAPFields from "./fields";
 import CAPWidgets from "./widgets";
 
-import objectPath from "object-path";
-
 import "./Form.less";
 import { Form } from "@rjsf/antd";
 import validator from "@rjsf/validator-ajv8";
@@ -35,39 +33,16 @@ const RJSFForm = ({
   tagName,
   liveValidate = false,
   showErrorList = false,
+  transformErrors,
 }) => {
+  const customizationContext = useContext(CustomizationContext);
 
-  const customizationContext = useContext(CustomizationContext)
-  
-  const dispatch = useDispatch()
-
-  // mainly this is used for the drafts forms
-  // we want to allow forms to be saved even without required fields
-  // if these fields are not filled in when publishing then an error will be shown
-  const transformErrors = errors => {
-    errors = errors
-      .filter(item => item.name != "required")
-      .map(error => {
-        if (error.name == "required") return null;
-
-        // Update messages for undefined fields when required,
-        // from "should be string" ==> "Either edit or remove"
-        if (error.message == "should be string") {
-          let errorMessages = objectPath.get(formData, error.property);
-          if (errorMessages == undefined)
-            error.message = "Either edit or remove";
-        }
-
-        return error;
-      });
-
-    return errors;
-  };
+  const dispatch = useDispatch();
 
   const handleChange = (change) => {
-    onChange && onChange(change)
-    dispatch(updateFormData({ value: change.formData }))
-  }
+    onChange && onChange(change);
+    dispatch(updateFormData({ value: change.formData }));
+  };
 
   const templates = {
     FieldTemplate: Fields || FieldTemplate,
@@ -84,8 +59,16 @@ const RJSFForm = ({
         uiSchema={uiSchema}
         tagName={tagName}
         formData={formData}
-        fields={{ ...CAPFields, ...customizationContext.customFields, ...fields }}
-        widgets={{ ...CAPWidgets, ...customizationContext.customWidgets, ...widgets }}
+        fields={{
+          ...CAPFields,
+          ...customizationContext.customFields,
+          ...fields,
+        }}
+        widgets={{
+          ...CAPWidgets,
+          ...customizationContext.customWidgets,
+          ...widgets,
+        }}
         templates={templates}
         liveValidate={liveValidate}
         showErrorList={showErrorList}

@@ -14,11 +14,9 @@ import axios from "axios";
 import ImportListModal from "./ImportListModal";
 import { CheckOutlined, CopyOutlined } from "@ant-design/icons";
 import CodeViewer from "../../../utils/CodeViewer";
-import { stex } from "@codemirror/legacy-modes/mode/stex";
 import {
   syntaxHighlighting,
   defaultHighlightStyle,
-  StreamLanguage,
 } from "@codemirror/language";
 import FieldHeader from "../Field/FieldHeader";
 import TitleField from "../../fields/internal/TitleField";
@@ -175,10 +173,8 @@ const NormalArrayFieldTemplate = ({
           <CodeViewer
             value={latexData}
             height="calc(100vh - 300px)"
-            extraExtensions={[
-              StreamLanguage.define(stex),
-              syntaxHighlighting(defaultHighlightStyle),
-            ]}
+            lang="stex"
+            extraExtensions={[syntaxHighlighting(defaultHighlightStyle)]}
           />
         </Modal>
       )}

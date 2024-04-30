@@ -1,8 +1,6 @@
 import { Button, Input, Tooltip } from "antd";
 import { CopyOutlined, LinkOutlined } from "@ant-design/icons";
-
-const URL_REGEX =
-  "https?://(www.)?[-a-zA-Z0-9@:%._+~#=]{1,256}.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)";
+import { URL_REGEX } from "../../utils";
 
 const UriWidget = ({
   autofocus,
@@ -25,7 +23,7 @@ const UriWidget = ({
       type="url"
       autoFocus={autofocus}
       value={value}
-      onChange={e => onChange(e.target.value)}
+      onChange={(e) => onChange(e.target.value)}
       onBlur={handleBlur}
       onFocus={handleFocus}
       disabled={disabled || (readonlyAsDisabled && readonly)}

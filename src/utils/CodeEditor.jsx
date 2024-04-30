@@ -4,16 +4,18 @@ import { indentWithTab } from "@codemirror/commands";
 import CodeViewer from "./CodeViewer";
 
 const CodeEditor = ({
-  value,
+  initialValue,
   lang,
   lint,
-  isReadOnly = false,
+  isEditable = true,
+  isReadOnly,
   handleEdit,
   schema,
   height,
-  extraExtensions,
+  extraExtensions = [],
   reset,
   minimal,
+  validationSchema,
 }) => {
   const editorExtensions = [
     keymap.of([indentWithTab]),
@@ -28,8 +30,9 @@ const CodeEditor = ({
 
   return (
     <CodeViewer
-      value={value}
+      value={initialValue}
       lang={lang}
+      isEditable={isEditable}
       isReadOnly={isReadOnly}
       extraExtensions={editorExtensions}
       schema={schema}
@@ -37,6 +40,7 @@ const CodeEditor = ({
       listener={handleEdit}
       reset={reset}
       minimal={minimal}
+      validationSchema={validationSchema}
     />
   );
 };

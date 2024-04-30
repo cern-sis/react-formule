@@ -64,6 +64,7 @@ const FieldTemplate = ({
             />
           )
         }
+        id={id}
         content={children}
         options={{
           ...uiOptions?.modal,

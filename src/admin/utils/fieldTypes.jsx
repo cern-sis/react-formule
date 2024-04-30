@@ -7,6 +7,7 @@ import {
   CalendarOutlined,
   CheckSquareOutlined,
   CloudDownloadOutlined,
+  CodeOutlined,
   ContainerOutlined,
   FontSizeOutlined,
   LayoutOutlined,
@@ -16,6 +17,7 @@ import {
   TagOutlined,
   UnorderedListOutlined,
 } from "@ant-design/icons";
+import { placeholder } from "@codemirror/view";
 
 // COMMON / EXTRA PROPERTIES:
 
@@ -214,17 +216,25 @@ const collections = {
       },
     },
     optionsUiSchemaUiSchema: {
-      ...common.optionsUiSchemaUiSchema,
       "ui:options": {
+        ...common.optionsUiSchemaUiSchema["ui:options"],
         itemsDisplayTitle: {
-          "ui:widget": "itemsDisplayTitle",
           "ui:options": {
             descriptionIsMarkdown: true,
             showAsModal: true,
             modal: {
               buttonInNewLine: true,
             },
+            codeEditor: {
+              minimal: true,
+              language: "jinja",
+              extraExtensions: [
+                placeholder("Path: {{item_123}} - Type: {{item_456}}"),
+              ],
+              height: "200px",
+            },
           },
+          "ui:field": "codeEditor",
         },
       },
     },
@@ -388,7 +398,6 @@ const simple = {
       },
     },
     optionsUiSchemaUiSchema: {
-      ...common.optionsUiSchemaUiSchema,
       "ui:options": {
         ...common.optionsUiSchemaUiSchema["ui:options"],
         mask: {
@@ -1078,6 +1087,145 @@ const advanced = {
       uiSchema: {
         "ui:servicesList": ["orcid", "ror", "zenodo"],
         "ui:field": "idFetcher",
+      },
+    },
+  },
+  codeEditor: {
+    title: "Code Editor",
+    icon: <CodeOutlined />,
+    description: "Code editor with syntax highlighting",
+    child: {},
+    optionsSchema: {
+      title: "Code Editor Schema",
+      type: "object",
+      properties: {
+        ...common.optionsSchema,
+        validateWith: {
+          type: "string",
+          title: "Validate with",
+          description:
+            "You can either provide a URL of a UI Schema to validate against or paste the JSON schema directly",
+          oneOf: [
+            { const: "none", title: "None" },
+            { const: "url", title: "URL" },
+            { const: "json", title: "JSON" },
+          ],
+        },
+        readOnly: extra.optionsSchema.readOnly,
+        isRequired: extra.optionsSchema.isRequired,
+      },
+      dependencies: {
+        validateWith: {
+          oneOf: [
+            {
+              properties: {
+                validateWith: {
+                  enum: ["url"],
+                },
+                validateWithUrl: {
+                  title: "Validation schema URL",
+                  type: "string",
+                },
+              },
+            },
+            {
+              properties: {
+                validateWith: {
+                  enum: ["json"],
+                },
+                validateWithJson: {
+                  title: "Validation JSON schema",
+                  type: "string",
+                },
+              },
+            },
+            {
+              properties: {
+                validateWith: {
+                  enum: ["none"],
+                },
+              },
+            },
+          ],
+        },
+      },
+    },
+    optionsSchemaUiSchema: {
+      readOnly: extra.optionsSchemaUiSchema.readOnly,
+      isRequired: extra.optionsSchemaUiSchema.isRequired,
+      validateWithUrl: {
+        "ui:widget": "uri",
+      },
+      validateWithJson: {
+        "ui:field": "codeEditor",
+        "ui:options": {
+          showAsModal: true,
+          modal: {
+            buttonInNewLine: true,
+            modalWidth: "800px",
+          },
+          codeEditor: {
+            minimal: true,
+            language: "json",
+            height: "600px",
+            extraExtensions: [placeholder("Paste your JSON Schema here")],
+          },
+        },
+      },
+      "ui:order": [
+        "title",
+        "description",
+        "validateWith",
+        "validateWithUrl",
+        "validateWithJson",
+        "*",
+      ],
+    },
+    optionsUiSchema: {
+      type: "object",
+      title: "UI Schema",
+      properties: {
+        "ui:options": {
+          type: "object",
+          title: "UI Options",
+          dependencies:
+            common.optionsUiSchema.properties["ui:options"].dependencies,
+          properties: {
+            ...common.optionsUiSchema.properties["ui:options"].properties,
+            height: {
+              type: "number",
+              title: "Height",
+              description: "In pixels",
+            },
+            language: {
+              type: "string",
+              title: "Language",
+              oneOf: [
+                { const: "none", title: "None" },
+                { const: "json", title: "JSON" },
+                { const: "jinja", title: "Jinja" },
+                { const: "stex", title: "LaTeX (sTeX)" },
+              ],
+              tooltip:
+                "This setting will be ignored when passing a validation schema in the schema settings",
+            },
+          },
+        },
+      },
+    },
+    optionsUiSchemaUiSchema: {
+      ...common.optionsUiSchemaUiSchema,
+    },
+    default: {
+      schema: {
+        type: "string",
+        validateWith: "none",
+      },
+      uiSchema: {
+        "ui:field": "codeEditor",
+        "ui:options": {
+          language: "none",
+        },
       },
     },
   },

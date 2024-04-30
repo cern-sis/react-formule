@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, Modal, Space } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 
-const FieldModal = ({ label, content, options }) => {
+const FieldModal = ({ id, label, content, options }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
@@ -19,6 +19,7 @@ const FieldModal = ({ label, content, options }) => {
       >
         {label}
         <Button
+          id={id}
           size="small"
           icon={<EditOutlined />}
           onClick={() => setModalOpen(true)}
@@ -32,6 +33,7 @@ const FieldModal = ({ label, content, options }) => {
         onCancel={() => setModalOpen(false)}
         footer={null}
         className="formule-field-modal"
+        data-cy="fieldModal"
         width={options?.modalWidth ? options?.modalWidth : 400}
       >
         {content}

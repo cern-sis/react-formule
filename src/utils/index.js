@@ -1,3 +1,6 @@
+export const URL_REGEX =
+  "https?://(www.)?[-a-zA-Z0-9@:%._+~#=]{1,256}.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)";
+
 export const stringToHslColor = (str, s, l) => {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {

@@ -13,7 +13,7 @@
 // https://on.cypress.io/configuration
 // ***********************************************************
 
-import './commands'
+import "./commands";
 
 /// <reference types="cypress" />
 
@@ -21,13 +21,27 @@ declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
-      getByDataCy(value: string): Chainable<JQuery<HTMLElement>>
-      clearTypeBlur(text: string, options?: Forceable): Chainable<JQuery<HTMLElement>>
-      addField(fieldType: string, targetAlias?: string): Chainable<JQuery<HTMLElement>>
-      addFieldWithName(fieldType: string, name: string, targetAlias?: string): Chainable<JQuery<HTMLElement>>
-      moveField(fromAlias: string, toAlias: string, overAlias?: string): Chainable<JQuery<HTMLElement>>
-      hasErrorMessage(message: string): Chainable<JQuery<HTMLElement>>
-      hasNoErrorMessage(): Chainable<JQuery<HTMLElement>>
+      getByDataCy(value: string): Chainable<JQuery<HTMLElement>>;
+      clearTypeBlur(
+        text: string,
+        options?: Partial<TypeOptions>,
+      ): Chainable<JQuery<HTMLElement>>;
+      addField(
+        fieldType: string,
+        targetAlias?: string,
+      ): Chainable<JQuery<HTMLElement>>;
+      addFieldWithName(
+        fieldType: string,
+        name: string,
+        targetAlias?: string,
+      ): Chainable<JQuery<HTMLElement>>;
+      moveField(
+        fromAlias: string,
+        toAlias: string,
+        overAlias?: string,
+      ): Chainable<JQuery<HTMLElement>>;
+      hasErrorMessage(message: string): Chainable<JQuery<HTMLElement>>;
+      hasNoErrorMessage(): Chainable<JQuery<HTMLElement>>;
     }
   }
 }
