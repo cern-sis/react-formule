@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Button, Modal, Space } from "antd";
-import { EditOutlined } from "@ant-design/icons";
+import { Button, Modal, Space, Tooltip, theme } from "antd";
+import { EditOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 
-const FieldModal = ({ id, label, content, options }) => {
+const FieldModal = ({ id, label, content, options, tooltip }) => {
   const [modalOpen, setModalOpen] = useState(false);
+  const { token } = theme.useToken();
 
   return (
     <>
@@ -17,7 +18,14 @@ const FieldModal = ({ id, label, content, options }) => {
           justifyContent: "space-between",
         }}
       >
-        {label}
+        <Space>
+          {label}
+          <Tooltip title={tooltip}>
+            <QuestionCircleOutlined
+              style={{ color: token.colorTextTertiary, cursor: "help" }}
+            />
+          </Tooltip>
+        </Space>
         <Button
           id={id}
           size="small"

@@ -69,6 +69,7 @@ const FieldTemplate = ({
         options={{
           ...uiOptions?.modal,
         }}
+        tooltip={schema.tooltip}
       />
     );
   } else {

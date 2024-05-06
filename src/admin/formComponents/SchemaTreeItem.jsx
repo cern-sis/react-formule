@@ -5,8 +5,9 @@ import {
   DownOutlined,
   QuestionOutlined,
   UpOutlined,
+  CopyOutlined,
 } from "@ant-design/icons";
-import { Col, Row, Tag, Typography } from "antd";
+import { Col, Dropdown, Row, Tag, Typography } from "antd";
 import { isItTheArrayField } from "../utils";
 import { useContext } from "react";
 import CustomizationContext from "../../contexts/CustomizationContext";
@@ -20,21 +21,27 @@ const SchemaTreeItem = ({
   display,
   updateDisplay,
 }) => {
-  const customizationContext = useContext(CustomizationContext)
+  const customizationContext = useContext(CustomizationContext);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   // selects the item for the property editor
   const handleClick = () => {
-    dispatch(selectProperty({path}));
+    dispatch(selectProperty({ path }));
   };
 
-  const handleUpdateDisplay = e => {
+  const handleUpdateDisplay = (e) => {
     e.stopPropagation();
     updateDisplay();
   };
 
-  const shouldBoxAcceptChildren = uiSchema => {
+  const handleDropdownClick = (e) => {
+    if (e.key === "copy") {
+      navigator.clipboard.writeText(path.schema[path.schema.length - 1]);
+    }
+  };
+
+  const shouldBoxAcceptChildren = (uiSchema) => {
     return uiSchema["ui:field"] !== undefined;
   };
 
@@ -61,17 +68,30 @@ const SchemaTreeItem = ({
       }
     }
 
-    const allFieldTypes = {...customizationContext.allFieldTypes, hidden: {fields: hiddenFields}}
+    const allFieldTypes = {
+      ...customizationContext.allFieldTypes,
+      hidden: { fields: hiddenFields },
+    };
 
     for (const category in allFieldTypes) {
-      for (const [key, value] of Object.entries(allFieldTypes[category].fields)) {
+      for (const [key, value] of Object.entries(
+        allFieldTypes[category].fields,
+      )) {
         if (key === type) {
           return value.icon;
         }
       }
     }
-    return <QuestionOutlined />
+    return <QuestionOutlined />;
   };
+
+  const dropdownItems = [
+    {
+      key: "copy",
+      label: "Copy key",
+      icon: <CopyOutlined />,
+    },
+  ];
 
   return (
     <Tag
@@ -88,49 +108,63 @@ const SchemaTreeItem = ({
         backgroundColor: "white",
       }}
       data-cy="treeItem"
+      id="tag-jaja"
     >
-      <Row gutter={8} onClick={handleClick} align="middle" wrap={false}>
-        <Col flex="none">{getIconByType(uiSchema, schema)}</Col>
-        <Col flex="auto">
-          <Row
-            style={{ width: "100%", marginTop: schema.title ? "-9px" : "0" }}
-            justify="space-between"
-            wrap={false}
-            gutter={8}
-          >
-            <Col>
-              <Typography.Text style={{ fontSize: "14px" }} ellipsis>
-                {path.schema[path.schema.length - 1]}
-              </Typography.Text>
-            </Col>
-          </Row>
-          {schema.title && (
+      <Dropdown
+        menu={{ items: dropdownItems, onClick: handleDropdownClick }}
+        trigger={["contextMenu"]}
+      >
+        <Row gutter={8} onClick={handleClick} align="middle" wrap={false}>
+          <Col flex="none">{getIconByType(uiSchema, schema)}</Col>
+          <Col flex="auto">
             <Row
-              style={{ width: "100%", marginTop: "-9px", marginBottom: "-9px" }}
+              style={{
+                width: "100%",
+                marginTop: schema.title ? "-9px" : "0",
+              }}
+              justify="space-between"
+              wrap={false}
+              gutter={8}
             >
               <Col>
-                <Typography.Text
-                  type="secondary"
-                  style={{ fontSize: "12px" }}
-                  ellipsis
-                >
-                  {schema.title}
+                <Typography.Text style={{ fontSize: "14px" }} ellipsis>
+                  {path.schema[path.schema.length - 1]}
                 </Typography.Text>
               </Col>
             </Row>
-          )}
-        </Col>
-        <Col>
-          {schema &&
-            ((schema.type == "object" && !shouldBoxAcceptChildren(uiSchema)) ||
-              isItTheArrayField(schema, uiSchema)) &&
-            (display ? (
-              <UpOutlined onClick={handleUpdateDisplay} />
-            ) : (
-              <DownOutlined onClick={handleUpdateDisplay} />
-            ))}
-        </Col>
-      </Row>
+            {schema.title && (
+              <Row
+                style={{
+                  width: "100%",
+                  marginTop: "-9px",
+                  marginBottom: "-9px",
+                }}
+              >
+                <Col>
+                  <Typography.Text
+                    type="secondary"
+                    style={{ fontSize: "12px" }}
+                    ellipsis
+                  >
+                    {schema.title}
+                  </Typography.Text>
+                </Col>
+              </Row>
+            )}
+          </Col>
+          <Col>
+            {schema &&
+              ((schema.type == "object" &&
+                !shouldBoxAcceptChildren(uiSchema)) ||
+                isItTheArrayField(schema, uiSchema)) &&
+              (display ? (
+                <UpOutlined onClick={handleUpdateDisplay} />
+              ) : (
+                <DownOutlined onClick={handleUpdateDisplay} />
+              ))}
+          </Col>
+        </Row>
+      </Dropdown>
     </Tag>
   );
 };
@@ -148,4 +182,4 @@ SchemaTreeItem.propTypes = {
   uiSchema: PropTypes.object,
 };
 
-export default SchemaTreeItem
+export default SchemaTreeItem;

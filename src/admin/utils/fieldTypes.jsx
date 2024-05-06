@@ -209,7 +209,9 @@ const collections = {
               type: "string",
               title: "Items Display Title",
               description:
-                "You can set a fixed value or you can reference child fields between `{{` and `}}`",
+                "You can set a fixed value or you can reference child fields by id between `{{` and `}}`",
+              tooltip:
+                "You can easily copy the field id by right-clicking the desired field in the tree",
             },
           },
         },
