@@ -3,14 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateRequired } from "../../store/schemaWizard";
 
 const RequiredWidget = ({ value, onChange }) => {
+  const path = useSelector((state) => state.schemaWizard.field.path);
 
-  const path = useSelector((state) => state.schemaWizard.field)
+  const dispatch = useDispatch();
 
-  const dispatch = useDispatch()
-
-  const handleChange = checked => {
+  const handleChange = (checked) => {
     onChange(checked);
-    dispatch(updateRequired({path: path.path, isRequired: checked}));
+    dispatch(updateRequired({ path, isRequired: checked }));
   };
 
   return (

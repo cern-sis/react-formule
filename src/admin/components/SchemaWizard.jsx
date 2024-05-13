@@ -8,15 +8,17 @@ import FormPreview from "../components/FormPreview";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { schemaInit } from "../../store/schemaWizard";
+import { isEmpty } from "lodash-es";
 
 const SchemaWizard = () => {
+  const field = useSelector((state) => state.schemaWizard.field);
+  const loader = useSelector((state) => state.schemaWizard.loader);
 
-  const field = useSelector((state) => state.schemaWizard.field)
-  const loader = useSelector((state) => state.schemaWizard.loader)
+  const dispatch = useDispatch();
 
-  const dispatch = useDispatch()
-
-  useEffect(() => { dispatch(schemaInit()) }, [])
+  useEffect(() => {
+    dispatch(schemaInit());
+  }, []);
 
   if (loader)
     return (
@@ -38,7 +40,7 @@ const SchemaWizard = () => {
           }}
           className="tour-field-types"
         >
-          {field ? <PropertyEditor /> : <SelectFieldType />}
+          {isEmpty(field) ? <SelectFieldType /> : <PropertyEditor />}
         </Col>
         <Col
           xs={14}
