@@ -12,19 +12,21 @@ import { PageHeader } from "@ant-design/pro-layout";
 import Customize from "../components/Customize";
 import { DeleteOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteByPath, enableCreateMode, renameIdByPath } from "../../store/schemaWizard";
+import {
+  deleteByPath,
+  enableCreateMode,
+  renameIdByPath,
+} from "../../store/schemaWizard";
 
 const { useBreakpoint } = Grid;
 
-const renderPath = pathToUpdate => {
+const renderPath = (path) => {
   let prev;
   let content;
   const breadcrumbItems = [];
 
-  let path = pathToUpdate.path;
-
   path &&
-    path.map(item => {
+    path.map((item) => {
       if (breadcrumbItems.length == 0) {
         if (item == "properties") content = "{ } root";
         else if (item == "items") content = "[ ] root";
@@ -49,35 +51,40 @@ const PropertyEditor = () => {
   const [name, setName] = useState();
   const screens = useBreakpoint();
 
-  const pathObj = useSelector((state) => state.schemaWizard.field)
+  const path = useSelector((state) => state.schemaWizard.field.path);
+  const uiPath = useSelector((state) => state.schemaWizard.field.uiPath);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (pathObj) {
-      const p = pathObj.path;
-      if (p.length) {
-        setName(p.findLast(item => item !== "properties" && item != "items"));
+    if (path) {
+      if (path.length) {
+        setName(
+          path.findLast((item) => item !== "properties" && item != "items"),
+        );
       } else {
         setName("root");
       }
     }
-  }, [pathObj]);
+  }, [path]);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", width: "100%" }} data-cy="fieldSettings">
+    <div
+      style={{ display: "flex", flexDirection: "column", width: "100%" }}
+      data-cy="fieldSettings"
+    >
       <PageHeader
         onBack={() => dispatch(enableCreateMode())}
-        title={(screens.xl || pathObj.path.length == 0) && "Field settings"}
+        title={(screens.xl || path.length == 0) && "Field settings"}
         extra={
-          pathObj.path.length > 0 && (
+          path.length > 0 && (
             <Popconfirm
               title="Delete field"
               okType="danger"
               okText="Delete"
               cancelText="Cancel"
               onConfirm={() => {
-                dispatch(deleteByPath({path: pathObj}));
+                dispatch(deleteByPath({ path }));
                 dispatch(enableCreateMode());
               }}
             >
@@ -88,22 +95,27 @@ const PropertyEditor = () => {
       />
       <Row justify="center">
         <Col xs={22} style={{ paddingBottom: "10px", textAlign: "center" }}>
-          {renderPath(pathObj)}
+          {renderPath(path)}
         </Col>
         <Col xs={18} data-cy="editFieldId">
           <Typography.Title
             level={5}
-            editable={pathObj.path.length && {
-              text: name,
-              onChange: value => dispatch(renameIdByPath({path: pathObj, newName: value})),
-            }}
+            editable={
+              path.length && {
+                text: name,
+                onChange: (value) =>
+                  dispatch(
+                    renameIdByPath({ path: { path, uiPath }, newName: value }),
+                  ),
+              }
+            }
             style={{ textAlign: "center" }}
           >
             {name}
           </Typography.Title>
         </Col>
       </Row>
-      <Customize path={pathObj} />
+      <Customize />
     </div>
   );
 };

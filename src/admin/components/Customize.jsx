@@ -1,28 +1,33 @@
 import { useEffect, useState } from "react";
-import PropTypes from "prop-types";
 import PropertyKeyEditorForm from "./PropKeyEditorForm";
 
 import { Radio, Space, Tabs, Typography } from "antd";
 import { SIZE_OPTIONS } from "../utils";
 import { useDispatch, useSelector } from "react-redux";
-import { updateSchemaByPath, updateUiSchemaByPath } from "../../store/schemaWizard";
+import {
+  updateSchemaByPath,
+  updateUiSchemaByPath,
+} from "../../store/schemaWizard";
 
-import { get } from "lodash-es"
+import { get } from "lodash-es";
 
 const JUSTIFY_OPTIONS = ["start", "center", "end"];
 
-const Customize = ({
-  path,
-}) => {
+const Customize = () => {
   const [justify, setJustify] = useState(() => "start");
   const [size, setSize] = useState("xlarge");
 
-  const dispatch = useDispatch()
-  const _path = useSelector((state) => state.schemaWizard.field.path)
-  const _uiPath = useSelector((state) => state.schemaWizard.field.uiPath)
-  
-  const schema = useSelector((state) => _path && get(state.schemaWizard, ["current", "schema", ..._path]))
-  const uiSchema = useSelector((state) => _uiPath && get(state.schemaWizard, ["current", "uiSchema", ..._uiPath]))
+  const dispatch = useDispatch();
+  const path = useSelector((state) => state.schemaWizard.field.path);
+  const uiPath = useSelector((state) => state.schemaWizard.field.uiPath);
+
+  const schema = useSelector(
+    (state) => path && get(state.schemaWizard, ["current", "schema", ...path]),
+  );
+  const uiSchema = useSelector(
+    (state) =>
+      uiPath && get(state.schemaWizard, ["current", "uiSchema", ...uiPath]),
+  );
 
   useEffect(() => {
     if (uiSchema && Object.hasOwn(uiSchema, "ui:options")) {
@@ -31,28 +36,38 @@ const Customize = ({
     }
   }, [uiSchema]);
 
-  const _onSchemaChange = data => {
-    dispatch(updateSchemaByPath({path: path.path, value: data.formData}));
+  const _onSchemaChange = (data) => {
+    dispatch(updateSchemaByPath({ path: path, value: data.formData }));
   };
-  const _onUiSchemaChange = data => {
-    dispatch(updateUiSchemaByPath({path: path.uiPath, value: data.formData}));
+  const _onUiSchemaChange = (data) => {
+    dispatch(updateUiSchemaByPath({ path: uiPath, value: data.formData }));
   };
-  const sizeChange = newSize => {
+  const sizeChange = (newSize) => {
     let { "ui:options": uiOptions = {}, ...rest } = uiSchema;
 
-    dispatch(updateUiSchemaByPath({path: path.uiPath, value: {
-      ...rest,
-      "ui:options": { ...uiOptions, size: newSize },
-    }}));
+    dispatch(
+      updateUiSchemaByPath({
+        path: uiPath,
+        value: {
+          ...rest,
+          "ui:options": { ...uiOptions, size: newSize },
+        },
+      }),
+    );
   };
 
-  const alignChange = newAlign => {
+  const alignChange = (newAlign) => {
     let { "ui:options": uiOptions = {}, ...rest } = uiSchema;
 
-    dispatch(updateUiSchemaByPath({path: path.uiPath, value: {
-      ...rest,
-      "ui:options": { ...uiOptions, justify: newAlign },
-    }}));
+    dispatch(
+      updateUiSchemaByPath({
+        path: uiPath,
+        value: {
+          ...rest,
+          "ui:options": { ...uiOptions, justify: newAlign },
+        },
+      }),
+    );
   };
 
   return (
@@ -79,7 +94,7 @@ const Customize = ({
           key: "2",
           label: "UI Schema Settings",
           children:
-            _path.length != 0 ? (
+            path.length != 0 ? (
               <PropertyKeyEditorForm
                 schema={schema && schema}
                 uiSchema={uiSchema && uiSchema}
@@ -87,7 +102,7 @@ const Customize = ({
                 onChange={_onUiSchemaChange}
                 optionsSchemaObject="optionsUiSchema"
                 optionsUiSchemaObject="optionsUiSchemaUiSchema"
-                key={_uiPath}
+                key={uiPath}
               />
             ) : (
               <Space
@@ -97,11 +112,11 @@ const Customize = ({
                 <Typography.Text>Size Options</Typography.Text>
                 <Radio.Group
                   size="small"
-                  onChange={e => sizeChange(e.target.value)}
+                  onChange={(e) => sizeChange(e.target.value)}
                   value={size}
                   style={{ paddingBottom: "15px" }}
                 >
-                  {Object.keys(SIZE_OPTIONS).map(size => (
+                  {Object.keys(SIZE_OPTIONS).map((size) => (
                     <Radio.Button key={size} value={size}>
                       {size}
                     </Radio.Button>
@@ -110,10 +125,10 @@ const Customize = ({
                 <Typography.Text>Align Options</Typography.Text>
                 <Radio.Group
                   size="small"
-                  onChange={e => alignChange(e.target.value)}
+                  onChange={(e) => alignChange(e.target.value)}
                   value={justify}
                 >
-                  {JUSTIFY_OPTIONS.map(justify => (
+                  {JUSTIFY_OPTIONS.map((justify) => (
                     <Radio.Button key={justify} value={justify}>
                       {justify}
                     </Radio.Button>
@@ -125,10 +140,6 @@ const Customize = ({
       ]}
     />
   );
-};
-
-Customize.propTypes = {
-  path: PropTypes.object,
 };
 
 export default Customize;
