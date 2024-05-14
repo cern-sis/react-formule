@@ -1,5 +1,5 @@
 export default {
-  branches: ["master"],
+  branches: ["master", "semantic-release-github-plugin"],
   plugins: [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
@@ -12,5 +12,6 @@ export default {
           "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}",
       },
     ],
+    "@semantic-release/github",
   ],
 };
