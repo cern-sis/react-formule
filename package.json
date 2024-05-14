@@ -1,7 +1,7 @@
 {
   "name": "react-formule",
   "private": false,
-  "version": "0.1.0",
+  "version": "1.0.0",
   "author": "CERN",
   "license": "MIT",
   "repository": {
@@ -67,6 +67,8 @@
   "devDependencies": {
     "@commitlint/cli": "^19.0.3",
     "@commitlint/config-conventional": "^19.0.3",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
     "@testing-library/react": "^14.0.0",
     "@types/lodash-es": "^4.17.12",
     "@types/react": "^18.2.15",
