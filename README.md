@@ -1,4 +1,4 @@
-<p align="center"><img src="docs/logo.png" width="350px"/></p>
+<p align="center"><img src="https://raw.githubusercontent.com/cern-sis/react-formule/master/docs/logo.png" width="350px"/></p>
 
 <h3 align="center"> 🕹️ <a href="https://cern-sis.github.io/react-formule/">DEMO</a> </h2>
 
@@ -17,7 +17,7 @@ It originated from the need of a flexible tool for physicists at CERN to create 
 
 A simple setup (see `./formule-demo`) could look like this:
 
-<p align="center"><img src="docs/demo.gif"/></p>
+<p align="center"><img src="https://raw.githubusercontent.com/cern-sis/react-formule/master/docs/demo.gif"/></p>
 
 ## :racehorse: How it works
 
@@ -85,7 +85,11 @@ const useEffect(() => initFormuleSchema(), []);
 ### Customizing and adding new field types
 
 ```jsx
-<FormuleContext theme={{token: {colorPrimary: "blue"}}} customFieldTypes={...} customFields={...} customWidgets={...}>
+<FormuleContext
+  theme={{token: {colorPrimary: "blue"}}}
+  customFieldTypes={...}
+  customFields={...}
+  customWidgets={...}>
 // ...
 </FormuleContext>
 ```
@@ -98,7 +102,7 @@ const transformSchema = (schema) => {
   return transformedSchema;
 };
 
-<FormuleContext transformSchema={transformSchema}>// ...</FormuleContext>;
+<FormuleContext transformSchema={transformSchema}>/* ... */</FormuleContext>;
 ```
 
 ### Syncing Formule state
