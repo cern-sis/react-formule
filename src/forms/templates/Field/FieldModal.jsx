@@ -20,11 +20,13 @@ const FieldModal = ({ id, label, content, options, tooltip }) => {
       >
         <Space>
           {label}
-          <Tooltip title={tooltip}>
-            <QuestionCircleOutlined
-              style={{ color: token.colorTextTertiary, cursor: "help" }}
-            />
-          </Tooltip>
+          {!tooltip && (
+            <Tooltip title={tooltip}>
+              <QuestionCircleOutlined
+                style={{ color: token.colorTextTertiary, cursor: "help" }}
+              />
+            </Tooltip>
+          )}
         </Space>
         <Button
           id={id}

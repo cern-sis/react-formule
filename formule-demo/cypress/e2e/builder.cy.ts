@@ -14,6 +14,16 @@ describe("test basic functionality", () => {
       .should("have.length", 1);
   });
 
+  it.only("allows deleting a field from the tree", () => {
+    cy.addField("text");
+
+    cy.getByDataCy("treeItem").should("have.length", 1);
+    cy.getByDataCy("treeItem").click();
+    cy.getByDataCy("deleteField").click();
+    cy.get("div.ant-popconfirm").find("button").contains("Delete").click();
+    cy.getByDataCy("treeItem").should("have.length", 0);
+  });
+
   it("allows drag and drop inside objects", () => {
     cy.addFieldWithName("object", "myobject");
     cy.addField("text");
