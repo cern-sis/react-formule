@@ -1,24 +1,28 @@
-import { useEffect, useMemo, useRef } from "react";
+import { MutableRefObject, useEffect, useMemo, useRef } from "react";
 import { basicSetup, minimalSetup } from "codemirror";
-import { EditorState } from "@codemirror/state";
+import { EditorState, Extension } from "@codemirror/state";
 import { EditorView } from "@codemirror/view";
 import { theme } from "antd";
 import { updateSchema, jsonSchema } from "codemirror-json-schema";
-import { StreamLanguage } from "@codemirror/language";
-import { jinja2 } from "@codemirror/legacy-modes/mode/jinja2";
-import { json } from "@codemirror/lang-json";
-import { stex } from "@codemirror/legacy-modes/mode/stex";
+import { CODEMIRROR_LANGUAGES } from ".";
 
-const LANGUAGES = {
-  json: json(),
-  jinja: StreamLanguage.define(jinja2),
-  stex: StreamLanguage.define(stex),
+type CodeViewerProps = {
+  value: string;
+  lang?: string;
+  isEditable?: boolean;
+  isReadOnly?: boolean;
+  extraExtensions?: Extension[];
+  height?: string;
+  schema?: object;
+  reset?: boolean;
+  minimal?: boolean;
+  validationSchema?: object;
 };
 
 const CodeViewer = ({
   value,
   lang,
-  isEditable = true,
+  isEditable = false,
   isReadOnly,
   extraExtensions = [],
   height,
@@ -26,8 +30,8 @@ const CodeViewer = ({
   reset,
   minimal,
   validationSchema,
-}) => {
-  const editorRef = useRef(null);
+}: CodeViewerProps) => {
+  const editorRef = useRef() as MutableRefObject<HTMLDivElement>;
 
   const { token } = theme.useToken();
 
@@ -49,7 +53,7 @@ const CodeViewer = ({
           borderColor: token.colorPrimary,
         },
       }),
-      lang && lang in LANGUAGES ? LANGUAGES[lang] : [],
+      lang && lang in CODEMIRROR_LANGUAGES ? CODEMIRROR_LANGUAGES[lang] : [],
       ...extraExtensions,
       validationSchema ? jsonSchema() : [],
     ],
@@ -76,6 +80,7 @@ const CodeViewer = ({
           extensions: extensions,
         }),
         parent: editorRef.current,
+        scrollTo: EditorView.scrollIntoView(0),
       });
       updateSchema(editor, validationSchema);
     }

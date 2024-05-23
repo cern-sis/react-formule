@@ -2,6 +2,22 @@ import { EditorView, keymap } from "@codemirror/view";
 import { linter, lintGutter } from "@codemirror/lint";
 import { indentWithTab } from "@codemirror/commands";
 import CodeViewer from "./CodeViewer";
+import { CODEMIRROR_LINTERS } from ".";
+
+type CodeEditorProps = {
+  initialValue: string;
+  lang?: string;
+  lint?: string;
+  isEditable?: boolean;
+  isReadOnly?: boolean;
+  handleEdit: (value: string) => void;
+  schema?: object;
+  height?: string;
+  extraExtensions?: [];
+  reset?: boolean;
+  minimal?: boolean;
+  validationSchema?: object;
+};
 
 const CodeEditor = ({
   initialValue,
@@ -16,10 +32,12 @@ const CodeEditor = ({
   reset,
   minimal,
   validationSchema,
-}) => {
+}: CodeEditorProps) => {
   const editorExtensions = [
     keymap.of([indentWithTab]),
-    lint ? [linter(lint()), lintGutter()] : [],
+    lint && lint in CODEMIRROR_LINTERS
+      ? [linter(CODEMIRROR_LINTERS[lint]), lintGutter()]
+      : [],
     EditorView.updateListener.of((update) => {
       if (update.docChanged) {
         handleEdit(update.state.doc.toString());
@@ -37,7 +55,6 @@ const CodeEditor = ({
       extraExtensions={editorExtensions}
       schema={schema}
       height={height}
-      listener={handleEdit}
       reset={reset}
       minimal={minimal}
       validationSchema={validationSchema}

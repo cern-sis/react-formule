@@ -1,6 +1,6 @@
 <p align="center"><img src="https://raw.githubusercontent.com/cern-sis/react-formule/master/docs/logo.png" width="350px"/></p>
 
-<h3 align="center"> 🕹️ <a href="https://cern-sis.github.io/react-formule/">DEMO</a> </h2>
+<h3 align="center"> 🕹️ <a href="https://cern-sis.github.io/react-formule/">DEMO</a> 🕹️</h3>
 
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
@@ -32,8 +32,14 @@ Formule consists of the following main components:
 
 It also exports the following functions:
 
-- **`initFormuleSchema`**: Inits the JSONSchema, _needs_ to be run on startup.
+- **`initFormuleSchema`**: Inits the JSONSchema, **_needs_** to be run on startup.
 - **`getFormuleState`**: Formule has its own internal redux state. You can retrieve it at any moment if you so require for more advanced use cases. If you want to continuosly synchronize the Formule state in your app, you can pass a callback function to FormuleContext instead (see below), which will be called every time the form state changes.
+
+And the following utilities:
+
+- **`CodeEditor`**: Useful if you want to edit the JSON schemas (or any other code) manually.
+- **`CodeViewer`**: Useful if you want to visualize the JSON schemas that are being generated (as you can see in the demo).
+- **`CodeDiffViewer`**: Useful if you want to compare two different JSON schemas, for example to see the changes since the last save.
 
 ### Field types
 
@@ -46,7 +52,7 @@ Formule includes a variety of predefined field types, grouped in three categorie
   - `Accordion`: When containing a `List`, it works as a `List` with collapsible entries.
   - `Layer`: When containing a `List`, it works as a `List` whose entries will open in a dialog window.
   - `Tab`: It's commonly supposed to be used as a wrapper around the rest of the elements. You will normally want to add an `Object` inside and you can use it to separate the form in different pages or sections.
-- **Advanced fields**: More complex or situational fields such as `URI`, `Rich/Latex editor`, `Tags` and `ID Fetcher`.
+- **Advanced fields**: More complex or situational fields such as `URI`, `Rich/Latex editor`, `Tags`, `ID Fetcher` and `Code Editor`.
 
 You can freely remove some of these predefined fields and add your own custom fields and widgets following the JSON Schema specifications. More details below.
 
@@ -126,4 +132,4 @@ Alternatively, you can pull the current state on demand by calling `getFormuleSt
 
 ## :space_invader: Local demo & how to contribute
 
-You can also clone the repo and run `formule-demo` to play around. Follow the instructions in its [README](./formule-demo/README.md): it will explain how to install `react-formule` as a local dependency (with either `yarn link` or, better, `yalc`) so that you can modify Formule and test the changes live in your host app, which will be ideal if you want to troubleshoot or contribute to the project.
+Apart from trying the online [demo](https://cern-sis.github.io/react-formule/) you can clone the repo and run `formule-demo` to play around. Follow the instructions in its [README](./formule-demo/README.md): it will explain how to install `react-formule` as a local dependency (with either `yarn link` or, better, `yalc`) so that you can modify Formule and test the changes live in your host app, which will be ideal if you want to troubleshoot or contribute to the project.

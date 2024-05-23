@@ -1,9 +1,15 @@
-import { FormuleContext, SelectOrEdit } from "react-formule";
-import { SchemaPreview } from "react-formule";
-import { FormPreview } from "react-formule";
-import { initFormuleSchema } from "react-formule";
-import { useEffect } from "react";
-import { Row, Col, Layout, Space, Typography } from "antd";
+import { FileTextOutlined } from "@ant-design/icons";
+import { Col, FloatButton, Layout, Modal, Row, Space, Typography } from "antd";
+import { useEffect, useState } from "react";
+import {
+  CodeViewer,
+  FormPreview,
+  FormuleContext,
+  SchemaPreview,
+  SchemaWizardState,
+  SelectOrEdit,
+  initFormuleSchema,
+} from "react-formule";
 import { theme } from "./theme";
 
 import "./style.css";
@@ -15,64 +21,127 @@ function App() {
     initFormuleSchema();
   }, []);
 
+  const [formuleState, setFormuleState] = useState<SchemaWizardState>();
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const handleFormuleStateChange = (newState: SchemaWizardState) => {
+    setFormuleState(newState);
+  };
+
   return (
-    <Layout style={{ height: "100%" }}>
-      <Content>
-        <FormuleContext theme={theme}>
-          <Row style={{ height: "100%" }}>
-            <Col
-              xs={10}
-              sm={5}
-              style={{
-                overflowX: "hidden",
-                height: "100%",
-                display: "flex",
-              }}
-              className="tour-field-types"
-            >
-              <SelectOrEdit />
-            </Col>
-            <Col
-              xs={14}
-              sm={5}
-              style={{
-                overflowX: "hidden",
-                padding: "0px 15px",
-                backgroundColor: "#F6F7F8",
-              }}
-              className="tour-schema-preview"
-            >
-              <SchemaPreview />
-            </Col>
-            <Col
-              xs={24}
-              sm={14}
-              style={{
-                overflowX: "hidden",
-                height: "100%",
-                padding: "0px 15px",
-              }}
-              className="tour-form-preview"
-            >
-              <FormPreview liveValidate={true} />
-            </Col>
-          </Row>
-        </FormuleContext>
-      </Content>
-      <Footer style={{ padding: 0 }}>
-        <Row
-          align="bottom"
-          justify="center"
-          style={{ padding: "5px", background: "#001529" }}
-        >
-          <Space direction="horizontal" size="middle">
-            <Typography.Text style={{ color: "rgba(255, 255, 255, 0.65)" }}>
-              Running react-formule v{import.meta.env.REACT_FORMULE_VERSION}
-            </Typography.Text>
-          </Space>
+    <>
+      <Modal
+        title="Generated JSON schemas"
+        open={modalOpen}
+        onCancel={() => setModalOpen(false)}
+        width={1000}
+        footer={null}
+      >
+        <Row gutter={10}>
+          <Col
+            xs={12}
+            style={{
+              overflowX: "hidden",
+              height: "100%",
+            }}
+          >
+            <Typography.Text strong>Schema</Typography.Text>
+            <CodeViewer
+              value={JSON.stringify(formuleState?.current.schema, null, 2)}
+              lang="json"
+              height="50vh"
+              reset
+            />
+          </Col>
+          <Col
+            xs={12}
+            style={{
+              overflowX: "hidden",
+              height: "100%",
+            }}
+          >
+            <Typography.Text strong>UI Schema</Typography.Text>
+            <CodeViewer
+              value={JSON.stringify(formuleState?.current.uiSchema, null, 2)}
+              lang="json"
+              height="50vh"
+              reset
+            />
+          </Col>
         </Row>
-      </Footer>
-    </Layout>
+      </Modal>
+      <Layout style={{ height: "100%" }}>
+        <Content>
+          <FormuleContext
+            theme={theme}
+            synchronizeState={handleFormuleStateChange}
+          >
+            <Row style={{ height: "100%" }}>
+              <Col
+                xs={10}
+                sm={5}
+                style={{
+                  overflowX: "hidden",
+                  height: "100%",
+                  display: "flex",
+                }}
+                className="tour-field-types"
+              >
+                <SelectOrEdit />
+              </Col>
+              <Col
+                xs={14}
+                sm={5}
+                style={{
+                  overflowX: "hidden",
+                  padding: "0px 15px",
+                  backgroundColor: "#F6F7F8",
+                }}
+                className="tour-schema-preview"
+              >
+                <SchemaPreview />
+              </Col>
+              <Col
+                xs={24}
+                sm={14}
+                style={{
+                  overflowX: "hidden",
+                  height: "100%",
+                  padding: "0px 15px",
+                }}
+                className="tour-form-preview"
+              >
+                <FormPreview liveValidate={true} />
+              </Col>
+            </Row>
+          </FormuleContext>
+        </Content>
+        <Footer style={{ padding: 0 }}>
+          <Row
+            align="bottom"
+            justify="center"
+            style={{ padding: "5px", background: "#001529" }}
+          >
+            <Space direction="horizontal" size="middle">
+              <Typography.Text style={{ color: "rgba(255, 255, 255, 0.65)" }}>
+                Running react-formule v{import.meta.env.REACT_FORMULE_VERSION}
+              </Typography.Text>
+            </Space>
+          </Row>
+        </Footer>
+      </Layout>
+      <FloatButton
+        onClick={() => setModalOpen(true)}
+        shape="square"
+        description={
+          <div>
+            <FileTextOutlined /> View generated schemas
+          </div>
+        }
+        style={{ width: "200px" }}
+        type="primary"
+      />
+    </>
   );
 }
 

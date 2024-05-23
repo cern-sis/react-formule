@@ -23,6 +23,8 @@ const initialState = {
   version: null,
 };
 
+export type SchemaWizardState = typeof initialState;
+
 const schemaWizard = createSlice({
   name: "schemaWizard",
   initialState,

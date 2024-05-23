@@ -1,5 +1,20 @@
+import { json, jsonParseLinter } from "@codemirror/lang-json";
+import { StreamLanguage } from "@codemirror/language";
+import { jinja2 } from "@codemirror/legacy-modes/mode/jinja2";
+import { stex } from "@codemirror/legacy-modes/mode/stex";
+
 export const URL_REGEX =
   "https?://(www.)?[-a-zA-Z0-9@:%._+~#=]{1,256}.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)";
+
+export const CODEMIRROR_LANGUAGES = {
+  json: json(),
+  jinja: StreamLanguage.define(jinja2),
+  stex: StreamLanguage.define(stex),
+};
+
+export const CODEMIRROR_LINTERS = {
+  json: jsonParseLinter(),
+};
 
 export const stringToHslColor = (str, s, l) => {
   let hash = 0;

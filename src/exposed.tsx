@@ -6,9 +6,9 @@ import { ConfigProvider, ThemeConfig } from "antd";
 import { Provider } from "react-redux";
 import store from "./store/configureStore";
 import fieldTypes from "./admin/utils/fieldTypes";
-import { FC, ReactNode } from "react";
+import { ReactNode } from "react";
 import { RJSFSchema } from "@rjsf/utils";
-import { schemaInit } from "./store/schemaWizard";
+import { SchemaWizardState, schemaInit } from "./store/schemaWizard";
 import StateSynchronizer from "./StateSynchronizer";
 
 type FormuleContextProps = {
@@ -17,11 +17,11 @@ type FormuleContextProps = {
   customFields?: object;
   customWidgets?: object;
   theme?: ThemeConfig;
-  synchronizeState?: (state: string) => void;
+  synchronizeState?: (state: SchemaWizardState) => void;
   transformSchema?: (schema: object) => object;
 };
 
-export const FormuleContext: FC<FormuleContextProps> = ({
+export const FormuleContext = ({
   children,
   customFieldTypes,
   customFields,
@@ -29,7 +29,7 @@ export const FormuleContext: FC<FormuleContextProps> = ({
   theme,
   synchronizeState,
   transformSchema = (schema) => schema,
-}) => {
+}: FormuleContextProps) => {
   const content = synchronizeState ? (
     <StateSynchronizer synchronizeState={synchronizeState}>
       {children}
@@ -63,7 +63,7 @@ export const FormuleContext: FC<FormuleContextProps> = ({
 export const initFormuleSchema = (
   data?: RJSFSchema,
   name?: string,
-  description?: string
+  description?: string,
 ) => {
   const { deposit_schema, deposit_options, ...configs } = data || {};
   store.dispatch(
@@ -73,7 +73,7 @@ export const initFormuleSchema = (
           ? { schema: deposit_schema, uiSchema: deposit_options }
           : initSchemaStructure(name, description),
       configs: configs || { fullname: name },
-    })
+    }),
   );
 };
 
