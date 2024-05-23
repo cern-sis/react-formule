@@ -84,11 +84,11 @@ const PropertyEditor = () => {
               okText="Delete"
               cancelText="Cancel"
               onConfirm={() => {
-                dispatch(deleteByPath({ path }));
+                dispatch(deleteByPath({ path: { path, uiPath } }));
                 dispatch(enableCreateMode());
               }}
             >
-              <Button danger icon={<DeleteOutlined />} />
+              <Button danger icon={<DeleteOutlined />} data-cy="deleteField" />
             </Popconfirm>
           )
         }
