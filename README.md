@@ -111,6 +111,18 @@ const transformSchema = (schema) => {
 <FormuleContext transformSchema={transformSchema}>/* ... */</FormuleContext>;
 ```
 
+### Handling and customizing errors
+
+You can add a custom `transformErrors` function to process, edit or filter the errors from RJSF in the way that best suits our needs:
+
+```jsx
+const transformErrors = (errors) => {
+  return errors.filter(...)
+};
+
+<FormuleForm transformErrors={transformErrors} />
+```
+
 ### Syncing Formule state
 
 If you want to run some logic in your application every time the current Formule state changes in any way (e.g. to run some action every time a new field is added to the form) you can pass a function to be called back when that happens:
