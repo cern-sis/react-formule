@@ -54,7 +54,6 @@ export const common = {
             type: "boolean",
           },
         },
-
         dependencies: {
           showAsModal: {
             oneOf: [
@@ -89,6 +88,11 @@ export const common = {
           },
         },
       },
+      "ui:label": {
+        title: "Show label",
+        type: "boolean",
+        default: true,
+      },
     },
   },
   optionsUiSchemaUiSchema: {
@@ -108,6 +112,9 @@ export const common = {
         "ui:widget": "switch",
       },
       "ui:order": ["showAsModal", "modal", "*"],
+    },
+    "ui:label": {
+      "ui:widget": "switch",
     },
   },
 };
@@ -168,6 +175,7 @@ const collections = {
             },
           },
         },
+        "ui:label": common.optionsUiSchema.properties["ui:label"],
       },
     },
     optionsUiSchemaUiSchema: {
@@ -215,6 +223,7 @@ const collections = {
             },
           },
         },
+        "ui:label": common.optionsUiSchema.properties["ui:label"],
       },
     },
     optionsUiSchemaUiSchema: {
@@ -239,6 +248,7 @@ const collections = {
           "ui:field": "codeEditor",
         },
       },
+      "ui:label": common.optionsUiSchemaUiSchema["ui:label"],
     },
 
     default: {
@@ -364,7 +374,6 @@ const simple = {
     optionsSchemaUiSchema: {
       readOnly: extra.optionsSchemaUiSchema.readOnly,
       isRequired: extra.optionsSchemaUiSchema.isRequired,
-
       pattern: {
         "ui:placeholder": "^.*$",
       },
@@ -397,6 +406,7 @@ const simple = {
             },
           },
         },
+        "ui:label": common.optionsUiSchema.properties["ui:label"],
       },
     },
     optionsUiSchemaUiSchema: {
@@ -410,6 +420,7 @@ const simple = {
           },
         },
       },
+      "ui:label": common.optionsUiSchemaUiSchema["ui:label"],
     },
     default: {
       schema: {
@@ -471,6 +482,7 @@ const simple = {
             },
           },
         },
+        "ui:label": common.optionsUiSchema.properties["ui:label"],
       },
     },
     optionsUiSchemaUiSchema: {
@@ -662,6 +674,7 @@ const simple = {
             },
           },
         },
+        "ui:label": common.optionsUiSchema.properties["ui:label"],
       },
     },
     optionsUiSchemaUiSchema: {
@@ -942,6 +955,7 @@ const advanced = {
             },
           },
         },
+        "ui:label": common.optionsUiSchema.properties["ui:label"],
       },
     },
     optionsUiSchemaUiSchema: {
@@ -1044,7 +1058,7 @@ const advanced = {
     child: {},
     optionsSchema: {
       type: "object",
-      title: "ID Fetcher Field Schema",
+      title: "ID Fetcher Schema",
       properties: {
         ...common.optionsSchema,
         readOnly: extra.optionsSchema.readOnly,
@@ -1213,6 +1227,7 @@ const advanced = {
             },
           },
         },
+        "ui:label": common.optionsUiSchema.properties["ui:label"],
       },
     },
     optionsUiSchemaUiSchema: {
