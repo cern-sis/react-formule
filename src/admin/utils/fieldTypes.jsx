@@ -18,6 +18,8 @@ import {
   UnorderedListOutlined,
 } from "@ant-design/icons";
 import { placeholder } from "@codemirror/view";
+import CollapseObjectFieldTemplate from "../../forms/templates/CollapseObjectFieldTemplate";
+import NoTitleObjectFieldTemplate from "../../forms/templates/NoTitleObjectFieldTemplate";
 
 // COMMON / EXTRA PROPERTIES:
 
@@ -112,10 +114,12 @@ export const common = {
         "ui:widget": "switch",
       },
       "ui:order": ["showAsModal", "modal", "*"],
+      "ui:ObjectFieldTemplate": NoTitleObjectFieldTemplate, // We could also pass a custom prop like hideTitle directly and avoid using a custom template
     },
     "ui:label": {
       "ui:widget": "switch",
     },
+    "ui:ObjectFieldTemplate": CollapseObjectFieldTemplate,
   },
 };
 
@@ -203,7 +207,9 @@ const collections = {
         ...common.optionsSchema,
       },
     },
-    optionsSchemaUiSchema: {},
+    optionsSchemaUiSchema: {
+      "ui:ObjectFieldTemplate": NoTitleObjectFieldTemplate,
+    },
     optionsUiSchema: {
       type: "object",
       title: "UI Schema",
@@ -227,6 +233,7 @@ const collections = {
       },
     },
     optionsUiSchemaUiSchema: {
+      ...common.optionsUiSchemaUiSchema,
       "ui:options": {
         ...common.optionsUiSchemaUiSchema["ui:options"],
         itemsDisplayTitle: {
@@ -248,7 +255,6 @@ const collections = {
           "ui:field": "codeEditor",
         },
       },
-      "ui:label": common.optionsUiSchemaUiSchema["ui:label"],
     },
 
     default: {

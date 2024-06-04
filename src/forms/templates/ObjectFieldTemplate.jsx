@@ -21,28 +21,29 @@ const ObjectFieldTemplate = ({
   schema,
   title,
   uiSchema,
+  hideHeader,
 }) => {
   const { colSpan = 24, labelAlign = "right", rowGutter = 24 } = formContext;
 
   const labelClsBasic = `${prefixCls}-item-label`;
   const labelColClassName = classNames(
     labelClsBasic,
-    labelAlign === "left" && `${labelClsBasic}-left`
+    labelAlign === "left" && `${labelClsBasic}-left`,
   );
 
-  const findSchema = element => element.content.props.schema;
+  const findSchema = (element) => element.content.props.schema;
 
-  const findSchemaType = element => findSchema(element).type;
+  const findSchemaType = (element) => findSchema(element).type;
 
-  const findUiSchema = element => element.content.props.uiSchema || {};
+  const findUiSchema = (element) => element.content.props.uiSchema || {};
 
-  const findUiSchemaField = element => findUiSchema(element)["ui:field"];
+  const findUiSchemaField = (element) => findUiSchema(element)["ui:field"];
 
-  const findUiSchemaOptions = element => findUiSchema(element)["ui:options"];
+  const findUiSchemaOptions = (element) => findUiSchema(element)["ui:options"];
 
-  const findUiSchemaWidget = element => findUiSchema(element)["ui:widget"];
+  const findUiSchemaWidget = (element) => findUiSchema(element)["ui:widget"];
 
-  const calculateColSpan = element => {
+  const calculateColSpan = (element) => {
     const type = findSchemaType(element);
     const field = findUiSchemaField(element);
     const widget = findUiSchemaWidget(element);
@@ -77,28 +78,34 @@ const ObjectFieldTemplate = ({
   return (
     <fieldset style={{ margin: "0 12px" }} id={idSchema.$id}>
       <Row gutter={rowGutter}>
-        <Col
-          style={{
-            padding: "0",
-            marginBottom: "12px",
-          }}
-          className={labelColClassName}
-          span={24}
-        >
-          <FieldHeader
-            label={uiSchema["ui:title"] || title}
-            isObject
-            description={uiSchema["ui:description"] || description}
-            uiSchema={uiSchema}
-            idSchema={idSchema}
-          />
-        </Col>
+        {!hideHeader && (
+          <Col
+            style={{
+              padding: "0",
+              marginBottom: "12px",
+            }}
+            className={labelColClassName}
+            span={24}
+          >
+            <FieldHeader
+              label={uiSchema["ui:title"] || title}
+              isObject
+              description={uiSchema["ui:description"] || description}
+              uiSchema={uiSchema}
+              idSchema={idSchema}
+            />
+          </Col>
+        )}
         <Col span={24} className="nestedObject">
           <Row gutter={10}>
             {properties
-              .filter(e => !e.hidden)
-              .map(element => (
-                <Col key={element.name} span={calculateColSpan(element)} data-cy="spanColWrapper">
+              .filter((e) => !e.hidden)
+              .map((element) => (
+                <Col
+                  key={element.name}
+                  span={calculateColSpan(element)}
+                  data-cy="spanColWrapper"
+                >
                   {element.content}
                 </Col>
               ))}

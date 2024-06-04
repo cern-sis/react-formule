@@ -17,6 +17,9 @@ import {
   enableCreateMode,
   renameIdByPath,
 } from "../../store/schemaWizard";
+import { get } from "lodash-es";
+// TODO: Replace with the correct icon from getIconByType
+import { QuestionOutlined } from "@ant-design/icons";
 
 const { useBreakpoint } = Grid;
 
@@ -53,6 +56,13 @@ const PropertyEditor = () => {
 
   const path = useSelector((state) => state.schemaWizard.field.path);
   const uiPath = useSelector((state) => state.schemaWizard.field.uiPath);
+
+  const schema = useSelector(
+    (state) =>
+      uiPath && get(state.schemaWizard, ["current", "schema", ...path]),
+  );
+
+  console.log(schema);
 
   const dispatch = useDispatch();
 
@@ -111,11 +121,13 @@ const PropertyEditor = () => {
             }
             style={{ textAlign: "center" }}
           >
-            {name}
+            <QuestionOutlined /> {name}
           </Typography.Title>
         </Col>
       </Row>
-      <Customize />
+      <Row style={{ overflowY: "hidden", flex: 1 }}>
+        <Customize />
+      </Row>
     </div>
   );
 };
