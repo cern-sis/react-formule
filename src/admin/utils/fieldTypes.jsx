@@ -18,6 +18,8 @@ import {
   UnorderedListOutlined,
 } from "@ant-design/icons";
 import { placeholder } from "@codemirror/view";
+import CollapseObjectFieldTemplate from "../../forms/templates/CollapseObjectFieldTemplate";
+import NoTitleObjectFieldTemplate from "../../forms/templates/NoTitleObjectFieldTemplate";
 
 // COMMON / EXTRA PROPERTIES:
 
@@ -54,7 +56,6 @@ export const common = {
             type: "boolean",
           },
         },
-
         dependencies: {
           showAsModal: {
             oneOf: [
@@ -89,6 +90,11 @@ export const common = {
           },
         },
       },
+      "ui:label": {
+        title: "Show label",
+        type: "boolean",
+        default: true,
+      },
     },
   },
   optionsUiSchemaUiSchema: {
@@ -108,7 +114,12 @@ export const common = {
         "ui:widget": "switch",
       },
       "ui:order": ["showAsModal", "modal", "*"],
+      "ui:ObjectFieldTemplate": NoTitleObjectFieldTemplate, // We could also pass a custom prop like hideTitle directly and avoid using a custom template
     },
+    "ui:label": {
+      "ui:widget": "switch",
+    },
+    "ui:ObjectFieldTemplate": CollapseObjectFieldTemplate,
   },
 };
 
@@ -168,6 +179,7 @@ const collections = {
             },
           },
         },
+        "ui:label": common.optionsUiSchema.properties["ui:label"],
       },
     },
     optionsUiSchemaUiSchema: {
@@ -195,7 +207,9 @@ const collections = {
         ...common.optionsSchema,
       },
     },
-    optionsSchemaUiSchema: {},
+    optionsSchemaUiSchema: {
+      "ui:ObjectFieldTemplate": NoTitleObjectFieldTemplate,
+    },
     optionsUiSchema: {
       type: "object",
       title: "UI Schema",
@@ -215,9 +229,11 @@ const collections = {
             },
           },
         },
+        "ui:label": common.optionsUiSchema.properties["ui:label"],
       },
     },
     optionsUiSchemaUiSchema: {
+      ...common.optionsUiSchemaUiSchema,
       "ui:options": {
         ...common.optionsUiSchemaUiSchema["ui:options"],
         itemsDisplayTitle: {
@@ -364,7 +380,6 @@ const simple = {
     optionsSchemaUiSchema: {
       readOnly: extra.optionsSchemaUiSchema.readOnly,
       isRequired: extra.optionsSchemaUiSchema.isRequired,
-
       pattern: {
         "ui:placeholder": "^.*$",
       },
@@ -397,6 +412,7 @@ const simple = {
             },
           },
         },
+        "ui:label": common.optionsUiSchema.properties["ui:label"],
       },
     },
     optionsUiSchemaUiSchema: {
@@ -410,6 +426,7 @@ const simple = {
           },
         },
       },
+      "ui:label": common.optionsUiSchemaUiSchema["ui:label"],
     },
     default: {
       schema: {
@@ -471,6 +488,7 @@ const simple = {
             },
           },
         },
+        "ui:label": common.optionsUiSchema.properties["ui:label"],
       },
     },
     optionsUiSchemaUiSchema: {
@@ -662,6 +680,7 @@ const simple = {
             },
           },
         },
+        "ui:label": common.optionsUiSchema.properties["ui:label"],
       },
     },
     optionsUiSchemaUiSchema: {
@@ -942,6 +961,7 @@ const advanced = {
             },
           },
         },
+        "ui:label": common.optionsUiSchema.properties["ui:label"],
       },
     },
     optionsUiSchemaUiSchema: {
@@ -1044,7 +1064,7 @@ const advanced = {
     child: {},
     optionsSchema: {
       type: "object",
-      title: "ID Fetcher Field Schema",
+      title: "ID Fetcher Schema",
       properties: {
         ...common.optionsSchema,
         readOnly: extra.optionsSchema.readOnly,
@@ -1213,6 +1233,7 @@ const advanced = {
             },
           },
         },
+        "ui:label": common.optionsUiSchema.properties["ui:label"],
       },
     },
     optionsUiSchemaUiSchema: {
