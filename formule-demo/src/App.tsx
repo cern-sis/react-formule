@@ -71,7 +71,7 @@ function App() {
         </Row>
       </Modal>
       <Layout style={{ height: "100%" }}>
-        <Content>
+        <Content style={{ overflowY: "scroll" }}>
           <FormuleContext
             theme={theme}
             synchronizeState={handleFormuleStateChange}
@@ -85,7 +85,6 @@ function App() {
                   height: "100%",
                   display: "flex",
                 }}
-                className="tour-field-types"
               >
                 <SelectOrEdit />
               </Col>
@@ -97,7 +96,6 @@ function App() {
                   padding: "0px 15px",
                   backgroundColor: "#F6F7F8",
                 }}
-                className="tour-schema-preview"
               >
                 <SchemaPreview />
               </Col>
@@ -109,7 +107,6 @@ function App() {
                   height: "100%",
                   padding: "0px 15px",
                 }}
-                className="tour-form-preview"
               >
                 <FormPreview liveValidate={true} />
               </Col>
