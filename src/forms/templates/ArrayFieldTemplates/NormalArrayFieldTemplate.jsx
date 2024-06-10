@@ -37,7 +37,7 @@ const NormalArrayFieldTemplate = ({
   formData,
 }) => {
   const { useToken } = theme;
-  const { rowGutter = 24 } = formContext;
+  const { rowGutter = 24, hideAnchors } = formContext;
 
   const [latexData, setLatexData] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -250,7 +250,8 @@ const NormalArrayFieldTemplate = ({
             <FieldHeader
               titleField={
                 <TitleField
-                  id={`${idSchema.$id}__title`}
+                  id={`${idSchema.$id}-title`}
+                  fieldId={idSchema.$id}
                   key={`array-field-title-${idSchema.$id}`}
                   required={required}
                   title={uiSchema["ui:title"] || title}
@@ -261,6 +262,7 @@ const NormalArrayFieldTemplate = ({
                   enableLatex={() => _enableLatex()}
                   enableImport={() => setImportModal(true)}
                   enableEmail={() => setEmailModal(true)}
+                  hideAnchors={hideAnchors}
                 />
               }
               description={uiSchema["ui:description"] || schema.description}

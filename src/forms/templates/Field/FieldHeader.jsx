@@ -10,20 +10,25 @@ const FieldHeader = ({
   isObject,
   idSchema,
   titleField,
+  hideAnchors,
 }) => {
   return (
-    <Space direction="vertical" size={0}>
-      {titleField && titleField}
-      {uiSchema["ui:title"] !== false && label && (
-        <TitleField
-          title={label}
-          titleIsMarkdown={
-            uiSchema["ui:options"] && uiSchema["ui:options"].titleIsMarkdown
-          }
-          isObject={isObject}
-          id={`${idSchema.$id}-title`}
-        />
-      )}
+    <Space direction="vertical" size={0} style={{ width: "100%" }}>
+      {titleField
+        ? titleField
+        : uiSchema["ui:title"] !== false &&
+          label && (
+            <TitleField
+              title={label}
+              titleIsMarkdown={
+                uiSchema["ui:options"] && uiSchema["ui:options"].titleIsMarkdown
+              }
+              isObject={isObject}
+              id={`${idSchema.$id}-title`}
+              fieldId={idSchema.$id}
+              hideAnchors={hideAnchors}
+            />
+          )}
       {description && (
         <Typography.Text type="secondary" id={`${idSchema.$id}-description`}>
           <Markdown
