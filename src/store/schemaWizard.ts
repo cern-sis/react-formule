@@ -3,6 +3,7 @@ import { notification } from "antd";
 import { set, get } from "lodash-es";
 import { findParentPath } from "../utils";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { RJSF_SEPARATOR } from "../forms/templates/utils";
 
 const initialState = {
   current: {
@@ -144,13 +145,17 @@ const schemaWizard = createSlice({
       // check if the new id is empty or exact same with the current id
       if (newName === itemToDelete || newName === "") {
         notification.warning({
-          message: "Make sure that the new id is different and not empty",
+          message: "Invalid format",
+          description: "Make sure that the new ID is different and not empty",
         });
         return;
       }
 
-      if (newName.indexOf(" ") >= 0) {
-        notification.warning({ message: "An id cannot contain spaces" });
+      if ([" ", RJSF_SEPARATOR].some((c) => newName.includes(c))) {
+        notification.warning({
+          message: "Invalid format",
+          description: "An ID cannot contain spaces or $ symbols",
+        });
         return;
       }
 
@@ -165,8 +170,9 @@ const schemaWizard = createSlice({
       const keys = Object.keys(schema);
       // make sure that the new name is unique among sibling widgets
       if (keys.includes(newName)) {
-        notification.error({
-          message: "The id should be unique, this name already exists",
+        notification.warning({
+          message: "Duplicate ID",
+          description: "The ID should be unique",
         });
         return;
       }

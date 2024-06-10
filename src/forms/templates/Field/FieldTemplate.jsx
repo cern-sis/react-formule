@@ -35,6 +35,7 @@ const FieldTemplate = ({
     labelCol = VERTICAL_LABEL_COL,
     wrapperCol = VERTICAL_WRAPPER_COL,
     wrapperStyle,
+    hideAnchors,
   } = formContext;
 
   if (hidden) {
@@ -50,20 +51,21 @@ const FieldTemplate = ({
 
   const shouldShowAsModal = uiOptions?.showAsModal === true;
 
+  const FieldHeaderWithProps = (
+    <FieldHeader
+      label={label}
+      description={rawDescription}
+      uiSchema={uiSchema}
+      idSchema={{ $id: id }}
+      hideAnchors={hideAnchors}
+    />
+  );
+
   let _children;
   if (shouldShowAsModal) {
     _children = (
       <FieldModal
-        label={
-          label && (
-            <FieldHeader
-              label={label}
-              description={rawDescription}
-              uiSchema={uiSchema}
-              idSchema={{ $id: id }}
-            />
-          )
-        }
+        label={label && FieldHeaderWithProps}
         id={id}
         content={children}
         options={{
@@ -103,14 +105,8 @@ const FieldTemplate = ({
             !shouldShowAsModal &&
             (displayLabel ||
               (uiSchema["ui:field"] && uiSchema["ui:label"] != false)) &&
-            label && (
-              <FieldHeader
-                label={label}
-                description={rawDescription}
-                uiSchema={uiSchema}
-                idSchema={{ $id: id }}
-              />
-            )
+            label &&
+            FieldHeaderWithProps
           }
           labelCol={labelCol}
           required={required}

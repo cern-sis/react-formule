@@ -13,6 +13,7 @@ import { useContext } from "react";
 import { Provider, useDispatch } from "react-redux";
 import store from "../store/configureStore";
 import { updateFormData } from "../store/schemaWizard";
+import { RJSF_SEPARATOR } from "./templates/utils";
 
 const RJSFForm = ({
   formRef,
@@ -34,6 +35,7 @@ const RJSFForm = ({
   liveValidate = false,
   showErrorList = false,
   transformErrors,
+  hideAnchors,
 }) => {
   const customizationContext = useContext(CustomizationContext);
 
@@ -84,7 +86,9 @@ const RJSFForm = ({
         formContext={{
           formRef: formRef,
           ...formContext,
+          hideAnchors: hideAnchors,
         }}
+        idSeparator={RJSF_SEPARATOR}
       >
         <span />
       </Form>
@@ -112,6 +116,7 @@ RJSFForm.propTypes = {
   FieldTemplate: PropTypes.node,
   ObjectFieldTemplate: PropTypes.node,
   ArrayFieldTemplate: PropTypes.node,
+  hideAnchors: PropTypes.bool,
 };
 
 export default RJSFForm;

@@ -88,7 +88,7 @@ const SchemaTreeItem = ({
   const dropdownItems = [
     {
       key: "copy",
-      label: "Copy key",
+      label: "Copy ID",
       icon: <CopyOutlined />,
     },
   ];
@@ -108,7 +108,6 @@ const SchemaTreeItem = ({
         backgroundColor: "white",
       }}
       data-cy="treeItem"
-      id="tag-jaja"
     >
       <Dropdown
         menu={{ items: dropdownItems, onClick: handleDropdownClick }}
@@ -120,7 +119,7 @@ const SchemaTreeItem = ({
             <Row
               style={{
                 width: "100%",
-                marginTop: schema.title ? "-9px" : "0",
+                marginTop: schema.title ? "-6px" : "0",
               }}
               justify="space-between"
               wrap={false}
@@ -137,7 +136,7 @@ const SchemaTreeItem = ({
                 style={{
                   width: "100%",
                   marginTop: "-9px",
-                  marginBottom: "-9px",
+                  marginBottom: "-5px",
                 }}
               >
                 <Col>

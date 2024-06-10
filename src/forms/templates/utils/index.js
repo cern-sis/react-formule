@@ -1,3 +1,5 @@
+export const RJSF_SEPARATOR = "$";
+
 const _checkIfHidden = (name, uiSchema) => {
   return (
     uiSchema &&
@@ -7,13 +9,12 @@ const _checkIfHidden = (name, uiSchema) => {
   );
 };
 
-export const _filterTabs = (tabs, idsList, options, properties) => {
+export const _filterTabs = (tabs, options, properties) => {
   if (tabs) {
     options.tabs.map((tab) => {
       tab.idsList = [];
       properties.map((item) => {
         if (tab.content.includes(item.name)) {
-          idsList.push(item.content.props.idSchema.$id);
           tab.idsList.push(item.content.props.idSchema.$id);
         }
       });
@@ -21,7 +22,7 @@ export const _filterTabs = (tabs, idsList, options, properties) => {
     return options.tabs;
   }
   return properties.filter(
-    (item) => !_checkIfHidden(item.name) && item.name !== "analysis_reuse_mode"
+    (item) => !_checkIfHidden(item.name) && item.name !== "analysis_reuse_mode",
   );
 };
 

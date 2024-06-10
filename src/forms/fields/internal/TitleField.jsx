@@ -11,6 +11,7 @@ import Markdown from "../../../partials/Markdown/Markdown";
 const TitleField = ({
   formContext,
   id,
+  fieldId,
   prefixCls,
   required,
   title,
@@ -23,6 +24,7 @@ const TitleField = ({
   readonly,
   titleIsMarkdown,
   isObject,
+  hideAnchors,
 }) => {
   const { colon = true } = formContext;
 
@@ -34,6 +36,7 @@ const TitleField = ({
   const labelClassName = classNames({
     [`${prefixCls}-item-required`]: required,
     [`${prefixCls}-item-no-colon`]: !colon,
+    formItemTitle: true,
   });
 
   const handleLabelClick = () => {
@@ -50,8 +53,8 @@ const TitleField = ({
   if (!title) return null;
 
   const titleText = (
-    <Typography.Text
-      style={{ fontSize: isObject && "12pt" }}
+    <Typography.Paragraph
+      style={{ fontSize: isObject && "12pt", marginBottom: 0 }}
       strong
       className={labelClassName}
       htmlFor={id}
@@ -61,12 +64,15 @@ const TitleField = ({
     >
       <Markdown
         text={labelChildren}
-        style={{
-          color: "#000",
-        }}
+        style={{ color: "#000" }}
         renderAsHtml={titleIsMarkdown}
       />
-    </Typography.Text>
+      {!hideAnchors && (
+        <a href={`#${fieldId}`} className="itemTitleAnchor">
+          &nbsp;#
+        </a>
+      )}
+    </Typography.Paragraph>
   );
   if ((uiImport && !readonly) || uiLatex || uiEmail) {
     return (
@@ -110,7 +116,7 @@ const TitleField = ({
       </Row>
     );
   }
-  return <>{titleText}</>;
+  return titleText;
 };
 
 TitleField.propTypes = {

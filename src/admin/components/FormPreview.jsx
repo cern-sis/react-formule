@@ -5,12 +5,12 @@ import { Row, Empty, Space, Typography, Col } from "antd";
 import { useSelector } from "react-redux";
 import CustomizationContext from "../../contexts/CustomizationContext";
 
-const FormPreview = ({liveValidate}) => {
-  const schema = useSelector((state) => state.schemaWizard.current.schema)
-  const uiSchema = useSelector((state) => state.schemaWizard.current.uiSchema)
-  const formData = useSelector((state) => state.schemaWizard.formData)
+const FormPreview = ({ liveValidate, hideAnchors }) => {
+  const schema = useSelector((state) => state.schemaWizard.current.schema);
+  const uiSchema = useSelector((state) => state.schemaWizard.current.uiSchema);
+  const formData = useSelector((state) => state.schemaWizard.formData);
 
-  const customizationContext = useContext(CustomizationContext)
+  const customizationContext = useContext(CustomizationContext);
 
   return (
     <div
@@ -56,6 +56,7 @@ const FormPreview = ({liveValidate}) => {
               formData={formData || {}}
               onChange={() => {}}
               liveValidate={liveValidate}
+              hideAnchors={hideAnchors}
             />
           </Col>
         </Row>
