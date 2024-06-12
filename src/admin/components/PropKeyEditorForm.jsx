@@ -64,6 +64,7 @@ const PropertyKeyEditorForm = ({
       onChange={onChange}
       liveValidate
       hideAnchors
+      isEditable
     />
   );
 };

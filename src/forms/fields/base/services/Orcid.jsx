@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { Avatar, Col, Row, Typography } from "antd";
-import { stringToHslColor } from "../../../utils";
+import { stringToHslColor } from "../../../../utils";
 
 const Orcid = ({ data }) => {
   return (
@@ -12,7 +12,7 @@ const Orcid = ({ data }) => {
             backgroundColor: stringToHslColor(
               `${data.person.name["family-name"].value} ${data.person.name["family-name"].value}`,
               40,
-              70
+              70,
             ),
           }}
         >

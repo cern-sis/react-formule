@@ -33,8 +33,8 @@ const MaskedInput = ({
           mask &&
           mask
             .split(/(.*?[^\\])/)
-            .filter(i => i) // needed to remove empty entries
-            .map(i => {
+            .filter((i) => i) // needed to remove empty entries
+            .map((i) => {
               let mappings = convertToUppercase
                 ? { ...MAPPINGS, a: /[a-zA-Z]/, A: /[a-zA-Z]/ }
                 : MAPPINGS;

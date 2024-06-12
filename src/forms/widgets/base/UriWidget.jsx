@@ -1,6 +1,6 @@
 import { Button, Input, Tooltip } from "antd";
 import { CopyOutlined, LinkOutlined } from "@ant-design/icons";
-import { URL_REGEX } from "../../utils";
+import { URL_REGEX } from "../../../utils";
 
 const UriWidget = ({
   autofocus,

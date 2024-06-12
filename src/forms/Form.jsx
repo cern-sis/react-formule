@@ -2,8 +2,10 @@ import PropTypes from "prop-types";
 import ObjectFieldTemplate from "./templates/ObjectFieldTemplate";
 import ArrayFieldTemplate from "./templates/ArrayFieldTemplates";
 import FieldTemplate from "./templates/Field/FieldTemplate";
-import CAPFields from "./fields";
-import CAPWidgets from "./widgets";
+import CAPFields from "./fields/base";
+import CAPWidgets from "./widgets/base";
+import PublishedFields from "./fields/published";
+import PublishedWidgets from "./widgets/published";
 
 import "./Form.less";
 import { Form } from "@rjsf/antd";
@@ -36,6 +38,7 @@ const RJSFForm = ({
   showErrorList = false,
   transformErrors,
   hideAnchors,
+  isEditable,
 }) => {
   const customizationContext = useContext(CustomizationContext);
 
@@ -65,11 +68,13 @@ const RJSFForm = ({
           ...CAPFields,
           ...customizationContext.customFields,
           ...fields,
+          ...(!isEditable && PublishedFields),
         }}
         widgets={{
           ...CAPWidgets,
           ...customizationContext.customWidgets,
           ...widgets,
+          ...(!isEditable && PublishedWidgets),
         }}
         templates={templates}
         liveValidate={liveValidate}
@@ -81,7 +86,7 @@ const RJSFForm = ({
         validator={validator}
         extraErrors={extraErrors}
         onChange={handleChange}
-        readonly={readonly}
+        readonly={readonly || !isEditable}
         transformErrors={transformErrors}
         formContext={{
           formRef: formRef,
@@ -117,6 +122,8 @@ RJSFForm.propTypes = {
   ObjectFieldTemplate: PropTypes.node,
   ArrayFieldTemplate: PropTypes.node,
   hideAnchors: PropTypes.bool,
+  transformErrors: PropTypes.func,
+  isEditable: PropTypes.bool,
 };
 
 export default RJSFForm;

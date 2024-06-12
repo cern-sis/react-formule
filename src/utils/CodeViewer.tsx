@@ -47,6 +47,7 @@ const CodeViewer = ({
           height: "100%",
           border: `1px solid ${token.colorBorder}`,
           backgroundColor: "white",
+          borderRadius: `${token.borderRadius}px`,
         },
         "&.cm-focused": {
           outline: "none",

@@ -22,7 +22,11 @@ const ArrayUtils = ({
             <Row>
               <Button
                 disabled={disabled || !hasMoveUp}
-                icon={<ArrowUpOutlined style={{ fontSize: "14px" }} />}
+                icon={
+                  <Row justify="center">
+                    <ArrowUpOutlined />
+                  </Row>
+                }
                 onClick={onReorderClick(index, index - 1)}
                 type="link"
                 size="small"
@@ -32,7 +36,11 @@ const ArrayUtils = ({
             <Row>
               <Button
                 disabled={disabled || !hasMoveDown}
-                icon={<ArrowDownOutlined style={{ fontSize: "14px" }} />}
+                icon={
+                  <Row justify="center">
+                    <ArrowDownOutlined />
+                  </Row>
+                }
                 onClick={onReorderClick(index, index + 1)}
                 type="link"
                 size="small"

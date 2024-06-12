@@ -9,7 +9,7 @@ import { useRef } from "react";
 import MdEditor from "react-markdown-editor-lite";
 import "react-markdown-editor-lite/lib/index.css";
 
-const RichEditorWidget = props => {
+const RichEditorWidget = (props) => {
   const mdParser = new MarkdownIt();
   mdParser.use(tm, {
     engine: katex,
@@ -18,10 +18,10 @@ const RichEditorWidget = props => {
   });
   let myEditor = useRef(null);
 
-  const renderHTML = text => {
+  const renderHTML = (text) => {
     return mdParser.render(text);
   };
-  const handleEditorChange = values => {
+  const handleEditorChange = (values) => {
     props.onChange(values.text);
   };
 
@@ -36,8 +36,8 @@ const RichEditorWidget = props => {
           props.height === 0
             ? undefined
             : props.height > 0
-            ? props.height
-            : "500px",
+              ? props.height
+              : "500px",
         border: props.noBorder ? "none" : undefined,
       }}
       config={{

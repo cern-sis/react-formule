@@ -30,7 +30,7 @@ const TagsField = ({ schema, onChange, readonly, formData }) => {
     }
   };
 
-  const applyChanges = newTags => {
+  const applyChanges = (newTags) => {
     setTags(newTags);
     if (schema.type === "array") {
       onChange(newTags);
@@ -39,12 +39,12 @@ const TagsField = ({ schema, onChange, readonly, formData }) => {
     }
   };
 
-  const handleClose = removedTag => {
-    const newTags = tags.filter(tag => tag !== removedTag);
+  const handleClose = (removedTag) => {
+    const newTags = tags.filter((tag) => tag !== removedTag);
     applyChanges(newTags);
   };
 
-  const handleInputConfirm = onValid => {
+  const handleInputConfirm = (onValid) => {
     const reg = schema.tagPattern ? new RegExp(schema.tagPattern) : /.*/;
     if (inputValue && !tags.includes(inputValue) && reg.test(inputValue)) {
       const newTags = [...tags, inputValue];
@@ -58,7 +58,7 @@ const TagsField = ({ schema, onChange, readonly, formData }) => {
     setInputVisible(false);
   };
 
-  const handleEnter = e => {
+  const handleEnter = (e) => {
     handleInputConfirm(resetInput);
     e.preventDefault();
   };
@@ -70,7 +70,7 @@ const TagsField = ({ schema, onChange, readonly, formData }) => {
 
   return (
     <Space size={[0, 8]} wrap className="tagsField">
-      {tags.map(tag => (
+      {tags.map((tag) => (
         <Tag
           key={tag}
           closable={!readonly}
@@ -102,7 +102,7 @@ const TagsField = ({ schema, onChange, readonly, formData }) => {
               size="small"
               style={{ width: 78 }}
               value={inputValue}
-              onChange={e => setInputValue(e.target.value)}
+              onChange={(e) => setInputValue(e.target.value)}
               onBlur={handleBlur}
               onPressEnter={handleEnter}
             />
