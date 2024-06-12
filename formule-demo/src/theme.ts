@@ -9,4 +9,9 @@ export const theme = {
     colorBgLayout: "#f0f2f5",
     fontFamily: "Titillium Web",
   },
+  components: {
+    Segmented: {
+      trackBg: "#E4E8EC",
+    },
+  },
 };

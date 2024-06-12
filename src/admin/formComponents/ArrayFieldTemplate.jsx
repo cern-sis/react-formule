@@ -7,13 +7,13 @@ import FieldTemplate from "./FieldTemplate";
 import { _validate } from "../utils";
 import DropArea from "./DropArea";
 
-const ArrayFieldTemplate = props => {
+const ArrayFieldTemplate = (props) => {
   const [display, setDisplay] = useState(false);
 
   let schemaPath = [];
   let uiSchemaPath = [];
   if (props.rawErrors) {
-    let _rawErrors = props.rawErrors.filter(i => (i.schema ? i : false));
+    let _rawErrors = props.rawErrors.filter((i) => (i.schema ? i : false));
     let { schema, uiSchema } = _rawErrors[0];
     schemaPath = schema;
     uiSchemaPath = uiSchema;
@@ -77,4 +77,4 @@ ArrayFieldTemplate.propTypes = {
   id: PropTypes.string,
 };
 
-export default ArrayFieldTemplate
+export default ArrayFieldTemplate;

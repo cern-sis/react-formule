@@ -1,9 +1,9 @@
-import CodeEditor from "../../utils/CodeEditor";
+import CodeEditor from "../../../utils/CodeEditor";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Typography } from "antd";
 import { debounce } from "lodash-es";
-import { URL_REGEX } from "../../utils";
+import { URL_REGEX } from "../../../utils";
 
 const CodeEditorField = ({
   formData,
@@ -79,6 +79,7 @@ const CodeEditorField = ({
         handleEdit={(v) => onChange(v)}
         reset
         lang={!validationSchema && language}
+        lint={!validationSchema && language}
         validationSchema={!readonly && validationSchema}
         {...codeEditor}
       />

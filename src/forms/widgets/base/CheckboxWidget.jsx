@@ -16,7 +16,7 @@ const CheckboxWidget = ({
 }) => {
   const { readonlyAsDisabled = true } = formContext;
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     if (schema.type === "boolean") {
       if (event.target.checked) {
         onChange(schema.checkedValue || true);
@@ -56,8 +56,8 @@ const CheckboxWidget = ({
   } else {
     return (
       <Checkbox.Group
-        options={options.enumOptions.map(option =>
-          !option.value ? { ...option, value: "null" } : option
+        options={options.enumOptions.map((option) =>
+          !option.value ? { ...option, value: "null" } : option,
         )}
         autoFocus={autofocus}
         value={value || []}

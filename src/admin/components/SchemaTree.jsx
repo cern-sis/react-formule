@@ -8,11 +8,10 @@ import CustomizationContext from "../../contexts/CustomizationContext";
 import { useContext } from "react";
 
 const SchemaTree = () => {
+  const schema = useSelector((state) => state.schemaWizard.current.schema);
+  const uiSchema = useSelector((state) => state.schemaWizard.current.uiSchema);
 
-  const schema = useSelector((state) => state.schemaWizard.current.schema)
-  const uiSchema = useSelector((state) => state.schemaWizard.current.uiSchema)
-
-  const customizationContext = useContext(CustomizationContext)
+  const customizationContext = useContext(CustomizationContext);
 
   return (
     <Form
