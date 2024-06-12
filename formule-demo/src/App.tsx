@@ -37,9 +37,9 @@ function App() {
         width={1000}
         footer={null}
       >
-        <Row gutter={10}>
+        <Row gutter={[10, 10]}>
           <Col
-            xs={12}
+            xs={24}
             style={{
               overflowX: "hidden",
               height: "100%",
@@ -49,7 +49,7 @@ function App() {
             <CodeViewer
               value={JSON.stringify(formuleState?.current.schema, null, 2)}
               lang="json"
-              height="50vh"
+              height="45vh"
               reset
             />
           </Col>
@@ -64,7 +64,22 @@ function App() {
             <CodeViewer
               value={JSON.stringify(formuleState?.current.uiSchema, null, 2)}
               lang="json"
-              height="50vh"
+              height="25vh"
+              reset
+            />
+          </Col>
+          <Col
+            xs={12}
+            style={{
+              overflowX: "hidden",
+              height: "100%",
+            }}
+          >
+            <Typography.Text strong>Form data</Typography.Text>
+            <CodeViewer
+              value={JSON.stringify(formuleState?.formData, null, 2)}
+              lang="json"
+              height="25vh"
               reset
             />
           </Col>
@@ -105,7 +120,7 @@ function App() {
                 style={{
                   overflowX: "hidden",
                   height: "100%",
-                  padding: "0px 15px",
+                  padding: "0px 25px",
                 }}
               >
                 <FormPreview liveValidate={true} />

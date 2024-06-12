@@ -33,11 +33,11 @@ const DateWidget = ({
 
   useEffect(() => {
     setIsoFormat(
-      schema.format === "date-time" ? DATE_TIME_ISO_FORMAT : DATE_ISO_FORMAT
+      schema.format === "date-time" ? DATE_TIME_ISO_FORMAT : DATE_ISO_FORMAT,
     );
   }, [schema]);
 
-  const handleChange = date =>
+  const handleChange = (date) =>
     onChange(date ? date.format(isoFormat) : undefined);
 
   const handleBlur = ({ target }) => onBlur(id, target.checked);
@@ -53,7 +53,7 @@ const DateWidget = ({
           ? DATE_TIME_DEFAULT_FORMAT
           : DATE_DEFAULT_FORMAT)
       }
-      disabledDate={current =>
+      disabledDate={(current) =>
         current &&
         ((schema.minDate && current < dayjs(schema.minDate, DATE_ISO_FORMAT)) ||
           (schema.maxDate &&

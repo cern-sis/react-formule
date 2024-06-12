@@ -1,8 +1,9 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Form from "../../forms/Form";
-import { shoudDisplayGuideLinePopUp } from "../utils";
-import { Row, Empty, Space, Typography, Col } from "antd";
+import { Segmented, Row } from "antd";
 import { useSelector } from "react-redux";
+import EditablePreview from "./EditablePreview";
+import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import CustomizationContext from "../../contexts/CustomizationContext";
 
 const FormPreview = ({ liveValidate, hideAnchors }) => {
@@ -11,6 +12,12 @@ const FormPreview = ({ liveValidate, hideAnchors }) => {
   const formData = useSelector((state) => state.schemaWizard.formData);
 
   const customizationContext = useContext(CustomizationContext);
+
+  const [segment, setSegment] = useState("editable");
+
+  const handleSegmentChange = (value) => {
+    setSegment(value);
+  };
 
   return (
     <div
@@ -21,45 +28,27 @@ const FormPreview = ({ liveValidate, hideAnchors }) => {
       }}
       data-cy="formPreview"
     >
-      <Typography.Title
-        level={4}
-        style={{ textAlign: "center", margin: "15px 0" }}
-      >
-        Preview
-      </Typography.Title>
-      {shoudDisplayGuideLinePopUp(schema) ? (
-        <Row
-          justify="center"
-          align="middle"
-          style={{ height: "100%", flex: 1 }}
-        >
-          <Empty
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
-            description={
-              <Space direction="vertical">
-                <Typography.Title level={5}>
-                  Your form is empty
-                </Typography.Title>
-                <Typography.Text type="secondary">
-                  Add fields to the drop area to initialize your form
-                </Typography.Text>
-              </Space>
-            }
-          />
-        </Row>
+      <Row justify="center" style={{ margin: "15px" }}>
+        <Segmented
+          options={[
+            { label: "Editable", value: "editable", icon: <EditOutlined /> },
+            { label: "Published", value: "published", icon: <EyeOutlined /> },
+          ]}
+          style={{ fontWeight: "bold" }}
+          value={segment}
+          onChange={handleSegmentChange}
+        />
+      </Row>
+      {segment === "editable" ? (
+        <EditablePreview hideTitle liveValidate={liveValidate} />
       ) : (
-        <Row justify="center">
-          <Col xs={22} sm={20}>
-            <Form
-              schema={customizationContext.transformSchema(schema)}
-              uiSchema={uiSchema}
-              formData={formData || {}}
-              onChange={() => {}}
-              liveValidate={liveValidate}
-              hideAnchors={hideAnchors}
-            />
-          </Col>
-        </Row>
+        <Form
+          schema={customizationContext.transformSchema(schema)}
+          uiSchema={uiSchema}
+          formData={formData}
+          hideAnchors={hideAnchors}
+          isPublished
+        />
       )}
     </div>
   );

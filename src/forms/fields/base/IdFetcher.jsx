@@ -39,7 +39,7 @@ const IdFetcher = ({ formData = {}, uiSchema, onChange }) => {
     }
   }, [uiSchema]);
 
-  const getContentByName = name => {
+  const getContentByName = (name) => {
     const choices = {
       ror: <Ror data={formData.fetched} />,
       zenodo: <Zenodo data={formData.fetched} />,
@@ -72,7 +72,7 @@ const IdFetcher = ({ formData = {}, uiSchema, onChange }) => {
 
     return id;
   };
-  const onSearch = async val => {
+  const onSearch = async (val) => {
     setErrorMessage(undefined);
     const currentServiceApi = SERVICES[service].url || null;
     const resourceID = getId(service, val);
@@ -117,10 +117,10 @@ const IdFetcher = ({ formData = {}, uiSchema, onChange }) => {
             <Select
               value={service}
               placeHolder="Select service"
-              onChange={val => setService(val)}
+              onChange={(val) => setService(val)}
               style={{ width: "100%" }}
             >
-              {uiSchema["ui:servicesList"].map(service => (
+              {uiSchema["ui:servicesList"].map((service) => (
                 <Select.Option value={service} key={service}>
                   {SERVICES[service].name}
                 </Select.Option>

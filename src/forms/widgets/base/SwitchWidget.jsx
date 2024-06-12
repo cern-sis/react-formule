@@ -15,7 +15,7 @@ const SwitchWidget = ({
 }) => {
   const { readonlyAsDisabled = true } = formContext;
 
-  const handleChange = checked => {
+  const handleChange = (checked) => {
     if (schema.type === "string") {
       onChange(String(checked));
     } else if (schema.type === "number") {

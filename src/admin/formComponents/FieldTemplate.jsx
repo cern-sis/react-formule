@@ -10,7 +10,7 @@ import { isItTheArrayField, _validate } from "../utils/index";
 import DropArea from "./DropArea";
 import { addByPath } from "../../store/schemaWizard";
 
-const FieldTemplate = props => {
+const FieldTemplate = (props) => {
   const {
     schema,
     uiSchema = {},
@@ -20,22 +20,22 @@ const FieldTemplate = props => {
     id,
   } = props;
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const [display, setDisplay] = useState(false);
 
   let path = {
     schema: [
       ...formContext.schema,
-      ...(rawErrors.find(e => typeof e === "object").schema || []),
+      ...(rawErrors.find((e) => typeof e === "object").schema || []),
     ],
     uiSchema: [
       ...formContext.uiSchema,
-      ...(rawErrors.find(e => typeof e === "object").uiSchema || []),
+      ...(rawErrors.find((e) => typeof e === "object").uiSchema || []),
     ],
   };
 
-  const shouldBoxHideChildren = uiSchema => {
+  const shouldBoxHideChildren = (uiSchema) => {
     return uiSchema["ui:field"] !== undefined;
   };
 
@@ -55,7 +55,7 @@ const FieldTemplate = props => {
       return (
         <HoverBox
           allowsChildren
-          addProperty={(path, value) => dispatch(addByPath({path, value}))}
+          addProperty={(path, value) => dispatch(addByPath({ path, value }))}
           key={id}
           path={path}
           shouldHideChildren={shouldBoxHideChildren(uiSchema)}
@@ -108,7 +108,7 @@ const FieldTemplate = props => {
       // The HoverBox wrapper here is needed to allow dropping items into objects
       // or arrays directly without having to expand them first
       <HoverBox
-        addProperty={(path, value) => dispatch(addByPath({path, value}))}
+        addProperty={(path, value) => dispatch(addByPath({ path, value }))}
         key={id}
         path={path}
         shouldHideChildren={shouldBoxHideChildren(uiSchema)}
@@ -130,4 +130,4 @@ FieldTemplate.propTypes = {
   schema: PropTypes.object,
 };
 
-export default FieldTemplate
+export default FieldTemplate;

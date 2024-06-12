@@ -39,7 +39,7 @@ const SelectWidget = ({
 
   const handleChange = (nextValue) => {
     onChange(
-      enumOptionsValueForIndex(nextValue, enumOptions || data, emptyValue)
+      enumOptionsValueForIndex(nextValue, enumOptions || data, emptyValue),
     );
   };
 
@@ -66,7 +66,7 @@ const SelectWidget = ({
   const selectedIndexes = enumOptionsIndexForValue(
     value,
     enumOptions,
-    multiple
+    multiple,
   );
 
   const _replace_hash_with_current_indexes = (path) => {
@@ -87,7 +87,7 @@ const SelectWidget = ({
         const path = _replace_hash_with_current_indexes(param[1]);
         suggestions.replace(
           `${param[0]}=`,
-          `${param[0]}=${data.getIn(path, "") || ""}`
+          `${param[0]}=${data.getIn(path, "") || ""}`,
         );
       });
     }
@@ -137,7 +137,7 @@ const SelectWidget = ({
                 Array.isArray(enumDisabled) &&
                 enumDisabled.indexOf(optionValue) !== -1,
             };
-          }
+          },
         )
       }
     />

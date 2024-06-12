@@ -18,7 +18,7 @@ const Ror = ({ data }) => {
         {data.country.country_name} ({data.country.country_code})
       </Descriptions.Item>
       <Descriptions.Item label="Type">
-        {data.types && data.types.map(type => <Tag key={type}>{type}</Tag>)}
+        {data.types && data.types.map((type) => <Tag key={type}>{type}</Tag>)}
       </Descriptions.Item>
       <Descriptions.Item label="URL">
         <a href={data.links}>{data.links}</a>
