@@ -144,4 +144,4 @@ Alternatively, you can pull the current state on demand by calling `getFormuleSt
 
 ## :space_invader: Local demo & how to contribute
 
-Apart from trying the online [demo](https://cern-sis.github.io/react-formule/) you can clone the repo and run `formule-demo` to play around. Follow the instructions in its [README](./formule-demo/README.md): it will explain how to install `react-formule` as a local dependency (with either `yarn link` or, better, `yalc`) so that you can modify Formule and test the changes live in your host app, which will be ideal if you want to troubleshoot or contribute to the project.
+Apart from trying the online [demo](https://cern-sis.github.io/react-formule/) you can clone the repo and run `formule-demo` to play around. Follow the instructions in its [README](./formule-demo/README.md): it will explain how to install `react-formule` as a local dependency so that you can modify Formule and test the changes live in your host app, which will be ideal if you want to troubleshoot or contribute to the project.

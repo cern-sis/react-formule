@@ -22,4 +22,8 @@ export default defineConfig({
   build: {
     commonjsOptions: { transformMixedEsModules: true },
   },
+  optimizeDeps: {
+    // Pre-bundle to avoid styling issues with native rjsf components
+    include: ["@rjsf/antd"],
+  },
 });
