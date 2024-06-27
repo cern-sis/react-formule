@@ -6,7 +6,6 @@ import {
   BorderTopOutlined,
   CalendarOutlined,
   CheckSquareOutlined,
-  CloudDownloadOutlined,
   CodeOutlined,
   ContainerOutlined,
   FontSizeOutlined,
@@ -1048,61 +1047,6 @@ const advanced = {
       },
       uiSchema: {
         "ui:field": "tags",
-      },
-    },
-  },
-  idFetcher: {
-    title: "ID Fetcher",
-    icon: <CloudDownloadOutlined />,
-    description: "Fetch data from ZENODO, ORCiD or ROR",
-    child: {},
-    optionsSchema: {
-      type: "object",
-      title: "ID Fetcher Schema",
-      properties: {
-        ...common.optionsSchema,
-        readOnly: extra.optionsSchema.readOnly,
-        isRequired: extra.optionsSchema.isRequired,
-      },
-    },
-    optionsSchemaUiSchema: {
-      readOnly: extra.optionsSchemaUiSchema.readOnly,
-      isRequired: extra.optionsSchemaUiSchema.isRequired,
-    },
-    optionsUiSchema: {
-      type: "object",
-      title: "UI Schema",
-      properties: {
-        ...common.optionsUiSchema.properties,
-        "ui:servicesList": {
-          title: "Select the services you want to allow",
-          type: "array",
-          items: {
-            type: "string",
-            oneOf: [
-              { const: "orcid", title: "ORCiD" },
-              { const: "ror", title: "ROR" },
-              { const: "zenodo", title: "Zenodo" },
-            ],
-          },
-          uniqueItems: true,
-        },
-      },
-    },
-    optionsUiSchemaUiSchema: {
-      ...common.optionsUiSchemaUiSchema,
-      "ui:servicesList": {
-        "ui:widget": "checkbox",
-      },
-    },
-    default: {
-      schema: {
-        type: "object",
-        properties: {},
-      },
-      uiSchema: {
-        "ui:servicesList": ["orcid", "ror", "zenodo"],
-        "ui:field": "idFetcher",
       },
     },
   },
