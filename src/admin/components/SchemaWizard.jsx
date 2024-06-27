@@ -1,4 +1,5 @@
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { MultiBackend } from "react-dnd-multi-backend";
+import { HTML5toTouch } from "rdndmb-html5-to-touch";
 import { DndProvider } from "react-dnd";
 import { Col, Row, Spin } from "antd";
 import PropertyEditor from "../components/PropertyEditor";
@@ -28,7 +29,7 @@ const SchemaWizard = () => {
     );
 
   return (
-    <DndProvider backend={HTML5Backend} context={window}>
+    <DndProvider backend={MultiBackend} options={HTML5toTouch} context={window}>
       <Row style={{ height: "100%" }}>
         <Col
           xs={10}
