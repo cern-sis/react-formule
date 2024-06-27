@@ -1,5 +1,6 @@
 import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { MultiBackend } from "react-dnd-multi-backend";
+import { HTML5toTouch } from "rdndmb-html5-to-touch";
 import { initSchemaStructure, combineFieldTypes } from "./admin/utils";
 import CustomizationContext from "./contexts/CustomizationContext";
 import { ConfigProvider, ThemeConfig } from "antd";
@@ -41,7 +42,11 @@ export const FormuleContext = ({
     <Provider store={store}>
       {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
       {/* @ts-ignore */}
-      <DndProvider backend={HTML5Backend} context={window}>
+      <DndProvider
+        backend={MultiBackend}
+        options={HTML5toTouch}
+        context={window}
+      >
         <ConfigProvider theme={theme}>
           <CustomizationContext.Provider
             value={{
