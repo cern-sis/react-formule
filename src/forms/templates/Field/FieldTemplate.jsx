@@ -120,6 +120,9 @@ const FieldTemplate = ({
       )}
     </WrapIfAdditional>
   );
+  if (window.location.hash.replace("#", "") === id) {
+    content = <div className="bounceShadow">{content}</div>;
+  }
 
   if (id != "root" || uiSchema["ui:object"] == "tabView") return content;
   else {
