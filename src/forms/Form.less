@@ -132,6 +132,23 @@
   .ant-form-item-label label {
     width: 100%;
   }
+
+  @keyframes bounceShadow {
+    0% {
+      box-shadow: 0 0 1px 5px #1a7fa380;
+    }
+    15%,
+    60% {
+      box-shadow: 0 0 1px 10px #1a7fa380;
+    }
+    100% {
+      box-shadow: none;
+    }
+  }
+
+  .bounceShadow {
+    animation: bounceShadow 5s forwards;
+  }
 }
 
 .tabItemError {

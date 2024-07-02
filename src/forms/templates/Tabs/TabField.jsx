@@ -154,7 +154,7 @@ const TabField = ({ uiSchema, properties, idSchema }) => {
         style={{ height: "100%", overflowX: "hidden", paddingBottom: "24px" }}
       >
         <Row justify="center">
-          <Col span={16} style={{ padding: "10px 0" }}>
+          <Col span={20} style={{ padding: "10px 0" }}>
             {activeTabContent.map((item) => item.content)}
           </Col>
         </Row>
