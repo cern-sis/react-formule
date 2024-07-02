@@ -8,8 +8,6 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "link-local-lib": "yarn link react-formule && yarn link react && yarn link react-dom",
-    "unlink-local-lib": "yarn unlink react-formule && yarn unlink react && yarn unlink react-dom",
     "test:e2e": "cypress open",
     "test:e2e:run": "cypress run --headless --browser chrome"
   },
