@@ -15,7 +15,7 @@ const TabFieldMenu = ({
     <Menu
       mode="inline"
       selectedKeys={[active]}
-      style={{ height: "100%", width: "220px" }}
+      style={{ height: "100%" }}
       items={[
         analysis_mode.length > 0 &&
           showReuseMode && {
@@ -26,9 +26,9 @@ const TabFieldMenu = ({
                 <Switch
                   disabled={analysis_mode[0].content.props.readonly}
                   checked={analysisChecked}
-                  onChange={checked => {
+                  onChange={(checked) => {
                     analysis_mode[0].content.props.onChange(
-                      checked ? "true" : undefined
+                      checked ? "true" : undefined,
                     );
                     setAnalysisChecked(checked);
                   }}
@@ -37,12 +37,12 @@ const TabFieldMenu = ({
             ),
           },
       ].concat(
-        tabs.map(tab => ({
+        tabs.map((tab) => ({
           key: tab.name,
           label: tab.title || tab.content.props.schema.title || tab.name,
           onClick: () => setActive(tab.name),
-          danger: isFieldContainsError(tab)
-        }))
+          danger: isFieldContainsError(tab),
+        })),
       )}
     />
   );
