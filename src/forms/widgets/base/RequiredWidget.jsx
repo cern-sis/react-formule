@@ -1,6 +1,6 @@
 import { Switch } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { updateRequired } from "../../store/schemaWizard";
+import { updateRequired } from "../../../store/schemaWizard";
 
 const RequiredWidget = ({ value, onChange }) => {
   const path = useSelector((state) => state.schemaWizard.field.path);

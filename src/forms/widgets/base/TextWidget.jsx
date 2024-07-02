@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { isRegExp } from "lodash-es";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { updateFormData } from "../../store/schemaWizard";
+import { updateFormData } from "../../../store/schemaWizard";
 import { set, cloneDeep } from "lodash-es";
 
 const INPUT_STYLE = {
@@ -47,8 +47,8 @@ const TextWidget = ({
       target.value === ""
         ? options.emptyValue
         : convertToUppercase
-        ? target.value.toUpperCase()
-        : target.value
+          ? target.value.toUpperCase()
+          : target.value,
     );
   };
 
@@ -83,7 +83,7 @@ const TextWidget = ({
       set(newFormData, destination, undefined);
     });
     dispatch(updateFormData({ value: newFormData }));
-    // We need to deep clone again after this dispatch since for some reason 
+    // We need to deep clone again after this dispatch since for some reason
     // redux/immer mark the object passed as argument to the reducer as readonly
     newFormData = cloneDeep(newFormData);
 
@@ -171,7 +171,7 @@ const TextWidget = ({
         autofill_from &&
         autofill_on &&
         autofill_on.includes("onClick") &&
-        (enabled => (
+        ((enabled) => (
           <Button
             type="primary"
             disabled={!enabled || readonly}

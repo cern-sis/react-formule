@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Button, Col, List, Modal, Row, Typography } from "antd";
+import { List, Modal, Typography } from "antd";
 import { render } from "squirrelly";
-import ArrowUpOutlined from "@ant-design/icons/ArrowUpOutlined";
-import ArrowDownOutlined from "@ant-design/icons/ArrowDownOutlined";
-import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
 import { isFieldContainsError } from "../utils";
+import ArrayUtils from "./ArrayUtils";
 
 const LayerArrayFieldTemplate = ({ items = [], uiSchema }) => {
   const [itemToDisplay, setItemToDisplay] = useState(null);
@@ -51,56 +49,17 @@ const LayerArrayFieldTemplate = ({ items = [], uiSchema }) => {
     if (!item.hasToolbar) return [];
 
     return [
-      <Row key={item.key} gutter={4}>
-        {(item.hasMoveUp || item.hasMoveDown) && (
-          <Col>
-            <Row>
-              <Button
-                key="up"
-                icon={
-                  <Row justify="center">
-                    <ArrowUpOutlined />
-                  </Row>
-                }
-                onClick={item.onReorderClick(item.index, item.index - 1)}
-                disabled={item.disabled || item.readonly || !item.hasMoveUp}
-                type="link"
-                size="small"
-                style={{ height: "16px" }}
-              />
-            </Row>
-            <Row>
-              <Button
-                key="down"
-                icon={
-                  <Row justify="center">
-                    <ArrowDownOutlined />
-                  </Row>
-                }
-                onClick={item.onReorderClick(item.index, item.index + 1)}
-                disabled={item.disabled || item.readonly || !item.hasMoveDown}
-                type="link"
-                size="small"
-                style={{ height: "16px" }}
-              />
-            </Row>
-          </Col>
-        )}
-        {item.hasRemove && (
-          <Col>
-            <Button
-              onClick={item.onDropIndexClick(item.index)}
-              key="delete"
-              danger
-              icon={<DeleteOutlined />}
-              disabled={item.disabled || item.readonly}
-              type="link"
-              size="small"
-              style={{ height: "32px" }}
-            />
-          </Col>
-        )}
-      </Row>,
+      <ArrayUtils
+        hasMoveDown={item.hasMoveDown}
+        hasMoveUp={item.hasMoveUp}
+        disabled={item.disabled}
+        readonly={item.readonly}
+        onReorderClick={item.onReorderClick}
+        index={item.index}
+        hasRemove={item.hasRemove}
+        onDropIndexClick={item.onDropIndexClick}
+        key={item.key}
+      />,
     ];
   };
 
