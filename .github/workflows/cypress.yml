@@ -13,8 +13,6 @@ jobs:
         uses: actions/checkout@v4
       - name: Install formule dependencies
         run: yarn install --frozen-lockfile
-      - name: Link
-        run: yarn link-local && cd formule-demo && yarn link-local-lib
       - name: Install formule-demo dependencies
         working-directory: ./formule-demo
         run: yarn install --frozen-lockfile
