@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "target": "ES2023",
     "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
     "module": "ESNext",
 
     /* Bundler mode */
@@ -23,7 +23,7 @@
     "skipLibCheck": true,
 
     "allowJs": true,
-    "noImplicitAny": false  // TODO: Remove eventually
+    "noImplicitAny": false // TODO: Remove eventually
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
