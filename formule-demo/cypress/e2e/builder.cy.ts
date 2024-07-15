@@ -14,7 +14,7 @@ describe("test basic functionality", () => {
       .should("have.length", 1);
   });
 
-  it.only("allows deleting a field from the tree", () => {
+  it("allows deleting a field from the tree", () => {
     cy.addField("text");
 
     cy.getByDataCy("treeItem").should("have.length", 1);
@@ -82,12 +82,12 @@ describe("test basic functionality", () => {
     cy.getByDataCy("fieldSettings").should("exist");
 
     // Testing root schema settings
-    cy.get("input#root_title").clearTypeBlur("Test root title");
+    cy.get("input#root!title").clearTypeBlur("Test root title");
     cy.getByDataCy("rootTitle").should("contain.text", "Test root title");
-    cy.get("input#root_description").clearTypeBlur("Test root description");
+    cy.get("input#root!description").clearTypeBlur("Test root description");
     cy.getByDataCy("rootDescription").should(
       "contain.text",
-      "Test root description",
+      "Test root description"
     );
 
     // Testing root uiSchema settings
@@ -118,27 +118,31 @@ describe("test basic functionality", () => {
     // Edit field id
     cy.getByDataCy("editFieldId").find("div[role=button]").click();
     cy.getByDataCy("editFieldId").find("textarea").clearTypeBlur("myfield");
-    cy.get("span#root_myfield-title").should("have.text", "myfield");
+    cy.get("div#root!myfield-title")
+      .find("span")
+      .should("have.text", "myfield");
 
     // Edit field title
-    cy.get("input#root_title").clearTypeBlur("Test title");
-    cy.get("span#root_myfield-title").should("have.text", "Test title");
+    cy.get("input#root!title").clearTypeBlur("Test title");
+    cy.get("div#root!myfield-title")
+      .find("span")
+      .should("have.text", "Test title");
 
     // Edit field description
-    cy.get("input#root_description").clearTypeBlur("Test description");
-    cy.get("span#root_myfield-description").should(
+    cy.get("input#root!description").clearTypeBlur("Test description");
+    cy.get("span#root!myfield-description").should(
       "have.text",
-      "Test description",
+      "Test description"
     );
 
     // Edit readOnly
     cy.getByDataCy("formPreview")
-      .find("input#root_myfield")
+      .find("input#root!myfield")
       .clearTypeBlur("sample text");
 
-    cy.get("button#root_readOnly").click();
+    cy.get("button#root!readOnly").click();
     cy.getByDataCy("formPreview")
-      .find("input#root_myfield")
+      .find("input#root!myfield")
       .should("be.disabled");
 
     // Edit uiSchema > field width
@@ -156,28 +160,28 @@ describe("test basic functionality", () => {
     cy.getByDataCy("treeItem").click();
 
     // Test pattern allowing only one character
-    cy.get("input#root_pattern").clearTypeBlur("^.$");
+    cy.get("input#root!pattern").clearTypeBlur("^.$");
     cy.getByDataCy("formPreview")
-      .find("input#root_myfield")
+      .find("input#root!myfield")
       .as("myfield")
       .clearTypeBlur("a");
     cy.getByDataCy("formPreview").hasNoErrorMessage();
     cy.get("@myfield").clearTypeBlur("asd");
     cy.getByDataCy("formPreview").hasErrorMessage('must match pattern "^.$"');
-    cy.get("input#root_pattern").clear();
+    cy.get("input#root!pattern").clear();
 
     // Test uiSchema > convertToUppercase
     cy.getByDataCy("fieldSettings")
       .find(".scrollableTabs .ant-tabs-nav-list")
       .find("[data-node-key=2]")
       .click();
-    cy.get("input#root_ui\\:options_convertToUppercase").click(); // Need to double escape the colon
+    cy.get("input#root!ui\\:options!convertToUppercase").click(); // Need to double escape the colon
     cy.get("@myfield").clearTypeBlur("asdf");
     cy.get("@myfield").should("have.value", "ASDF");
-    cy.get("input#root_ui\\:options_convertToUppercase").click();
+    cy.get("input#root!ui\\:options!convertToUppercase").click();
 
     // Test uiSchema > mask
-    cy.get("input#root_ui\\:options_mask").clearTypeBlur("BA-00/a");
+    cy.get("input#root!ui\\:options!mask").clearTypeBlur("BA-00/a");
     cy.get("@myfield").focus();
     cy.get("@myfield").should("have.value", "B_-__/_");
     cy.get("@myfield").type("NWW5j34r");
@@ -192,21 +196,21 @@ describe("test basic functionality", () => {
 
     // Test number type
     cy.getByDataCy("formPreview")
-      .find("input#root_myfield")
+      .find("input#root!myfield")
       .as("myfield")
       .clearTypeBlur("123.45");
     cy.getByDataCy("formPreview")
       .find(".ant-form-item-explain-error")
       .should("not.exist");
     // select type integer
-    cy.get("input#root_type").type("{downArrow}{enter}", { force: true });
-    cy.get("input#root_type")
+    cy.get("input#root!type").type("{downArrow}{enter}", { force: true });
+    cy.get("input#root!type")
       .parent()
       .parent()
       .find("[title=Integer]")
       .should("exist");
     cy.getByDataCy("formPreview")
-      .find("input#root_myfield")
+      .find("input#root!myfield")
       .as("myfield")
       .clearTypeBlur("123.45");
     cy.getByDataCy("formPreview").hasErrorMessage("must be integer");
@@ -217,25 +221,25 @@ describe("test basic functionality", () => {
     cy.getByDataCy("treeItem").click();
 
     // Test checkbox type: one option
-    cy.get("input#root_title").clearTypeBlur("Only option");
+    cy.get("input#root!title").clearTypeBlur("Only option");
     cy.getByDataCy("formPreview")
       .find(".ant-checkbox-wrapper span")
       .contains("Only option")
       .should("exist");
 
     // Test checkbox type: multiple options
-    cy.get("input#root_type").type("{downArrow}{enter}", { force: true });
-    cy.get("input#root_type")
+    cy.get("input#root!type").type("{downArrow}{enter}", { force: true });
+    cy.get("input#root!type")
       .parent()
       .parent()
       .find('[title="Multiple Options"]')
       .should("exist");
     // rename options
-    cy.get("input#root_items_enum_0").clearTypeBlur("First option");
-    cy.get("input#root_items_enum_1").clearTypeBlur("Second option");
+    cy.get("input#root!items!enum!0").clearTypeBlur("First option");
+    cy.get("input#root!items!enum!1").clearTypeBlur("Second option");
     // add extra option
-    cy.get("fieldset#root_items").getByDataCy("addItemButton").click();
-    cy.get("input#root_items_enum_2").clearTypeBlur("Third option");
+    cy.get("fieldset#root!items").getByDataCy("addItemButton").click();
+    cy.get("input#root!items!enum!2").clearTypeBlur("Third option");
     cy.getByDataCy("formPreview")
       .find(".ant-checkbox-wrapper span")
       .contains("First option")
@@ -245,7 +249,7 @@ describe("test basic functionality", () => {
       .contains("Second option")
       .as("option2")
       .should("exist");
-    cy.get("input[id^=root_items_enum_").should("have.length", 3);
+    cy.get("input[id^=root!items!enum!").should("have.length", 3);
     // check option
     cy.getByDataCy("formPreview")
       .find(".ant-checkbox-wrapper span")
@@ -258,8 +262,8 @@ describe("test basic functionality", () => {
       .parent()
       .should("have.class", "ant-checkbox-wrapper-checked");
     //remove option (eq(1) gets the second element)
-    cy.get("#root_items .arrayFieldRow").eq(1).find(".anticon-delete").click();
-    cy.get("input[id^=root_items_enum_").should("have.length", 2);
+    cy.get("#root!items .arrayFieldRow").eq(1).find(".anticon-delete").click();
+    cy.get("input[id^=root!items!enum!").should("have.length", 2);
     cy.get("@option2").should("not.exist");
 
     // TODO: returned value when checked and unchecked should be tested in a unit/component test with access to formData
@@ -278,18 +282,18 @@ describe("test basic functionality", () => {
     cy.getByDataCy("treeItem").click();
 
     // Test select type: one value (text)
-    cy.get("input#root_type")
+    cy.get("input#root!type")
       .parent()
       .parent()
       .find('[title="Select one value (text)"]')
       .should("exist");
-    cy.get("fieldset#root_enum").getByDataCy("addItemButton").click();
-    cy.get("input#root_enum_0").clearTypeBlur("First option");
-    cy.get("fieldset#root_enum").getByDataCy("addItemButton").click();
-    cy.get("input#root_enum_1").clearTypeBlur("Second option");
-    cy.get("#root_enum .arrayFieldRow").eq(0).find(".anticon-delete").click();
+    cy.get("fieldset#root!enum").getByDataCy("addItemButton").click();
+    cy.get("input#root!enum!0").clearTypeBlur("First option");
+    cy.get("fieldset#root!enum").getByDataCy("addItemButton").click();
+    cy.get("input#root!enum!1").clearTypeBlur("Second option");
+    cy.get("#root!enum .arrayFieldRow").eq(0).find(".anticon-delete").click();
     cy.getByDataCy("formPreview")
-      .get("input#root_myfield")
+      .get("input#root!myfield")
       .as("dropdown")
       .type("{downArrow}");
     cy.get("@dropdown").type("{enter}");
@@ -299,19 +303,19 @@ describe("test basic functionality", () => {
       .should("exist");
 
     // Test select type: one value (number)
-    cy.get("input#root_type").type("{downArrow}{enter}", { force: true });
-    cy.get("input#root_type")
+    cy.get("input#root!type").type("{downArrow}{enter}", { force: true });
+    cy.get("input#root!type")
       .parent()
       .parent()
       .find('[title="Select one value (number)"]')
       .should("exist");
-    cy.get("fieldset#root_enum").getByDataCy("addItemButton").click();
-    cy.get("input#root_enum_0").clearTypeBlur("asd");
-    cy.get("input#root_enum_0").should("have.value", "");
-    cy.get("input#root_enum_0").clearTypeBlur("1");
-    cy.get("input#root_enum_0").should("have.value", "1");
-    cy.get("input#root_enum_1").clearTypeBlur("2");
-    cy.get("#root_enum .arrayFieldRow").eq(0).find(".anticon-delete").click();
+    cy.get("fieldset#root!enum").getByDataCy("addItemButton").click();
+    cy.get("input#root!enum!0").clearTypeBlur("asd");
+    cy.get("input#root!enum!0").should("have.value", "");
+    cy.get("input#root!enum!0").clearTypeBlur("1");
+    cy.get("input#root!enum!0").should("have.value", "1");
+    cy.get("input#root!enum!1").clearTypeBlur("2");
+    cy.get("#root!enum .arrayFieldRow").eq(0).find(".anticon-delete").click();
     cy.get("@dropdown").type("{downArrow}");
     cy.get("@dropdown").type("{enter}");
     cy.getByDataCy("formPreview")
@@ -320,27 +324,27 @@ describe("test basic functionality", () => {
       .should("exist");
 
     // Test select type: multiple values
-    cy.get("input#root_type").type("{downArrow}{enter}", { force: true });
-    cy.get("input#root_type")
+    cy.get("input#root!type").type("{downArrow}{enter}", { force: true });
+    cy.get("input#root!type")
       .parent()
       .parent()
       .find('[title="Select multiple values"]')
       .should("exist");
-    cy.get("fieldset#root_items_enum").getByDataCy("addItemButton").click();
-    cy.get("input#root_items_enum_0").clearTypeBlur("First option");
-    cy.get("fieldset#root_items_enum").getByDataCy("addItemButton").click();
-    cy.get("input#root_items_enum_1").clearTypeBlur("Second option");
-    cy.get("fieldset#root_items_enum").getByDataCy("addItemButton").click();
-    cy.get("input#root_items_enum_2").clearTypeBlur("Third option");
-    cy.get("#root_items_enum .arrayFieldRow")
+    cy.get("fieldset#root!items!enum").getByDataCy("addItemButton").click();
+    cy.get("input#root!items!enum!0").clearTypeBlur("First option");
+    cy.get("fieldset#root!items!enum").getByDataCy("addItemButton").click();
+    cy.get("input#root!items!enum!1").clearTypeBlur("Second option");
+    cy.get("fieldset#root!items!enum").getByDataCy("addItemButton").click();
+    cy.get("input#root!items!enum!2").clearTypeBlur("Third option");
+    cy.get("#root!items!enum .arrayFieldRow")
       .eq(1)
       .find(".anticon-delete")
       .click();
     cy.getByDataCy("formPreview")
-      .get("input#root_myfield")
+      .get("input#root!myfield")
       .type("{downArrow}{enter}", { force: true });
     cy.getByDataCy("formPreview")
-      .get("input#root_myfield")
+      .get("input#root!myfield")
       .type("{downArrow}{enter}", { force: true });
     cy.getByDataCy("formPreview")
       .get(".ant-select-item-option-content")
@@ -357,44 +361,44 @@ describe("test basic functionality", () => {
     cy.getByDataCy("treeItem").click();
 
     // Test date type (format)
-    cy.get("input#root_myfield").clearTypeBlur("11/10/2023", { force: true });
-    cy.get("input#root_myfield").should("have.value", "11/10/2023");
-    cy.get("input#root_myfield").clearTypeBlur("11/10/2023 17:29:16", {
+    cy.get("input#root!myfield").clearTypeBlur("11/10/2023", { force: true });
+    cy.get("input#root!myfield").should("have.value", "11/10/2023");
+    cy.get("input#root!myfield").clearTypeBlur("11/10/2023 17:29:16", {
       force: true,
     });
-    cy.get("input#root_myfield").should("have.value", "11/10/2023");
-    cy.get("input#root_format").type("{downArrow}{enter}", { force: true });
-    cy.get("input#root_myfield").clearTypeBlur("11/10/2023 17:29:16", {
+    cy.get("input#root!myfield").should("have.value", "11/10/2023");
+    cy.get("input#root!format").type("{downArrow}{enter}", { force: true });
+    cy.get("input#root!myfield").clearTypeBlur("11/10/2023 17:29:16", {
       force: true,
     });
-    cy.get("input#root_myfield").should("have.value", "11/10/2023 17:29:16");
+    cy.get("input#root!myfield").should("have.value", "11/10/2023 17:29:16");
 
     // Test format (customFormat)
-    cy.get("input#root_customFormat").type("hh:mm DD-MM-YYYY");
-    cy.get("input#root_myfield").clearTypeBlur("11/10/2023 17:29:16", {
+    cy.get("input#root!customFormat").type("hh:mm DD-MM-YYYY");
+    cy.get("input#root!myfield").clearTypeBlur("11/10/2023 17:29:16", {
       force: true,
     });
-    cy.get("input#root_myfield").should("have.value", "");
-    cy.get("input#root_myfield").clearTypeBlur("17:29 11-10-2023", {
+    cy.get("input#root!myfield").should("have.value", "");
+    cy.get("input#root!myfield").clearTypeBlur("17:29 11-10-2023", {
       force: true,
     });
-    cy.get("input#root_myfield").should("have.value", "17:29 11-10-2023");
+    cy.get("input#root!myfield").should("have.value", "17:29 11-10-2023");
 
     // Test minDate
-    cy.get("input#root_customFormat").clear();
-    cy.get("input#root_format").type("{downArrow}{enter}", { force: true });
-    cy.get("input#root_minDate").type("10/05/2023", { force: true });
-    cy.get("input#root_myfield").clearTypeBlur("9/05/2023", { force: true });
-    cy.get("input#root_myfield").should("have.value", "");
-    cy.get("input#root_myfield").clearTypeBlur("10/05/2023", { force: true });
-    cy.get("input#root_myfield").should("have.value", "10/05/2023");
+    cy.get("input#root!customFormat").clear();
+    cy.get("input#root!format").type("{downArrow}{enter}", { force: true });
+    cy.get("input#root!minDate").type("10/05/2023", { force: true });
+    cy.get("input#root!myfield").clearTypeBlur("9/05/2023", { force: true });
+    cy.get("input#root!myfield").should("have.value", "");
+    cy.get("input#root!myfield").clearTypeBlur("10/05/2023", { force: true });
+    cy.get("input#root!myfield").should("have.value", "10/05/2023");
 
     // Test maxDate
-    cy.get("input#root_maxDate").type("21/12/2023", { force: true });
-    cy.get("input#root_myfield").clearTypeBlur("22/12/2023", { force: true });
-    cy.get("input#root_myfield").should("have.value", "");
-    cy.get("input#root_myfield").clearTypeBlur("21/12/2023", { force: true });
-    cy.get("input#root_myfield").should("have.value", "21/12/2023");
+    cy.get("input#root!maxDate").type("21/12/2023", { force: true });
+    cy.get("input#root!myfield").clearTypeBlur("22/12/2023", { force: true });
+    cy.get("input#root!myfield").should("have.value", "");
+    cy.get("input#root!myfield").clearTypeBlur("21/12/2023", { force: true });
+    cy.get("input#root!myfield").should("have.value", "21/12/2023");
   });
 
   it("tests uri field", () => {
@@ -476,8 +480,8 @@ describe("test basic functionality", () => {
     cy.addFieldWithName("text", "myfield", "@objectField");
 
     cy.getByDataCy("formPreview")
-      .find("fieldset#root_myobject")
-      .find("input#root_myobject_myfield")
+      .find("fieldset#root!myobject")
+      .find("input#root!myobject!myfield")
       .should("exist");
   });
 
@@ -488,17 +492,17 @@ describe("test basic functionality", () => {
 
     // test basic add, move, delete functionality
     cy.getByDataCy("formPreview")
-      .find("fieldset#root_myarray")
+      .find("fieldset#root!myarray")
       .getByDataCy("addItemButton")
       .as("addItem")
       .click();
     cy.get("@addItem").click();
     cy.getByDataCy("formPreview")
-      .find("input#root_myarray_0")
+      .find("input#root!myarray!0")
       .as("item0")
       .clearTypeBlur("First item");
     cy.getByDataCy("formPreview")
-      .find("input#root_myarray_1")
+      .find("input#root!myarray!1")
       .as("item1")
       .clearTypeBlur("Second item");
     cy.getByDataCy("arrayUtils").first().find(".anticon-arrow-down").click();
@@ -506,10 +510,10 @@ describe("test basic functionality", () => {
     cy.get("@item1").should("have.value", "First item");
     cy.getByDataCy("arrayUtils").first().find(".anticon-delete").click();
     cy.getByDataCy("formPreview")
-      .find("input#root_myarray_0")
+      .find("input#root!myarray!0")
       .should("have.value", "First item");
     cy.getByDataCy("formPreview")
-      .find("input#root_myarray_1")
+      .find("input#root!myarray!1")
       .should("not.exist");
   });
 
@@ -519,7 +523,7 @@ describe("test basic functionality", () => {
     // cy.addField("accordionObjectField", "@arrayField")
     // cy.getByDataCy("treeItem").contains("items").as("accordionItems")
     // cy.addField("text", "@accordionItems")
-    // cy.getByDataCy("formPreview").find("fieldset#root_myarray").getByDataCy("addItemButton").as("addItem").click()
+    // cy.getByDataCy("formPreview").find("fieldset#root!myarray").getByDataCy("addItemButton").as("addItem").click()
     // cy.get("@addItem").click()
     // cy.getByDataCy("formPreview").find(".ant-collapse-item").first().click()
     // FIXME: To be properly tested once the accordion field is reviewed and its function is more clearly defined
@@ -533,7 +537,7 @@ describe("test basic functionality", () => {
     cy.addFieldWithName("text", "myfield", "@layerItems");
 
     cy.getByDataCy("formPreview")
-      .find("fieldset#root_myarray")
+      .find("fieldset#root!myarray")
       .getByDataCy("addItemButton")
       .as("addItem")
       .click();
@@ -545,14 +549,14 @@ describe("test basic functionality", () => {
       .first()
       .click();
     cy.getByDataCy("layerModal")
-      .find("input#root_myarray_0_myfield")
+      .find("input#root!myarray!0!myfield")
       .as("input0")
       .clearTypeBlur("First item");
     cy.getByDataCy("layerModal").find("button").contains("OK").click();
 
     cy.get("@layerItem").last().click();
     cy.getByDataCy("layerModal")
-      .find("input#root_myarray_1_myfield")
+      .find("input#root!myarray!1!myfield")
       .as("input1")
       .should("exist");
     cy.getByDataCy("layerModal").find("button").contains("Cancel").click();
@@ -577,14 +581,14 @@ describe("test basic functionality", () => {
       .contains("myfield1")
       .click();
     cy.getByDataCy("formPreview")
-      .find("input#root_mytab_myfield1")
+      .find("input#root!mytab!myfield1")
       .should("exist");
     cy.getByDataCy("formPreview")
       .find(".ant-menu-item")
       .contains("myfield2")
       .click();
     cy.getByDataCy("formPreview")
-      .find("input#root_mytab_myfield2")
+      .find("input#root!mytab!myfield2")
       .should("exist");
   });
 
@@ -603,12 +607,6 @@ describe("test basic functionality", () => {
         .get(".cm-content")
         .get("span.cm-lintRange-error")
         .should(range ? "exist" : "not.exist");
-    };
-
-    const jsonToCypress = (json) => {
-      return JSON.stringify(json).replace(/{|}/g, (match) => {
-        return match === "{" ? "{{}" : "{}}";
-      });
     };
 
     const json1 = {
@@ -637,47 +635,47 @@ describe("test basic functionality", () => {
     // No validation
     cy.getByDataCy("formPreview")
       .find(".cm-content")
-      .clearTypeBlur(jsonToCypress(json1));
+      .invoke("html", JSON.stringify(json1));
     shouldHaveValidationErrors(false, false);
     cy.getByDataCy("codeEditorFieldError").should("have.text", "");
 
     // TODO: Test URL validation
 
     // JSON validation, wrong validation schema
-    cy.get("input#root_validateWith").type("{downArrow}{downArrow}{enter}", {
+    cy.get("input#root!validateWith").type("{downArrow}{downArrow}{enter}", {
       force: true,
     });
-    cy.get("button#root_validateWithJson").click();
+    cy.get("button#root!validateWithJson").click();
     cy.getByDataCy("fieldModal")
       .find(".cm-content")
-      .clearTypeBlur("this is an invalid schema");
+      .invoke("html", "this is an invalid schema");
     cy.getByDataCy("fieldModal").find(".ant-modal-close").click();
 
     cy.getByDataCy("formPreview")
       .find(".cm-content")
-      .clearTypeBlur(jsonToCypress(json1));
+      .invoke("html", JSON.stringify(json1));
 
     cy.getByDataCy("codeEditorFieldError").should(
       "have.text",
-      "Error parsing validation JSON",
+      "Error parsing validation JSON"
     );
 
     // JSON validation, good validation schema
-    cy.get("button#root_validateWithJson").click();
+    cy.get("button#root!validateWithJson").click();
     cy.getByDataCy("fieldModal")
       .find(".cm-content")
-      .clearTypeBlur(jsonToCypress(validationSchema), { delay: 0 });
+      .invoke("html", JSON.stringify(validationSchema));
     cy.getByDataCy("fieldModal").find(".ant-modal-close").click();
 
     cy.getByDataCy("formPreview")
       .find(".cm-content")
-      .clearTypeBlur(jsonToCypress(json1));
+      .invoke("html", JSON.stringify(json1));
     cy.getByDataCy("codeEditorFieldError").should("have.text", "");
     shouldHaveValidationErrors(false, true);
 
     cy.getByDataCy("formPreview")
       .find(".cm-content")
-      .clearTypeBlur(jsonToCypress(json2));
+      .invoke("html", JSON.stringify(json2));
     shouldHaveValidationErrors(false, false);
   });
 });

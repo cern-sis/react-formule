@@ -1,4 +1,4 @@
-export const RJSF_SEPARATOR = "$";
+export const RJSF_SEPARATOR = "!";
 
 const _checkIfHidden = (name, uiSchema) => {
   return (
