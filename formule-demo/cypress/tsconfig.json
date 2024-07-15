@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["ES2021", "dom"],
+    "target": "ES2023",
+    "lib": ["ES2023", "dom"],
     "types": ["cypress"]
   },
   "include": ["**/*.ts"]

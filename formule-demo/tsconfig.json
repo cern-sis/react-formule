@@ -1,15 +1,12 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "target": "ES2023",
     "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
     "module": "ESNext",
-    "skipLibCheck": true, // FIXME: We can remove this once we change moduleResolution to bundler
 
     /* Bundler mode */
-    // FIXME: change back to bundler once a new version of cypress fixes this https://github.com/cypress-io/cypress/issues/27731
-    // we would probably be able to remove "module": "./dist/react-formule.js" from formule's package.json then
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
