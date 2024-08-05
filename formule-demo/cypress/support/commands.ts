@@ -2,29 +2,6 @@
 
 import { expandAll } from "./utils";
 
-// Overwrites the get command to escape the ! character
-Cypress.Commands.overwriteQuery("get", function (originalFn, alias, options) {
-  const innerFn = originalFn.apply(this, [
-    alias.replaceAll("!", "\\!"),
-    options,
-  ]);
-
-  return (subject) => {
-    return innerFn(subject);
-  };
-});
-
-// Overwrites the find command to escape the ! character
-Cypress.Commands.overwriteQuery("find", function (originalFn, alias, options) {
-  const innerFn = originalFn.apply(this, [
-    alias.replaceAll("!", "\\!"),
-    options,
-  ]);
-  return (subject) => {
-    return innerFn(subject);
-  };
-});
-
 Cypress.Commands.add("getByDataCy", (value) => {
   cy.get(`[data-cy=${value}]`);
 });

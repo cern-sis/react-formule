@@ -1,5 +1,3 @@
-export const RJSF_SEPARATOR = "!";
-
 const _checkIfHidden = (name, uiSchema) => {
   return (
     uiSchema &&

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import {
   Col,
@@ -11,11 +11,13 @@ import {
   Select,
 } from "antd";
 import TabFieldMenu from "./TabFieldMenu";
-import { RJSF_SEPARATOR, _filterTabs, isFieldContainsError } from "../utils";
+import { _filterTabs, isFieldContainsError } from "../utils";
+import CustomizationContext from "../../../contexts/CustomizationContext";
 
 const TabField = ({ uiSchema, properties, idSchema }) => {
   const { useBreakpoint } = Grid;
   const screens = useBreakpoint();
+  const customizationContext = useContext(CustomizationContext);
 
   let options = uiSchema["ui:options"] || {};
 
@@ -77,7 +79,7 @@ const TabField = ({ uiSchema, properties, idSchema }) => {
 
   useEffect(() => {
     if (anchor) {
-      const items = anchor.split(RJSF_SEPARATOR);
+      const items = anchor.split(customizationContext.separator);
       items.forEach((item, index) => {
         if (idSchema.$id.includes(item)) {
           const tabName = items[index + 1];

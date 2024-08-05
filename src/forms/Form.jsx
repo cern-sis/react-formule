@@ -13,7 +13,6 @@ import { useContext } from "react";
 import { Provider, useDispatch } from "react-redux";
 import store from "../store/configureStore";
 import { updateFormData } from "../store/schemaWizard";
-import { RJSF_SEPARATOR } from "./templates/utils";
 
 const RJSFForm = ({
   formRef,
@@ -88,7 +87,7 @@ const RJSFForm = ({
           ...formContext,
           hideAnchors: hideAnchors,
         }}
-        idSeparator={RJSF_SEPARATOR}
+        idSeparator={customizationContext.separator}
       >
         <span />
       </Form>
