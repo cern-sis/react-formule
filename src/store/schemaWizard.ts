@@ -3,7 +3,6 @@ import { notification } from "antd";
 import { set, get } from "lodash-es";
 import { findParentPath } from "../utils";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { RJSF_SEPARATOR } from "../forms/templates/utils";
 
 const initialState = {
   current: {
@@ -131,7 +130,7 @@ const schemaWizard = createSlice({
       schemaWizard.caseReducers.enableCreateMode(state);
     },
     renameIdByPath(state, action) {
-      const { path, newName } = action.payload;
+      const { path, newName, separator } = action.payload;
       const { path: schemaPath, uiPath: uiSchemaPath } = path;
 
       const newSchemaPath = [...schemaPath];
@@ -151,10 +150,12 @@ const schemaWizard = createSlice({
         return;
       }
 
-      if ([" ", RJSF_SEPARATOR].some((c) => newName.includes(c))) {
+      if ([" ", ...separator].some((c) => newName.includes(c))) {
         notification.warning({
           message: "Invalid format",
-          description: "An ID cannot contain spaces or $ symbols",
+          description: `An ID can't contain spaces or \`${Array.from(
+            new Set(separator),
+          ).join(" ")}\` characters`,
         });
         return;
       }

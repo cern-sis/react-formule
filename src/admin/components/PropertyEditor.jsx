@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   Breadcrumb,
   Button,
@@ -17,6 +17,7 @@ import {
   enableCreateMode,
   renameIdByPath,
 } from "../../store/schemaWizard";
+import CustomizationContext from "../../contexts/CustomizationContext";
 
 const { useBreakpoint } = Grid;
 
@@ -50,6 +51,8 @@ const renderPath = (path) => {
 const PropertyEditor = () => {
   const [name, setName] = useState();
   const screens = useBreakpoint();
+
+  const customizationContext = useContext(CustomizationContext);
 
   const path = useSelector((state) => state.schemaWizard.field.path);
   const uiPath = useSelector((state) => state.schemaWizard.field.uiPath);
@@ -105,7 +108,11 @@ const PropertyEditor = () => {
                 text: name,
                 onChange: (value) =>
                   dispatch(
-                    renameIdByPath({ path: { path, uiPath }, newName: value }),
+                    renameIdByPath({
+                      path: { path, uiPath },
+                      newName: value,
+                      separator: customizationContext.separator,
+                    }),
                   ),
               }
             }
