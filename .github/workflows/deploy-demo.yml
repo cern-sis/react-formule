@@ -23,6 +23,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 18.x
+      - name: Override react-formule with latest npm release
+        run: yarn add react-formule
       - name: Install
         run: yarn
       - name: Build
