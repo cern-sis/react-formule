@@ -123,7 +123,7 @@ function App() {
                   padding: "0px 25px",
                 }}
               >
-                <FormPreview liveValidate={true} />
+                <FormPreview liveValidate={true} hideAnchors={false} />
               </Col>
             </Row>
           </FormuleContext>
