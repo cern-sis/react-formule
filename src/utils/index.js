@@ -5,6 +5,8 @@ import { stex } from "@codemirror/legacy-modes/mode/stex";
 
 export const URL_REGEX =
   "https?://(www.)?[-a-zA-Z0-9@:%._+~#=]{1,256}.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)";
+export const DATE_DEFAULT_FORMAT = "DD/MM/YYYY";
+export const DATE_TIME_DEFAULT_FORMAT = "DD/MM/YYYY HH:mm:ss";
 
 export const CODEMIRROR_LANGUAGES = {
   json: json(),
