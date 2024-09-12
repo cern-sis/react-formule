@@ -5,10 +5,15 @@ import update from "immutability-helper";
 import { useDispatch } from "react-redux";
 import { updateUiSchemaByPath } from "../../store/schemaWizard";
 
-const ObjectFieldTemplate = ({properties, uiSchema, formContext, idSchema}) => {
+const ObjectFieldTemplate = ({
+  properties,
+  uiSchema,
+  formContext,
+  idSchema,
+}) => {
   const [cards, setCards] = useState([]);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(
     () => {
@@ -34,16 +39,16 @@ const ObjectFieldTemplate = ({properties, uiSchema, formContext, idSchema}) => {
       // if there is no change with the number of the items it means that either there is a re ordering
       // or some update at each props data
       if (propertiesLength === cardsLength) {
-        let uiCards = cards.map(item => item.name);
-        let uiProperties = properties.map(item => item.name);
+        let uiCards = cards.map((item) => item.name);
+        let uiProperties = properties.map((item) => item.name);
         let different;
-        uiProperties.map(item => {
+        uiProperties.map((item) => {
           if (!uiCards.includes(item)) {
             different = item;
           }
         });
 
-        const newCards = [...cards]
+        const newCards = [...cards];
 
         // the different variable will define if there was a change in the prop keys or there is just a re ordering
         if (different) {
@@ -53,7 +58,7 @@ const ObjectFieldTemplate = ({properties, uiSchema, formContext, idSchema}) => {
           });
 
           let itemProps;
-          properties.map(item => {
+          properties.map((item) => {
             if (item.name === different) itemProps = item;
           });
 
@@ -62,39 +67,43 @@ const ObjectFieldTemplate = ({properties, uiSchema, formContext, idSchema}) => {
             name: different,
             prop: itemProps,
           };
-          newCards[diffIndex] = item
+          newCards[diffIndex] = item;
         } else {
           newCards.map((card, index) => {
             card.prop = properties[index];
           });
         }
-        setCards(newCards)
+        setCards(newCards);
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [properties]
+    [properties],
   );
 
-  // Updates the uiSchema after the cards update with the new ui:order 
+  // Updates the uiSchema after the cards update with the new ui:order
   // (so that the form preview displays the correct order)
-  useEffect(
-    () => {
-      let uiCards = cards.map(item => item.name);
-      let uiProperties = properties.map(item => item.name);
-      let { ...rest } = uiSchema;
+  useEffect(() => {
+    const uiCards = cards.map((item) => item.name);
+    const uiProperties = properties.map((item) => item.name);
+    const { ...rest } = uiSchema;
 
-      uiCards = uiProperties.length < uiCards.length ? uiProperties : uiCards;
+    const isOrderChanged = !uiCards.every(
+      (card, index) => card === uiProperties[index],
+    );
 
-      dispatch(updateUiSchemaByPath({
-        path: formContext.uiSchema.length > 0 ? formContext.uiSchema : [],
-        value: {
-          ...rest,
-          "ui:order": [...uiCards, "*"],
-        }
-      }));
+    if (isOrderChanged) {
+      dispatch(
+        updateUiSchemaByPath({
+          path: formContext.uiSchema.length > 0 ? formContext.uiSchema : [],
+          value: {
+            ...rest,
+            "ui:order": [...uiCards, "*"],
+          },
+        }),
+      );
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [cards]
-  );
+  }, [cards]);
 
   // create a new array to keep track of the changes in the order
   properties.map((prop, index) => {
@@ -117,17 +126,22 @@ const ObjectFieldTemplate = ({properties, uiSchema, formContext, idSchema}) => {
       if (dragCard) {
         setCards(
           update(cards, {
-            $splice: [[dragIndex, 1], [hoverIndex, 0, dragCard]],
-          })
+            $splice: [
+              [dragIndex, 1],
+              [hoverIndex, 0, dragCard],
+            ],
+          }),
         );
       }
     },
-    [cards]
+    [cards],
   );
   if (idSchema.$id == "root") {
     return (
       <div>
-        {cards.map((card, i) => RenderSortable(formContext.uiSchema, card, i, moveCard))}
+        {cards.map((card, i) =>
+          RenderSortable(formContext.uiSchema, card, i, moveCard),
+        )}
       </div>
     );
   }
@@ -141,5 +155,4 @@ ObjectFieldTemplate.propTypes = {
   uiSchema: PropTypes.object,
 };
 
-
-export default ObjectFieldTemplate
+export default ObjectFieldTemplate;
