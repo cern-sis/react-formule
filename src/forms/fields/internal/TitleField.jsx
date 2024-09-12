@@ -9,7 +9,7 @@ import {
 import Markdown from "../../../partials/Markdown/Markdown";
 
 const TitleField = ({
-  formContext,
+  formContext = {},
   id,
   fieldId,
   prefixCls,
@@ -129,10 +129,6 @@ TitleField.propTypes = {
   uiLatex: PropTypes.bool,
   enableLatex: PropTypes.func,
   enableImport: PropTypes.func,
-};
-
-TitleField.defaultProps = {
-  formContext: {},
 };
 
 export default TitleField;

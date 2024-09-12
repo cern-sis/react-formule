@@ -49,7 +49,6 @@ const ArrayFieldTemplateItem = ({
 ArrayFieldTemplateItem.propTypes = {
   children: PropTypes.node,
   disabled: PropTypes.bool,
-  formContext: PropTypes.object,
   hasMoveDown: PropTypes.bool,
   hasMoveUp: PropTypes.bool,
   hasRemove: PropTypes.bool,
@@ -58,10 +57,6 @@ ArrayFieldTemplateItem.propTypes = {
   onDropIndexClick: PropTypes.func,
   onReorderClick: PropTypes.func,
   readonly: PropTypes.bool,
-};
-
-ArrayFieldTemplateItem.defaultProps = {
-  formContext: {},
 };
 
 export default ArrayFieldTemplateItem;
