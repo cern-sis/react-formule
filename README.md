@@ -67,7 +67,7 @@ Formule includes a variety of predefined field types, grouped in three categorie
 
 You can freely remove some of these predefined fields and add your own custom fields and widgets following the JSON Schema specifications. More details below.
 
-All of these items contain different settings that you can tinker with, separated into **Schema Settings** (_generally_ affecting how the field _works_) and **UI Schema Settings** (_generally_ affecting how the field _looks_ like).
+All of these items contain different settings that you can tinker with, separated into **Schema Settings** (_generally_ affecting how the field _works_) and **UI Schema Settings** (_generally_ affecting how the field _looks like_).
 
 ## :horse_racing: Setting it up
 
@@ -101,12 +101,29 @@ const useEffect(() => initFormuleSchema(), []);
 
 ### Customizing and adding new field types
 
+Override (if existing) or create your own field types (rjsf type definitions) similarly to how it's done in `fieldTypes.jsx`, passing them as `customFieldTypes`. Implement your own custom fields and widgets (react components) by passing them as `customFields` and/or `customWidgets` (see `forms/fields/` and `forms/widgets/` for examples). If you also want to use a different published version of a field or widget, pass the component in `customPublishedFields` or `customPublishedWidgets`.
+
 ```jsx
+const customFieldTypes = {
+  advanced: {
+    myfield: {
+      title: ...
+      ...
+    }
+  }
+}
+
+const customFields: {
+  myfield: MyField  // react component
+}
+
 <FormuleContext
-  theme={{token: {colorPrimary: "blue"}}}
-  customFieldTypes={...}
-  customFields={...}
-  customWidgets={...}>
+  theme={{token: {colorPrimary: "blue"}}} // antd theme
+  customFieldTypes={customFieldTypes}
+  customFields={customFields}
+  customWidgets={...}
+  customPublishedFields={...}
+  customPublishedWidgets={...}>
 // ...
 </FormuleContext>
 ```
@@ -115,7 +132,7 @@ If you use Formule to edit existing JSON schemas that include extra fields (e.g.
 
 ```jsx
 const transformSchema = (schema) => {
-  // Remove properties...
+  // Remove properties here...
   return transformedSchema;
 };
 

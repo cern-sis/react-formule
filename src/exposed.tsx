@@ -17,6 +17,8 @@ type FormuleContextProps = {
   customFieldTypes?: object;
   customFields?: object;
   customWidgets?: object;
+  customPublishedFields?: object;
+  customPublishedWidgets?: object;
   theme?: ThemeConfig;
   separator?: string;
   synchronizeState?: (state: SchemaWizardState) => void;
@@ -28,6 +30,8 @@ export const FormuleContext = ({
   customFieldTypes,
   customFields,
   customWidgets,
+  customPublishedFields,
+  customPublishedWidgets,
   theme,
   separator = "::",
   synchronizeState,
@@ -55,6 +59,8 @@ export const FormuleContext = ({
               allFieldTypes: combineFieldTypes(fieldTypes, customFieldTypes),
               customFields,
               customWidgets,
+              customPublishedFields,
+              customPublishedWidgets,
               transformSchema,
               separator,
             }}
