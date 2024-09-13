@@ -68,12 +68,14 @@ const RJSFForm = ({
           ...customizationContext.customFields,
           ...fields,
           ...(isPublished && PublishedFields),
+          ...(isPublished && customizationContext.customPublishedFields),
         }}
         widgets={{
           ...CAPWidgets,
           ...customizationContext.customWidgets,
           ...widgets,
           ...(isPublished && PublishedWidgets),
+          ...(isPublished && customizationContext.customPublishedWidgets),
         }}
         templates={templates}
         liveValidate={liveValidate}
@@ -88,9 +90,9 @@ const RJSFForm = ({
         readonly={readonly || isPublished}
         transformErrors={transformErrors}
         formContext={{
-          formRef: formRef,
+          formRef,
           ...formContext,
-          hideAnchors: hideAnchors,
+          hideAnchors,
         }}
         idSeparator={customizationContext.separator}
       >
