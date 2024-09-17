@@ -1,18 +1,12 @@
 import { useDispatch } from "react-redux";
 import { PropTypes } from "prop-types";
 
-import {
-  DownOutlined,
-  QuestionOutlined,
-  UpOutlined,
-  CopyOutlined,
-} from "@ant-design/icons";
+import { DownOutlined, UpOutlined, CopyOutlined } from "@ant-design/icons";
 import { Col, Dropdown, Row, Tag, Typography } from "antd";
-import { isItTheArrayField } from "../utils";
+import { getIconByType, isItTheArrayField } from "../utils";
 import { useContext } from "react";
 import CustomizationContext from "../../contexts/CustomizationContext";
 import { selectProperty } from "../../store/schemaWizard";
-import { hiddenFields } from "../utils/fieldTypes";
 
 const SchemaTreeItem = ({
   path,
@@ -45,46 +39,6 @@ const SchemaTreeItem = ({
     return uiSchema["ui:field"] !== undefined;
   };
 
-  const getIconByType = (uiSchema = {}, schema = {}) => {
-    let type = "unknown";
-    // in case we can not define the type of the element from the uiSchema,
-    // extract the type from the schema
-    if (
-      !uiSchema ||
-      (!uiSchema["ui:widget"] &&
-        !uiSchema["ui:field"] &&
-        !uiSchema["ui:object"])
-    ) {
-      type = schema.type === "string" ? "text" : schema.type;
-    } else {
-      if (uiSchema["ui:widget"]) {
-        type = schema.format === "uri" ? schema.format : uiSchema["ui:widget"];
-      }
-      if (uiSchema["ui:field"]) {
-        type = uiSchema["ui:field"];
-      }
-      if (uiSchema["ui:object"]) {
-        type = uiSchema["ui:object"];
-      }
-    }
-
-    const allFieldTypes = {
-      ...customizationContext.allFieldTypes,
-      hidden: { fields: hiddenFields },
-    };
-
-    for (const category in allFieldTypes) {
-      for (const [key, value] of Object.entries(
-        allFieldTypes[category].fields,
-      )) {
-        if (key === type) {
-          return value.icon;
-        }
-      }
-    }
-    return <QuestionOutlined />;
-  };
-
   const dropdownItems = [
     {
       key: "copy",
@@ -114,7 +68,13 @@ const SchemaTreeItem = ({
         trigger={["contextMenu"]}
       >
         <Row gutter={8} onClick={handleClick} align="middle" wrap={false}>
-          <Col flex="none">{getIconByType(uiSchema, schema)}</Col>
+          <Col flex="none">
+            {getIconByType(
+              schema,
+              uiSchema,
+              customizationContext.allFieldTypes,
+            )}
+          </Col>
           <Col flex="auto">
             <Row
               style={{

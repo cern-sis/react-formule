@@ -18,6 +18,8 @@ import {
   renameIdByPath,
 } from "../../store/schemaWizard";
 import CustomizationContext from "../../contexts/CustomizationContext";
+import { get } from "lodash-es";
+import { getIconByType } from "../utils";
 
 const { useBreakpoint } = Grid;
 
@@ -48,6 +50,7 @@ const renderPath = (path) => {
 
   return <Breadcrumb items={breadcrumbItems} />;
 };
+
 const PropertyEditor = () => {
   const [name, setName] = useState();
   const screens = useBreakpoint();
@@ -56,6 +59,13 @@ const PropertyEditor = () => {
 
   const path = useSelector((state) => state.schemaWizard.field.path);
   const uiPath = useSelector((state) => state.schemaWizard.field.uiPath);
+
+  const schema = useSelector((state) =>
+    get(state.schemaWizard, ["current", "schema", ...path]),
+  );
+  const uiSchema = useSelector((state) =>
+    get(state.schemaWizard, ["current", "uiSchema", ...uiPath]),
+  );
 
   const dispatch = useDispatch();
 
@@ -97,7 +107,7 @@ const PropertyEditor = () => {
         }
       />
       <Row justify="center">
-        <Col xs={22} style={{ paddingBottom: "10px", textAlign: "center" }}>
+        <Col xs={22} style={{ paddingBottom: "10px" }}>
           {renderPath(path)}
         </Col>
         <Col xs={18} data-cy="editFieldId">
@@ -116,13 +126,20 @@ const PropertyEditor = () => {
                   ),
               }
             }
-            style={{ textAlign: "center" }}
+            style={{ textAlign: "center", margin: "10px 0" }}
           >
+            {getIconByType(
+              schema,
+              uiSchema,
+              customizationContext.allFieldTypes,
+            )}{" "}
             {name}
           </Typography.Title>
         </Col>
       </Row>
-      <Customize />
+      <Row style={{ overflowY: "hidden", flex: 1 }}>
+        <Customize />
+      </Row>
     </div>
   );
 };

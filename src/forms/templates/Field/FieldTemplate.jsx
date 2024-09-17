@@ -98,7 +98,11 @@ const FieldTemplate = ({
         <Form.Item
           colon={colon}
           hasFeedback={schema.type !== "array" && schema.type !== "object"}
-          help={(!!rawHelp && help) || (!!rawErrors && renderFieldErrors())}
+          help={
+            (!!rawHelp && help) ||
+            (!!rawErrors && renderFieldErrors()) ||
+            undefined
+          }
           htmlFor={id}
           // displayLabel is always false for custom fields, so we need the or condition
           label={

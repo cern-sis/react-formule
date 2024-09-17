@@ -74,11 +74,11 @@ const Customize = () => {
     <Tabs
       className="scrollableTabs"
       centered
-      style={{ flex: 1 }}
+      style={{ height: "100%", width: "100%" }}
       items={[
         {
           key: "1",
-          label: "Schema Settings",
+          label: "Settings",
           children: (
             <PropertyKeyEditorForm
               schema={schema && schema}
@@ -92,7 +92,7 @@ const Customize = () => {
         },
         {
           key: "2",
-          label: "UI Schema Settings",
+          label: "UI Settings",
           children:
             path.length != 0 ? (
               <PropertyKeyEditorForm
@@ -105,10 +105,7 @@ const Customize = () => {
                 key={uiPath}
               />
             ) : (
-              <Space
-                direction="vertical"
-                style={{ padding: "0 12px", width: "100%" }}
-              >
+              <Space direction="vertical" style={{ padding: "0 12px" }}>
                 <Typography.Text>Size Options</Typography.Text>
                 <Radio.Group
                   size="small"

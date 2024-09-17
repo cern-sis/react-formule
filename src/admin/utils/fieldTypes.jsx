@@ -21,6 +21,8 @@ import {
   UploadOutlined,
 } from "@ant-design/icons";
 import { placeholder } from "@codemirror/view";
+import PropKeyEditorObjectFieldTemplate from "../../forms/templates/PropKeyEditorObjectFieldTemplate";
+import UiOptionsObjectFieldTemplate from "../../forms/templates/UiOptionsObjectFieldTemplate";
 
 // COMMON / EXTRA PROPERTIES:
 
@@ -36,6 +38,9 @@ export const common = {
       type: "string",
       description: "Provide a description to be displayed for your field",
     },
+  },
+  optionsSchemaUiSchema: {
+    "ui:ObjectFieldTemplate": PropKeyEditorObjectFieldTemplate,
   },
   optionsUiSchema: {
     type: "object",
@@ -116,10 +121,12 @@ export const common = {
         "ui:widget": "switch",
       },
       "ui:order": ["showAsModal", "modal", "*"],
+      "ui:ObjectFieldTemplate": UiOptionsObjectFieldTemplate,
     },
     "ui:label": {
       "ui:widget": "switch",
     },
+    "ui:ObjectFieldTemplate": PropKeyEditorObjectFieldTemplate,
   },
 };
 
@@ -149,7 +156,7 @@ export const extra = {
 const collections = {
   object: {
     title: "Object",
-    icon: <div>&#123;&#32;&#125;</div>,
+    icon: <span>&#123;&#32;&#125;</span>,
     description: "Data in JSON format, Grouped section",
     className: "tour-object-field",
     child: {},
@@ -160,7 +167,9 @@ const collections = {
         ...common.optionsSchema,
       },
     },
-    optionsSchemaUiSchema: {},
+    optionsSchemaUiSchema: {
+      ...common.optionsSchemaUiSchema,
+    },
     optionsUiSchema: {
       type: "object",
       title: "UI Schema",
@@ -207,7 +216,9 @@ const collections = {
         ...common.optionsSchema,
       },
     },
-    optionsSchemaUiSchema: {},
+    optionsSchemaUiSchema: {
+      ...common.optionsSchemaUiSchema,
+    },
     optionsUiSchema: {
       type: "object",
       title: "UI Schema",
@@ -231,6 +242,7 @@ const collections = {
       },
     },
     optionsUiSchemaUiSchema: {
+      ...common.optionsUiSchemaUiSchema,
       "ui:options": {
         ...common.optionsUiSchemaUiSchema["ui:options"],
         itemsDisplayTitle: {
@@ -252,7 +264,6 @@ const collections = {
           "ui:field": "codeEditor",
         },
       },
-      "ui:label": common.optionsUiSchemaUiSchema["ui:label"],
     },
 
     default: {
@@ -275,7 +286,9 @@ const collections = {
         ...common.optionsSchema,
       },
     },
-    optionsSchemaUiSchema: {},
+    optionsSchemaUiSchema: {
+      ...common.optionsSchemaUiSchema,
+    },
     optionsUiSchema: {
       ...common.optionsUiSchema,
     },
@@ -304,7 +317,9 @@ const collections = {
         ...common.optionsSchema,
       },
     },
-    optionsSchemaUiSchema: {},
+    optionsSchemaUiSchema: {
+      ...common.optionsSchemaUiSchema,
+    },
     optionsUiSchema: {
       ...common.optionsUiSchema,
     },
@@ -332,7 +347,9 @@ const collections = {
         ...common.optionsSchema,
       },
     },
-    optionsSchemaUiSchema: {},
+    optionsSchemaUiSchema: {
+      ...common.optionsSchemaUiSchema,
+    },
     optionsUiSchema: {
       ...common.optionsUiSchema,
       type: "object",
@@ -392,6 +409,7 @@ const collections = {
       },
     },
     optionsUiSchemaUiSchema: {
+      ...common.optionsUiSchemaUiSchema,
       "ui:options": {
         ...common.optionsUiSchemaUiSchema["ui:options"],
         hideSteps: {
@@ -407,7 +425,6 @@ const collections = {
           "ui:widget": "switch",
         },
       },
-      "ui:label": common.optionsUiSchemaUiSchema["ui:label"],
     },
     default: {
       schema: {
@@ -435,7 +452,9 @@ const collections = {
         ...common.optionsSchema,
       },
     },
-    optionsSchemaUiSchema: {},
+    optionsSchemaUiSchema: {
+      ...common.optionsSchemaUiSchema,
+    },
     optionsUiSchema: {
       ...common.optionsUiSchema,
     },
@@ -478,6 +497,7 @@ const simple = {
       },
     },
     optionsSchemaUiSchema: {
+      ...common.optionsSchemaUiSchema,
       readOnly: extra.optionsSchemaUiSchema.readOnly,
       isRequired: extra.optionsSchemaUiSchema.isRequired,
       pattern: {
@@ -516,6 +536,7 @@ const simple = {
       },
     },
     optionsUiSchemaUiSchema: {
+      ...common.optionsUiSchemaUiSchema,
       "ui:options": {
         ...common.optionsUiSchemaUiSchema["ui:options"],
         mask: {
@@ -526,7 +547,6 @@ const simple = {
           },
         },
       },
-      "ui:label": common.optionsUiSchemaUiSchema["ui:label"],
     },
     default: {
       schema: {
@@ -552,6 +572,7 @@ const simple = {
       },
     },
     optionsSchemaUiSchema: {
+      ...common.optionsSchemaUiSchema,
       readOnly: extra.optionsSchemaUiSchema.readOnly,
       isRequired: extra.optionsSchemaUiSchema.isRequired,
     },
@@ -626,6 +647,7 @@ const simple = {
       },
     },
     optionsSchemaUiSchema: {
+      ...common.optionsSchemaUiSchema,
       readOnly: extra.optionsSchemaUiSchema.readOnly,
       isRequired: extra.optionsSchemaUiSchema.isRequired,
     },
@@ -710,6 +732,7 @@ const simple = {
       },
     },
     optionsSchemaUiSchema: {
+      ...common.optionsSchemaUiSchema,
       readOnly: extra.optionsSchemaUiSchema.readOnly,
       isRequired: extra.optionsSchemaUiSchema.isRequired,
     },
@@ -758,6 +781,7 @@ const simple = {
       },
     },
     optionsSchemaUiSchema: {
+      ...common.optionsSchemaUiSchema,
       readOnly: extra.optionsSchemaUiSchema.readOnly,
       isRequired: extra.optionsSchemaUiSchema.isRequired,
     },
@@ -819,6 +843,7 @@ const simple = {
       },
     },
     optionsSchemaUiSchema: {
+      ...common.optionsSchemaUiSchema,
       readOnly: extra.optionsSchemaUiSchema.readOnly,
       isRequired: extra.optionsSchemaUiSchema.isRequired,
     },
@@ -935,6 +960,7 @@ const simple = {
       ],
     },
     optionsSchemaUiSchema: {
+      ...common.optionsSchemaUiSchema,
       readOnly: extra.optionsSchemaUiSchema.readOnly,
       isRequired: extra.optionsSchemaUiSchema.isRequired,
     },
@@ -991,6 +1017,7 @@ const simple = {
       },
     },
     optionsSchemaUiSchema: {
+      ...common.optionsSchemaUiSchema,
       customFormat: {
         "ui:placeholder": "DD/MM/YYYY",
         "ui:options": {
@@ -1040,6 +1067,7 @@ const advanced = {
       },
     },
     optionsSchemaUiSchema: {
+      ...common.optionsSchemaUiSchema,
       readOnly: extra.optionsSchemaUiSchema.readOnly,
       isRequired: extra.optionsSchemaUiSchema.isRequired,
     },
@@ -1092,6 +1120,7 @@ const advanced = {
       },
     },
     optionsSchemaUiSchema: {
+      ...common.optionsSchemaUiSchema,
       readOnly: extra.optionsSchemaUiSchema.readOnly,
       isRequired: extra.optionsSchemaUiSchema.isRequired,
     },
@@ -1136,6 +1165,7 @@ const advanced = {
       },
     },
     optionsSchemaUiSchema: {
+      ...common.optionsSchemaUiSchema,
       readOnly: extra.optionsSchemaUiSchema.readOnly,
       isRequired: extra.optionsSchemaUiSchema.isRequired,
     },
@@ -1172,6 +1202,7 @@ const advanced = {
       },
     },
     optionsSchemaUiSchema: {
+      ...common.optionsSchemaUiSchema,
       readOnly: extra.optionsSchemaUiSchema.readOnly,
       isRequired: extra.optionsSchemaUiSchema.isRequired,
     },
@@ -1273,6 +1304,7 @@ const advanced = {
       },
     },
     optionsSchemaUiSchema: {
+      ...common.optionsSchemaUiSchema,
       readOnly: extra.optionsSchemaUiSchema.readOnly,
       isRequired: extra.optionsSchemaUiSchema.isRequired,
       validateWithUrl: {
@@ -1449,6 +1481,7 @@ export const hiddenFields = {
       },
     },
     optionsSchemaUiSchema: {
+      ...common.optionsSchemaUiSchema,
       readOnly: extra.optionsSchemaUiSchema.readOnly,
       isRequired: extra.optionsSchemaUiSchema.isRequired,
     },

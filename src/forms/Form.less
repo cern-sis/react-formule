@@ -161,9 +161,29 @@
       font-weight: bold;
     }
   }
+
+  .propKeyCollapse
+    .ant-collapse-content-box
+    fieldset
+    .ant-col
+    .ant-col:last-of-type
+    .ant-form-item:last-of-type {
+    margin-bottom: 0;
+  }
+
+  .propKeyCollapse
+    .ant-collapse-content-box
+    > .form-group:last-of-type
+    > .ant-form-item:last-of-type {
+    margin-bottom: 0;
+  }
 }
 
 .tabItemError {
   background-color: @field-error-bg-color !important;
   color: @field-error-color !important;
+}
+
+.scrollableTabs .ant-tabs-content-holder {
+  overflow-y: scroll;
 }

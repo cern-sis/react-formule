@@ -22,6 +22,7 @@ const ObjectFieldTemplate = ({
   schema,
   title,
   uiSchema,
+  isUiOptions,
 }) => {
   const {
     colSpan = 24,
@@ -95,26 +96,37 @@ const ObjectFieldTemplate = ({
       />
     );
   return (
-    <fieldset style={{ margin: "0 12px" }} id={idSchema.$id}>
-      <Row gutter={rowGutter}>
+    <fieldset
+      style={{
+        padding: isUiOptions && 0,
+      }}
+      id={idSchema.$id}
+    >
+      <Row gutter={rowGutter} style={{ margin: 0 }}>
+        {!isUiOptions && (
+          <Col
+            style={{
+              padding: "0",
+              marginBottom: "12px",
+            }}
+            className={labelColClassName}
+            span={24}
+          >
+            <FieldHeader
+              label={uiSchema["ui:title"] || title}
+              isObject
+              description={uiSchema["ui:description"] || description}
+              uiSchema={uiSchema}
+              idSchema={idSchema}
+              hideAnchors={hideAnchors}
+            />
+          </Col>
+        )}
         <Col
-          style={{
-            padding: "0",
-            marginBottom: "12px",
-          }}
-          className={labelColClassName}
           span={24}
+          className="nestedObject"
+          style={{ padding: isUiOptions && 0 }}
         >
-          <FieldHeader
-            label={uiSchema["ui:title"] || title}
-            isObject
-            description={uiSchema["ui:description"] || description}
-            uiSchema={uiSchema}
-            idSchema={idSchema}
-            hideAnchors={hideAnchors}
-          />
-        </Col>
-        <Col span={24} className="nestedObject">
           <Row gutter={10}>
             {properties
               .filter((e) => !e.hidden)
@@ -130,7 +142,6 @@ const ObjectFieldTemplate = ({
           </Row>
         </Col>
       </Row>
-
       {canExpand(schema, uiSchema, formData) && !readonly && (
         <Col span={24}>
           <Row gutter={rowGutter} justify="end">
