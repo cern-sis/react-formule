@@ -6,16 +6,6 @@ export const SIZE_OPTIONS = {
   xlarge: 24,
 };
 
-export const initSchemaStructure = (name = "New schema", description = "") => ({
-  schema: {
-    title: name,
-    description: description,
-    type: "object",
-    properties: {},
-  },
-  uiSchema: {},
-});
-
 let _addErrors = (errors, path) => {
   errors.addError({ schema: path.schema, uiSchema: path.uiSchema });
 

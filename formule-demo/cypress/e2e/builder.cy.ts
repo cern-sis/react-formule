@@ -5,6 +5,8 @@ const SEP = "\\:\\:";
 describe("test basic functionality", () => {
   beforeEach(() => {
     cy.visit("localhost:3030");
+    // Collapse the float buttons to avoid visibility issues
+    cy.getByDataCy("floatButtons").click();
   });
 
   it("allows drag and drop to the SchemaTree", () => {

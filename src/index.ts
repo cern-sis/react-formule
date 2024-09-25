@@ -1,6 +1,11 @@
 export { initFormuleSchema } from "./exposed";
 export { getFormuleState } from "./exposed";
 export { FormuleContext } from "./exposed";
+export { getAllFromLocalStorage } from "./exposed";
+export { saveToLocalStorage } from "./exposed";
+export { deleteFromLocalStorage } from "./exposed";
+export { loadFromLocalStorage } from "./exposed";
+export { isUnsaved } from "./exposed";
 
 export { default as PropertyEditor } from "./admin/components/PropertyEditor";
 export { default as SelectFieldType } from "./admin/components/SelectFieldType";
