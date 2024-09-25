@@ -6,7 +6,7 @@ This is a small application that serves as a playground to test react-formule.
 
 ### The easy way
 
-Simply run `yarn install` and `yarn dev` in react-formule and visit `localhost:3030`. You will see any changes in react-formule immediately in the demo app.
+Simply run `yarn install` in react-formule, `yarn install` and `yarn dev` in formule-demo and visit `localhost:3030`. You will see any changes in react-formule immediately in the demo app.
 
 **Note:** If you look at `formule-demo/vite.config.local.ts` you will see an alias for `react-formule`. What this does is essentially equivalent to using `yarn link` with `./src/index.ts` as entry point.
 
