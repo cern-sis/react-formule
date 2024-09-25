@@ -1,7 +1,7 @@
 import { MultiBackend } from "react-dnd-multi-backend";
 import { HTML5toTouch } from "rdndmb-html5-to-touch";
 import { DndProvider } from "react-dnd";
-import { Col, Row, Spin } from "antd";
+import { Col, Row } from "antd";
 import PropertyEditor from "../components/PropertyEditor";
 import SelectFieldType from "../components/SelectFieldType";
 import SchemaPreview from "../components/SchemaPreview";
@@ -13,20 +13,12 @@ import { isEmpty } from "lodash-es";
 
 const SchemaWizard = () => {
   const field = useSelector((state) => state.schemaWizard.field);
-  const loader = useSelector((state) => state.schemaWizard.loader);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(schemaInit());
   }, []);
-
-  if (loader)
-    return (
-      <Row style={{ height: "100%" }} align="middle" justify="center">
-        <Spin size="large" />
-      </Row>
-    );
 
   return (
     <DndProvider backend={MultiBackend} options={HTML5toTouch} context={window}>
