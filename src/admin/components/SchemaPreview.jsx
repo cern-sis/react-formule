@@ -5,11 +5,11 @@ import { SettingOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { selectProperty } from "../../store/schemaWizard";
 
-const SchemaPreview = () => {
+const SchemaPreview = ({ hideSchemaKey }) => {
+  const schema = useSelector((state) => state.schemaWizard.current.schema);
+  const id = useSelector((state) => state.schemaWizard.id);
 
-  const schema = useSelector((state) => state.schemaWizard.current.schema)
-
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   return (
     <div style={{ height: "80%" }} data-cy="schemaTree">
@@ -17,11 +17,17 @@ const SchemaPreview = () => {
         <Col span={24}>
           <Typography.Title
             level={4}
-            style={{ textAlign: "center", margin: "15px 0" }}
+            style={{
+              textAlign: "center",
+              margin: hideSchemaKey ? "15px 0" : "15px 0 0 0",
+            }}
           >
             Schema tree
           </Typography.Title>
         </Col>
+        {!hideSchemaKey && (
+          <Typography.Text type="secondary">{id}</Typography.Text>
+        )}
       </Row>
       <Row
         wrap={false}
@@ -29,18 +35,25 @@ const SchemaPreview = () => {
         align="middle"
         style={{ padding: "0 10px" }}
       >
-        <Typography.Title level={5} style={{ margin: 0 }} ellipsis data-cy="rootTitle">
+        <Typography.Title
+          level={5}
+          style={{ margin: 0 }}
+          ellipsis
+          data-cy="rootTitle"
+        >
           {(schema && schema.title) || "root"}
         </Typography.Title>
         <Tooltip title="Edit root settings">
-        <Button
-          type="link"
-          shape="circle"
-          icon={<SettingOutlined />}
-          onClick={() => dispatch(selectProperty({ path: { schema: [], uiSchema: [] }}))}
-          className="tour-root-settings"
-          data-cy="rootSettings"
-        />
+          <Button
+            type="link"
+            shape="circle"
+            icon={<SettingOutlined />}
+            onClick={() =>
+              dispatch(selectProperty({ path: { schema: [], uiSchema: [] } }))
+            }
+            className="tour-root-settings"
+            data-cy="rootSettings"
+          />
         </Tooltip>
       </Row>
       <Row style={{ padding: "0 10px" }}>

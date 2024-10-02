@@ -114,7 +114,6 @@ RJSFForm.propTypes = {
   formContext: PropTypes.object,
   widgets: PropTypes.object,
   mode: PropTypes.string,
-  draftEditor: PropTypes.bool,
   readonly: PropTypes.bool,
   className: PropTypes.string,
   liveValidate: PropTypes.bool,
