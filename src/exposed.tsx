@@ -21,6 +21,7 @@ type FormuleContextProps = {
   customPublishedWidgets?: object;
   theme?: ThemeConfig;
   separator?: string;
+  errorBoundary?: ReactNode;
   synchronizeState?: (state: SchemaWizardState) => void;
   transformSchema?: (schema: object) => object;
 };
@@ -34,6 +35,7 @@ export const FormuleContext = ({
   customPublishedWidgets,
   theme,
   separator = "::",
+  errorBoundary,
   synchronizeState,
   transformSchema = (schema) => schema,
 }: FormuleContextProps) => {
@@ -61,8 +63,9 @@ export const FormuleContext = ({
               customWidgets,
               customPublishedFields,
               customPublishedWidgets,
-              transformSchema,
               separator,
+              errorBoundary,
+              transformSchema,
             }}
           >
             {content}

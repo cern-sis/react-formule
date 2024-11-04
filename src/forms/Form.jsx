@@ -15,6 +15,7 @@ import { useContext } from "react";
 import { Provider, useDispatch } from "react-redux";
 import store from "../store/configureStore";
 import { updateFormData } from "../store/schemaWizard";
+import FormErrorBoundary from "./FormErrorBoundary";
 
 const RJSFForm = ({
   formRef,
@@ -54,50 +55,54 @@ const RJSFForm = ({
     ObjectFieldTemplate: Objects || ObjectFieldTemplate,
   };
 
+  const ErrorBoundary = customizationContext.errorBoundary || FormErrorBoundary;
+
   return (
     <Provider store={store}>
-      <Form
-        className={["__Form__", className].join(" ")}
-        ref={formRef}
-        schema={schema}
-        uiSchema={uiSchema}
-        tagName={tagName}
-        formData={formData}
-        fields={{
-          ...CAPFields,
-          ...customizationContext.customFields,
-          ...fields,
-          ...(isPublished && PublishedFields),
-          ...(isPublished && customizationContext.customPublishedFields),
-        }}
-        widgets={{
-          ...CAPWidgets,
-          ...customizationContext.customWidgets,
-          ...widgets,
-          ...(isPublished && PublishedWidgets),
-          ...(isPublished && customizationContext.customPublishedWidgets),
-        }}
-        templates={templates}
-        liveValidate={liveValidate}
-        showErrorList={showErrorList}
-        noHtml5Validate={true}
-        onError={() => {}}
-        onBlur={() => {}}
-        customValidate={validate}
-        validator={validator}
-        extraErrors={extraErrors}
-        onChange={handleChange}
-        readonly={readonly || isPublished}
-        transformErrors={transformErrors}
-        formContext={{
-          formRef,
-          ...formContext,
-          hideAnchors,
-        }}
-        idSeparator={customizationContext.separator}
-      >
-        <span />
-      </Form>
+      <ErrorBoundary>
+        <Form
+          className={["__Form__", className].join(" ")}
+          ref={formRef}
+          schema={schema}
+          uiSchema={uiSchema}
+          tagName={tagName}
+          formData={formData}
+          fields={{
+            ...CAPFields,
+            ...customizationContext.customFields,
+            ...fields,
+            ...(isPublished && PublishedFields),
+            ...(isPublished && customizationContext.customPublishedFields),
+          }}
+          widgets={{
+            ...CAPWidgets,
+            ...customizationContext.customWidgets,
+            ...widgets,
+            ...(isPublished && PublishedWidgets),
+            ...(isPublished && customizationContext.customPublishedWidgets),
+          }}
+          templates={templates}
+          liveValidate={liveValidate}
+          showErrorList={showErrorList}
+          noHtml5Validate={true}
+          onError={() => {}}
+          onBlur={() => {}}
+          customValidate={validate}
+          validator={validator}
+          extraErrors={extraErrors}
+          onChange={handleChange}
+          readonly={readonly || isPublished}
+          transformErrors={transformErrors}
+          formContext={{
+            formRef,
+            ...formContext,
+            hideAnchors,
+          }}
+          idSeparator={customizationContext.separator}
+        >
+          <span />
+        </Form>
+      </ErrorBoundary>
     </Provider>
   );
 };
