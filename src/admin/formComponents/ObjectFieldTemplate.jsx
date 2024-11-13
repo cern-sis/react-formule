@@ -4,6 +4,7 @@ import RenderSortable from "./RenderSortable";
 import update from "immutability-helper";
 import { useDispatch } from "react-redux";
 import { updateUiSchemaByPath } from "../../store/schemaWizard";
+import { isEqual } from "lodash-es";
 
 const ObjectFieldTemplate = ({
   properties,
@@ -73,7 +74,9 @@ const ObjectFieldTemplate = ({
             card.prop = properties[index];
           });
         }
-        setCards(newCards);
+        if (!isEqual(newCards, cards)) {
+          setCards(newCards);
+        }
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps

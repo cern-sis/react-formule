@@ -43,7 +43,7 @@ Formule consists of the following main components:
 
 It also exports the following functions:
 
-- **`initFormuleSchema`**: Inits the JSONSchema, **_needs_** to be run on startup.
+- **`initFormuleSchema`**: Inits or resets the JSONSchema. You can also load an existing schema by passing it as an argument.
 - **`getFormuleState`**: Formule has its own internal redux state. You can retrieve it at any moment if you so require for more advanced use cases. If you want to continuosly synchronize the Formule state in your app, you can pass a callback function to FormuleContext instead (see below), which will be called every time the form state changes.
 
 And the following utilities:
@@ -51,6 +51,16 @@ And the following utilities:
 - **`CodeEditor`**: Useful if you want to edit the JSON schemas (or any other code) manually.
 - **`CodeViewer`**: Useful if you want to visualize the JSON schemas that are being generated (as you can see in the demo).
 - **`CodeDiffViewer`**: Useful if you want to compare two different JSON schemas, for example to see the changes since the last save.
+
+As well as the following utility functions to handle saving and loading schemas from local storage if you need and for unsaved change detection:
+
+- `getAllFromLocalStorage`
+- `saveToLocalStorage`
+- `deleteFromLocalStorage`
+- `loadFromLocalStorage`
+- `isUnsaved`
+
+Have a look at `src/index.ts` to see all exported components and functions. You can also have a look at `formule-demo` to see how they are used there.
 
 ### Field types
 
@@ -83,20 +93,19 @@ yarn add react-formule
 
 ```jsx
 import {
-    FormuleContext,
-    SelectOrEdit,
-    SchemaPreview,
-    FormPreview,
-    initFormuleSchema
+  FormuleContext,
+  SelectOrEdit,
+  SchemaPreview,
+  FormPreview,
 } from "react-formule";
 
-const useEffect(() => initFormuleSchema(), []);
-
-<FormuleContext>
+return (
+  <FormuleContext>
     <SelectOrEdit />
     <SchemaPreview />
     <FormPreview />
-</FormuleContext>
+  </FormuleContext>
+);
 ```
 
 ### Customizing and adding new field types
@@ -168,8 +177,8 @@ const handleFormuleStateChange = (newState) => {
 Alternatively, you can pull the current state on demand by calling `getFormuleState` at any moment.
 
 > [!TIP]
-> For more examples, feel free to browse around the [CERN Analysis Preservation](https://github.com/cernanalysispreservation/analysispreservation.cern.ch) repository, where we use all the features mentioned above.
+> For more examples, feel free to browse around formule-demo and the [CERN Analysis Preservation](https://github.com/cernanalysispreservation/analysispreservation.cern.ch) repository, where we use all the features mentioned above.
 
 ## :space_invader: Local demo & how to contribute
 
-Apart from trying the online [demo](https://cern-sis.github.io/react-formule/) you can clone the repo and run `formule-demo` to play around. Follow the instructions in its [README](./formule-demo/README.md): it will explain how to install `react-formule` as a local dependency so that you can modify Formule and test the changes live in your host app, which will be ideal if you want to troubleshoot or contribute to the project.
+Apart from trying the online [demo](https://cern-sis.github.io/react-formule/) you can clone the repo and run `formule-demo` to play around. Follow the instructions in its [README](./formule-demo/README.md): it will explain how to install `react-formule` as a local dependency so that you can modify Formule and test the changes live in your host app, which will be ideal if you want to troubleshoot or contribute to the project. Your contributions are welcome! :rocket:

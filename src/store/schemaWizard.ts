@@ -1,26 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { notification } from "antd";
 import { set, get } from "lodash-es";
-import { findParentPath } from "../utils";
+import { findParentPath, itemIdGenerator } from "../utils";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-const initialState = {
+export const initialState = {
   current: {
-    schema: {},
+    schema: {
+      title: "New schema",
+      description: "",
+      type: "object",
+      properties: {},
+    },
     uiSchema: {},
   },
   initial: {
     schema: {},
     uiSchema: {},
   },
-  initialConfig: {},
-  config: {},
+  id: itemIdGenerator(),
   field: {},
   formData: {},
-  propKeyEditor: null,
-  error: null,
-  loader: false,
-  version: null,
 };
 
 export type SchemaWizardState = typeof initialState;
@@ -29,14 +29,12 @@ const schemaWizard = createSlice({
   name: "schemaWizard",
   initialState,
   reducers: {
-    schemaInit(state, action: PayloadAction<{ data; configs }>) {
-      const { data, configs } = action.payload;
+    schemaInit(state, action: PayloadAction<{ data; id }>) {
+      const { data, id } = action.payload;
+      Object.assign(state, initialState);
       state["current"] = data;
       state["initial"] = data;
-      state["config"] = configs;
-      state["version"] = configs.version;
-      state["initialConfig"] = configs;
-      state["loader"] = false;
+      state["id"] = id;
     },
     enableCreateMode(state) {
       state["field"] = {};
@@ -69,7 +67,7 @@ const schemaWizard = createSlice({
       let _path = schemaPath;
       let _uiPath = uiSchemaPath;
 
-      const random_name = `item_${Math.random().toString(36).substring(2, 8)}`;
+      const random_name = `item_${itemIdGenerator()}`;
 
       if (schema.type) {
         if (schema.type == "object") {

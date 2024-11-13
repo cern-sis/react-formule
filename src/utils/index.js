@@ -41,3 +41,5 @@ export const findParentPath = (schemaPath) => {
   }
   return [];
 };
+
+export const itemIdGenerator = () => Math.random().toString(36).substring(2, 8);
