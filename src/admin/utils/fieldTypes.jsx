@@ -26,12 +26,10 @@ export const common = {
     title: {
       type: "string",
       title: "Title",
-      description: "Provide a title to be displayed for your field",
     },
     description: {
       title: "Description",
       type: "string",
-      description: "Provide a description to be displayed for your field",
     },
   },
   optionsUiSchema: {
@@ -121,6 +119,10 @@ export const common = {
 
 export const extra = {
   optionsSchema: {
+    tooltip: {
+      title: "Tooltip",
+      type: "string"
+    },
     readOnly: {
       type: "boolean",
       title: "Read-only",
@@ -171,7 +173,7 @@ const collections = {
             hidden: {
               type: "boolean",
               title: "Do you want this field to be hidden?",
-              description: "If yes, this field will not be visible in the form",
+              tooltip: "If enabled, this field will not be visible in the form",
             },
           },
         },
@@ -180,6 +182,12 @@ const collections = {
     },
     optionsUiSchemaUiSchema: {
       ...common.optionsUiSchemaUiSchema,
+      "ui:options": {
+        ...common.optionsUiSchemaUiSchema["ui:options"],
+        hidden: {
+          "ui:widget": "switch",
+        }
+      }
     },
     default: {
       schema: {
@@ -362,11 +370,12 @@ const simple = {
         ...common.optionsSchema,
         pattern: {
           title: "Validation regex",
-          description:
+          tooltip:
             "The input will be validated against this regex on form submission",
           type: "string",
           format: "regex",
         },
+        tooltip: extra.optionsSchema.tooltip,
         readOnly: extra.optionsSchema.readOnly,
         isRequired: extra.optionsSchema.isRequired,
       },
@@ -392,7 +401,7 @@ const simple = {
             suggestions: {
               type: "string",
               title: "Add a suggestion URL endpoint",
-              description: "Provide an URL endpoint, to fetch data from there",
+              tooltip: "Provide an URL endpoint to fetch data from",
             },
             convertToUppercase: {
               type: "boolean",
@@ -441,6 +450,7 @@ const simple = {
       title: "TextArea Schema",
       properties: {
         ...common.optionsSchema,
+        tooltip: extra.optionsSchema.tooltip,
         readOnly: extra.optionsSchema.readOnly,
         isRequired: extra.optionsSchema.isRequired,
       },
@@ -461,23 +471,20 @@ const simple = {
           properties: {
             ...common.optionsUiSchema.properties["ui:options"].properties,
             rows: {
-              title: "Rows",
-              description: "The number of rows in the textarea",
+              title: "Number of Rows",
+              description: "Default: 4",
               type: "number",
             },
             maxLength: {
-              title: "Max Length",
-              description: "Infinity if not provided",
+              title: "Max Characters",
               type: "number",
             },
             minLength: {
-              title: "Min Length",
-              description: "Empty if not provided",
+              title: "Min Characters",
               type: "number",
             },
             placeholder: {
               title: "Placeholder",
-              description: "Provide a placeholder for the field",
               type: "string",
             },
           },
@@ -515,6 +522,7 @@ const simple = {
             { const: "number", title: "Float" },
           ],
         },
+        tooltip: extra.optionsSchema.tooltip,
         readOnly: extra.optionsSchema.readOnly,
         isRequired: extra.optionsSchema.isRequired,
       },
@@ -554,6 +562,7 @@ const simple = {
             { const: "array", title: "Multiple Options" },
           ],
         },
+        tooltip: extra.optionsSchema.tooltip,
         readOnly: extra.optionsSchema.readOnly,
         isRequired: extra.optionsSchema.isRequired,
       },
@@ -583,9 +592,8 @@ const simple = {
                   enum: ["array"],
                 },
                 items: {
-                  title: "Define your options",
+                  title: "Options",
                   type: "object",
-                  description: "The options for the widget",
                   properties: {
                     enum: {
                       title: "Options List",
@@ -640,7 +648,6 @@ const simple = {
         type: {
           type: "string",
           title: "Type of the returned value",
-          description: "Define the type of the returned value",
           oneOf: [
             { const: "boolean", title: "Boolean" },
             { const: "string", title: "String" },
@@ -668,9 +675,9 @@ const simple = {
             ...common.optionsUiSchema.properties["ui:options"].properties,
             falseToUndefined: {
               type: "boolean",
-              title: "Do you want to return undefined instead of false?",
-              description:
-                "In some cases the returned value is preferred to be undefined than false",
+              title: "Return undefined instead of false?",
+              tooltip:
+                "In some cases the returned value can be preferred to be undefined than false",
             },
           },
         },
@@ -679,6 +686,12 @@ const simple = {
     },
     optionsUiSchemaUiSchema: {
       ...common.optionsUiSchemaUiSchema,
+      "ui:options": {
+        ...common.optionsUiSchemaUiSchema["ui:options"],
+        falseToUndefined: {
+          "ui:widget": "switch",
+        },
+      },
     },
     default: {
       schema: {
@@ -700,14 +713,14 @@ const simple = {
       properties: {
         ...common.optionsSchema,
         enum: {
-          title: "Define your options",
+          title: "Options",
           type: "array",
-          description: "The options for the radio widget",
           items: {
             title: "Radio Option",
             type: "string",
           },
         },
+        tooltip: extra.optionsSchema.tooltip,
         readOnly: extra.optionsSchema.readOnly,
         isRequired: extra.optionsSchema.isRequired,
       },
@@ -751,6 +764,7 @@ const simple = {
             { const: "array", title: "Select multiple values" },
           ],
         },
+        tooltip: extra.optionsSchema.tooltip,
         readOnly: extra.optionsSchema.readOnly,
         isRequired: extra.optionsSchema.isRequired,
       },
@@ -766,9 +780,8 @@ const simple = {
           then: {
             properties: {
               enum: {
-                title: "Define your options",
+                title: "Options",
                 type: "array",
-                description: "The options for the widget",
                 items: {
                   title: "Option",
                   type: "string",
@@ -788,9 +801,8 @@ const simple = {
           then: {
             properties: {
               enum: {
-                title: "Define your options",
+                title: "Options",
                 type: "array",
-                description: "The options for the widget",
                 items: {
                   title: "Option",
                   type: "number",
@@ -810,7 +822,7 @@ const simple = {
           then: {
             properties: {
               items: {
-                title: "Define your options",
+                title: "Options",
                 type: "object",
                 properties: {
                   enum: {
@@ -880,6 +892,7 @@ const simple = {
           type: "string",
           title: "Maximum date allowed",
         },
+        tooltip: extra.optionsSchema.tooltip,
         readOnly: extra.optionsSchema.readOnly,
         isRequired: extra.optionsSchema.isRequired,
       },
@@ -929,6 +942,7 @@ const advanced = {
       title: "URI Schema",
       properties: {
         ...common.optionsSchema,
+        tooltip: extra.optionsSchema.tooltip,
         readOnly: extra.optionsSchema.readOnly,
         isRequired: extra.optionsSchema.isRequired,
       },
@@ -951,7 +965,7 @@ const advanced = {
             suggestions: {
               type: "string",
               title: "Add a suggestion URL endpoint",
-              description: "Provide an URL endpoint, to fetch data from there",
+              tooltip: "Provide a URL endpoint, to fetch data from there",
             },
           },
         },
@@ -981,6 +995,7 @@ const advanced = {
       title: "Rich/LaTeX Editor Schema",
       properties: {
         ...common.optionsSchema,
+        tooltip: extra.optionsSchema.tooltip,
         readOnly: extra.optionsSchema.readOnly,
         isRequired: extra.optionsSchema.isRequired,
       },
@@ -1017,14 +1032,15 @@ const advanced = {
         tagPattern: {
           type: "string",
           title: "Pattern",
-          description: "Provide a regex for your pattern",
+          tooltip: "Only tags matching this regex will be allowed",
         },
         tagPatternErrorMessage: {
           type: "string",
           title: "Pattern error message",
-          description:
-            "Provide a message to display when the input does not match the pattern",
+          tooltip:
+            "Message to display when the input does not match the pattern",
         },
+        tooltip: extra.optionsSchema.tooltip,
         readOnly: extra.optionsSchema.readOnly,
         isRequired: extra.optionsSchema.isRequired,
       },
@@ -1061,6 +1077,7 @@ const advanced = {
       title: "ID Fetcher Schema",
       properties: {
         ...common.optionsSchema,
+        tooltip: extra.optionsSchema.tooltip,
         readOnly: extra.optionsSchema.readOnly,
         isRequired: extra.optionsSchema.isRequired,
       },
@@ -1119,7 +1136,7 @@ const advanced = {
         validateWith: {
           type: "string",
           title: "Validate with",
-          description:
+          tooltip:
             "You can either provide a URL of a UI Schema to validate against or paste the JSON schema directly",
           oneOf: [
             { const: "none", title: "None" },
@@ -1127,6 +1144,7 @@ const advanced = {
             { const: "json", title: "JSON" },
           ],
         },
+        tooltip: extra.optionsSchema.tooltip,
         readOnly: extra.optionsSchema.readOnly,
         isRequired: extra.optionsSchema.isRequired,
       },
@@ -1269,6 +1287,7 @@ export const hiddenFields = {
             { const: "number", title: "Float" },
           ],
         },
+        tooltip: extra.optionsSchema.tooltip,
         readOnly: extra.optionsSchema.readOnly,
         isRequired: extra.optionsSchema.isRequired,
       },
