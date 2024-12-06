@@ -630,7 +630,7 @@ describe("test basic functionality", () => {
     cy.addFieldWithName("tabView", "mytab");
     cy.getByDataCy("treeItem").contains("mytab").as("tabField");
     cy.addFieldWithName("text", "myfield1", "@tabField");
-    cy.addFieldWithName("text", "myfield2", "@tabField");
+    cy.addFieldWithName("checkbox", "myfield2", "@tabField");
 
     cy.getByDataCy("formPreview")
       .find(".ant-menu-item")
@@ -639,13 +639,18 @@ describe("test basic functionality", () => {
     cy.getByDataCy("formPreview")
       .find(`input#root${SEP}mytab${SEP}myfield1`)
       .should("exist");
+    // Verify that the content refreshes properly
     cy.getByDataCy("formPreview")
       .find(".ant-menu-item")
       .contains("myfield2")
       .click();
     cy.getByDataCy("formPreview")
       .find(`input#root${SEP}mytab${SEP}myfield2`)
+      .as("checkboxWidget")
       .should("exist");
+    cy.get("@checkboxWidget").should("not.be.checked");
+    cy.get("@checkboxWidget").click();
+    cy.get("@checkboxWidget").should("be.checked");
   });
 
   it("tests code editor field", () => {

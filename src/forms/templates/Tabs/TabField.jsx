@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useMemo } from "react";
 import PropTypes from "prop-types";
 import {
   Col,
@@ -18,6 +18,8 @@ const TabField = ({ uiSchema, properties, idSchema }) => {
   const { useBreakpoint } = Grid;
   const screens = useBreakpoint();
   const customizationContext = useContext(CustomizationContext);
+  const [anchor, setAnchor] = useState("");
+  const [scroll, setScroll] = useState(false);
 
   let options = uiSchema["ui:options"] || {};
 
@@ -38,9 +40,18 @@ const TabField = ({ uiSchema, properties, idSchema }) => {
       ? analysis_mode[0].content.props.formData == "true"
       : false,
   );
-  const [anchor, setAnchor] = useState("");
-  const [activeTabContent, setActiveTabContent] = useState([]);
-  const [scroll, setScroll] = useState(false);
+
+  const activeTabContent = useMemo(() => {
+    let activeTab = tabs.filter((prop) => prop.name == active);
+    if (options.tabs) {
+      return properties.filter(
+        (prop) =>
+          activeTab[0].content && activeTab[0].content.indexOf(prop.name) > -1,
+      );
+    } else {
+      return activeTab;
+    }
+  }, [active, options.tabs, properties, tabs]);
 
   const updateActive = (newActiveTab) => {
     setActive(newActiveTab);
@@ -60,22 +71,6 @@ const TabField = ({ uiSchema, properties, idSchema }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    let activeTab = tabs.filter((prop) => prop.name == active);
-    if (options.tabs) {
-      setActiveTabContent(
-        properties.filter(
-          (prop) =>
-            activeTab[0].content &&
-            activeTab[0].content.indexOf(prop.name) > -1,
-        ),
-      );
-    } else {
-      setActiveTabContent(activeTab);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active]);
 
   useEffect(() => {
     if (anchor) {
