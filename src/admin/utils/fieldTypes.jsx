@@ -1,14 +1,13 @@
 import {
   AimOutlined,
   AppstoreOutlined,
-  BookOutlined,
   BorderHorizontalOutlined,
   BorderTopOutlined,
   CalendarOutlined,
   CheckSquareOutlined,
   CloudDownloadOutlined,
   CodeOutlined,
-  ContainerOutlined,
+  AlignCenterOutlined,
   FontSizeOutlined,
   LayoutOutlined,
   LinkOutlined,
@@ -16,6 +15,9 @@ import {
   SwapOutlined,
   TagOutlined,
   UnorderedListOutlined,
+  FieldNumberOutlined,
+  FileMarkdownOutlined,
+  NodeIndexOutlined,
 } from "@ant-design/icons";
 import { placeholder } from "@codemirror/view";
 
@@ -54,6 +56,7 @@ export const common = {
             type: "boolean",
           },
         },
+        // Using dependencies here instead of if-then-else simplifies reusing the common properties
         dependencies: {
           showAsModal: {
             oneOf: [
@@ -317,6 +320,108 @@ const collections = {
       },
     },
   },
+  stepsView: {
+    title: "Steps",
+    icon: <NodeIndexOutlined />,
+    child: {},
+    optionsSchema: {
+      type: "object",
+      title: "Steps Field Schema",
+      properties: {
+        ...common.optionsSchema,
+      },
+    },
+    optionsSchemaUiSchema: {},
+    optionsUiSchema: {
+      ...common.optionsUiSchema,
+      type: "object",
+      title: "UI Schema",
+      properties: {
+        "ui:options": {
+          type: "object",
+          title: "UI Options",
+          dependencies:
+            common.optionsUiSchema.properties["ui:options"].dependencies,
+          properties: {
+            ...common.optionsUiSchema.properties["ui:options"].properties,
+            hideSteps: {
+              type: "boolean",
+              title: "Hide steps",
+              tooltip:
+                "Hide the steps and display a simple progress bar instead",
+            },
+          },
+          if: {
+            properties: {
+              hideSteps: {
+                const: false,
+              },
+            },
+          },
+          then: {
+            properties: {
+              stepsPlacement: {
+                type: "string",
+                title: "Steps placement",
+                oneOf: [
+                  { const: "horizontal", title: "Horizontal" },
+                  { const: "vertical", title: "Vertical" },
+                ],
+              },
+              hideButtons: {
+                type: "boolean",
+                title: "Hide buttons",
+                tooltip: "Hide the next and previous buttons",
+              },
+              hideNumbers: {
+                type: "boolean",
+                title: "Hide numbers",
+                tooltip: "Hide the step numbers and show a simple dot instead",
+              },
+              markAsCompleted: {
+                type: "boolean",
+                title: "Mark as completed",
+                tooltip:
+                  "Mark the steps as completed (if correct) after moving to the next one",
+              },
+            },
+          },
+        },
+        "ui:label": common.optionsUiSchema.properties["ui:label"],
+      },
+    },
+    optionsUiSchemaUiSchema: {
+      "ui:options": {
+        ...common.optionsUiSchemaUiSchema["ui:options"],
+        hideSteps: {
+          "ui:widget": "switch",
+        },
+        hideButtons: {
+          "ui:widget": "switch",
+        },
+        hideNumbers: {
+          "ui:widget": "switch",
+        },
+        markAsCompleted: {
+          "ui:widget": "switch",
+        },
+      },
+      "ui:label": common.optionsUiSchemaUiSchema["ui:label"],
+    },
+    default: {
+      schema: {
+        type: "object",
+        properties: {},
+      },
+      uiSchema: {
+        "ui:object": "stepsView",
+        "ui:options": {
+          stepsPlacement: "horizontal",
+          markAsCompleted: true,
+        },
+      },
+    },
+  },
   layerObjectField: {
     title: "Layer",
     icon: <BorderHorizontalOutlined />,
@@ -433,7 +538,7 @@ const simple = {
   },
   textarea: {
     title: "Text area",
-    icon: <ContainerOutlined />,
+    icon: <AlignCenterOutlined />,
     description: "Text Area field",
     child: {},
     optionsSchema: {
@@ -499,7 +604,7 @@ const simple = {
   },
   number: {
     title: "Number",
-    icon: <NumberOutlined />,
+    icon: <FieldNumberOutlined />,
     description: "IDs, order number, rating, quantity",
     child: {},
     optionsSchema: {
@@ -973,7 +1078,7 @@ const advanced = {
   },
   richeditor: {
     title: "Rich/LaTeX editor",
-    icon: <BookOutlined />,
+    icon: <FileMarkdownOutlined />,
     description: "Rich/LaTeX Editor Field",
     child: {},
     optionsSchema: {
