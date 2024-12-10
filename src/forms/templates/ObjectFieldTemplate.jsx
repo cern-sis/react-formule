@@ -6,6 +6,7 @@ import { PlusCircleOutlined } from "@ant-design/icons";
 import TabField from "./Tabs/TabField";
 import PropTypes from "prop-types";
 import FieldHeader from "./Field/FieldHeader";
+import StepsField from "./StepsField";
 
 const ObjectFieldTemplate = ({
   description,
@@ -80,6 +81,14 @@ const ObjectFieldTemplate = ({
   if (uiSchema["ui:object"] == "tabView")
     return (
       <TabField
+        uiSchema={uiSchema}
+        properties={properties}
+        idSchema={idSchema}
+      />
+    );
+  if (uiSchema["ui:object"] == "stepsView")
+    return (
+      <StepsField
         uiSchema={uiSchema}
         properties={properties}
         idSchema={idSchema}

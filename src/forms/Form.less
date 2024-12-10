@@ -4,6 +4,7 @@
 .__Form__ {
   height: 100%;
   fieldset {
+    min-width: 0; // prevents overflow of antd Steps component
     border: 0;
   }
   label {
@@ -114,10 +115,6 @@
     display: none;
   }
 
-  .ant-select-dropdown .ant-select-item-option-content {
-    white-space: break-spaces;
-  }
-
   .formule-field-modal {
     .ant-modal-content .ant-modal-body {
       margin-top: 20px;
@@ -156,6 +153,13 @@
 
   .bounceShadow {
     animation: bounceShadow 5s forwards;
+  }
+
+  .ant-steps-item-icon {
+    border-radius: unset !important;
+    .ant-steps-icon {
+      font-weight: bold;
+    }
   }
 }
 

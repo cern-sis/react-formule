@@ -10,6 +10,7 @@ import {
   UploadOutlined,
   RollbackOutlined,
   ToolOutlined,
+  DownOutlined,
 } from "@ant-design/icons";
 import {
   Button,
@@ -326,7 +327,7 @@ function App() {
             <Row style={{ height: "100%" }}>
               <Col
                 xs={10}
-                sm={5}
+                md={5}
                 style={{
                   overflowX: "hidden",
                   height: "100%",
@@ -337,7 +338,7 @@ function App() {
               </Col>
               <Col
                 xs={14}
-                sm={5}
+                md={5}
                 style={{
                   overflowX: "hidden",
                   padding: "0px 15px",
@@ -348,7 +349,7 @@ function App() {
               </Col>
               <Col
                 xs={24}
-                sm={14}
+                md={14}
                 style={{
                   overflowX: "hidden",
                   height: "100%",
@@ -386,6 +387,7 @@ function App() {
           open={openFloatButtons}
           onClick={() => setOpenFloatButtons(!openFloatButtons)}
           icon={<ToolOutlined />}
+          closeIcon={<DownOutlined />}
           type="primary"
           badge={
             !openFloatButtons && hasUnsavedChanges

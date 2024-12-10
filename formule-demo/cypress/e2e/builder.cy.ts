@@ -648,6 +648,34 @@ describe("test basic functionality", () => {
       .should("exist");
   });
 
+  it("tests steps field", () => {
+    cy.addFieldWithName("stepsView", "mysteps");
+    cy.getByDataCy("treeItem").contains("mysteps").as("stepsField");
+    cy.addFieldWithName("text", "myfield1", "@stepsField");
+    cy.addFieldWithName("text", "myfield2", "@stepsField");
+
+    // Direct navigation
+    cy.getByDataCy("formPreview")
+      .find(`input#root${SEP}mysteps${SEP}myfield1`)
+      .should("exist");
+    cy.getByDataCy("formPreview")
+      .find(".ant-steps-item")
+      .contains("myfield2")
+      .click();
+    cy.getByDataCy("formPreview")
+      .find(`input#root${SEP}mysteps${SEP}myfield2`)
+      .should("exist");
+    // Navigation with previous and next buttons
+    cy.getByDataCy("formPreview").find("button").contains("Previous").click();
+    cy.getByDataCy("formPreview")
+      .find(`input#root${SEP}mysteps${SEP}myfield1`)
+      .should("exist");
+    cy.getByDataCy("formPreview").find("button").contains("Next").click();
+    cy.getByDataCy("formPreview")
+      .find(`input#root${SEP}mysteps${SEP}myfield2`)
+      .should("exist");
+  });
+
   it("tests code editor field", () => {
     const shouldHaveValidationErrors = (point: boolean, range: boolean) => {
       if (!point && !range) {

@@ -13,5 +13,8 @@ export const theme = {
     Segmented: {
       trackBg: "#E4E8EC",
     },
+    Progress: {
+      defaultColor: PRIMARY_COLOR,
+    },
   },
 };

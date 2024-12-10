@@ -98,7 +98,7 @@ const TabField = ({ uiSchema, properties, idSchema }) => {
     if (scroll) {
       const elem = document.getElementById(anchor);
       if (elem) {
-        elem.scrollIntoView(true);
+        elem.scrollIntoView({ behavior: "smooth" });
       }
     }
   }, [activeTabContent, anchor, scroll]);
