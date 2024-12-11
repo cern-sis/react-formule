@@ -1,4 +1,5 @@
-import { Alert, Typography } from "antd";
+import { Alert, Button, Typography } from "antd";
+import { ReloadOutlined } from "@ant-design/icons";
 
 const { ErrorBoundary } = Alert;
 
@@ -39,6 +40,13 @@ const FormErrorBoundary = ({ children }) => (
             </li>
           </ul>
         </Typography.Paragraph>
+        <Button
+          icon={<ReloadOutlined />}
+          onClick={() => window.location.reload()}
+          block
+        >
+          Reload page
+        </Button>
       </div>
     }
   >
