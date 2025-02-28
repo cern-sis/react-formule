@@ -106,10 +106,14 @@ const Customize = () => {
                 key={uiPath}
               />
             ) : (
-              <Space direction="vertical" style={{ padding: "0 12px" }}>
+              <Space
+                direction="vertical"
+                style={{ padding: "0 12px", width: "100%" }}
+              >
                 <Typography.Text>Size Options</Typography.Text>
                 <Radio.Group
                   size="small"
+                  block
                   onChange={(e) => sizeChange(e.target.value)}
                   value={size}
                   style={{ paddingBottom: "15px" }}
@@ -123,6 +127,7 @@ const Customize = () => {
                 <Typography.Text>Align Options</Typography.Text>
                 <Radio.Group
                   size="small"
+                  block
                   onChange={(e) => alignChange(e.target.value)}
                   value={justify}
                 >

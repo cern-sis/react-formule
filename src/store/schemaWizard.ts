@@ -59,9 +59,10 @@ const schemaWizard = createSlice({
       set(state, ["current", "uiSchema", ...path], value);
     },
     updateByPath(state, action) {
-      const { path, value } = action.payload;
-      set(state, ["current", "schema", ...path.schema], value.schema);
-      set(state, ["current", "uiSchema", ...path.uiSchema], value.uiSchema);
+      const { path = [], value } = action.payload;
+      const { schema: schemaPath = [], uiSchema: uiSchemaPath = [] } = path;
+      set(state, ["current", "schema", ...schemaPath], value.schema);
+      set(state, ["current", "uiSchema", ...uiSchemaPath], value.uiSchema);
     },
     addByPath(state, action) {
       const { path, value } = action.payload;
@@ -318,6 +319,7 @@ export const {
   schemaInit,
   enableCreateMode,
   selectProperty,
+  updateByPath,
   updateSchemaByPath,
   updateUiSchemaByPath,
   addByPath,

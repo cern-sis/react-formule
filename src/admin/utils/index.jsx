@@ -81,13 +81,15 @@ export const getIconByType = (schema, uiSchema, fieldTypes) => {
     }
   }
 
-  const allFieldTypes = {
+  const fieldTypesWithHidden = {
     ...fieldTypes,
     hidden: { fields: hiddenFields },
   };
 
-  for (const category in allFieldTypes) {
-    for (const [key, value] of Object.entries(allFieldTypes[category].fields)) {
+  for (const category in fieldTypesWithHidden) {
+    for (const [key, value] of Object.entries(
+      fieldTypesWithHidden[category].fields,
+    )) {
       if (key === type) {
         return <Tooltip title={value.title}>{value.icon}</Tooltip>;
       }

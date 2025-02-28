@@ -190,3 +190,15 @@
 .scrollableTabs .ant-tabs-content-holder {
   overflow-y: scroll;
 }
+
+.gradientBorder:hover {
+  border-image: linear-gradient(45deg, rgb(185, 26, 234), rgb(21, 67, 181)) 1;
+  border-style: solid;
+  outline: none;
+}
+
+.gradientBorder:focus {
+  box-shadow:
+    0 0 5px rgba(185, 26, 234, 0.5),
+    0 0 5px rgba(21, 67, 181, 0.5) !important;
+}
