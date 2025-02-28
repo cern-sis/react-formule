@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
+import svgr from "vite-plugin-svgr";
 import { execSync } from "child_process";
 
 const version = execSync("npm show react-formule version").toString().trim();
@@ -7,7 +8,7 @@ const version = execSync("npm show react-formule version").toString().trim();
 // https://vitejs.dev/config/
 export default defineConfig({
   base: "/react-formule",
-  plugins: [react()],
+  plugins: [svgr(), react()],
   define: {
     "process.env": {},
     "import.meta.env.REACT_FORMULE_VERSION": JSON.stringify(version),

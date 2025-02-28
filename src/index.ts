@@ -25,3 +25,13 @@ export { default as CodeViewer } from "./utils/CodeViewer";
 export { default as CodeDiffViewer } from "./utils/CodeDiffViewer";
 
 export type { SchemaWizardState } from "./store/schemaWizard";
+
+// FormuleAI exports
+export { default as AiChatFooter } from "./ai/AiChatFooter";
+export { default as AiDiff } from "./ai/AiDiff";
+export { default as AiSettingsDialog } from "./ai/AiSettingsDialog";
+export { defaultProviders, defaultGenerationPrompt } from "./ai/defaults";
+export { useGetProvider, useGenerateSchema } from "./ai/hooks";
+export { generatePatches } from "./ai/utils";
+
+export * from "./types";

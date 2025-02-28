@@ -5,8 +5,6 @@ const SEP = "\\:\\:";
 describe("test basic functionality", () => {
   beforeEach(() => {
     cy.visit("localhost:3030");
-    // Collapse the float buttons to avoid visibility issues
-    cy.getByDataCy("floatButtons").click();
   });
 
   it("allows drag and drop to the SchemaTree", () => {
@@ -71,7 +69,7 @@ describe("test basic functionality", () => {
     cy.getByDataCy("treeItem").eq(1).contains("mynumber");
     cy.getByDataCy("treeItem").eq(2).contains("mytextarea");
 
-    cy.moveField("@textField", "@textAreaField");
+    cy.moveField("@textField", "@textAreaField", '[data-cy="dropArea"]');
 
     cy.getByDataCy("treeItem").eq(0).contains("mynumber");
     cy.getByDataCy("treeItem").eq(1).contains("mytextarea");
@@ -121,7 +119,7 @@ describe("test basic functionality", () => {
     cy.getByDataCy("fieldSettings").should("exist");
 
     // Edit field id
-    cy.getByDataCy("editFieldId").find("div[role=button]").click();
+    cy.getByDataCy("editFieldId").find("button").click();
     cy.getByDataCy("editFieldId").find("textarea").clearTypeBlur("myfield");
     cy.get(`div#root${SEP}myfield-title`)
       .find("span")
@@ -180,10 +178,10 @@ describe("test basic functionality", () => {
       .find(".scrollableTabs .ant-tabs-nav-list")
       .find("[data-node-key=2]")
       .click();
-    cy.get(`input#root${SEP}ui\\:options${SEP}convertToUppercase`).click(); // Need to double escape the colon
+    cy.get(`button#root${SEP}ui\\:options${SEP}convertToUppercase`).click(); // Need to double escape the colon
     cy.get("@myfield").clearTypeBlur("asdf");
     cy.get("@myfield").should("have.value", "ASDF");
-    cy.get(`input#root${SEP}ui\\:options${SEP}convertToUppercase`).click();
+    cy.get(`button#root${SEP}ui\\:options${SEP}convertToUppercase`).click();
     cy.get("@myfield").clear();
 
     // Test uiSchema > mask
@@ -401,7 +399,7 @@ describe("test basic functionality", () => {
       .should("exist");
   });
 
-  it.only("tests date field", () => {
+  it("tests date field", () => {
     cy.addFieldWithName("date", "myfield");
     cy.getByDataCy("treeItem").click();
 
@@ -631,16 +629,16 @@ describe("test basic functionality", () => {
     cy.getByDataCy("formPreview")
       .find(`input#root${SEP}myaccordion${SEP}0`)
       .clearTypeBlur("First item");
-    cy.get("@accordionItems").last().click();
     cy.getByDataCy("formPreview")
-      .find(`.ant-collapse-content-hidden`)
+      .find(`.ant-collapse-content`)
       .should("have.length", 1);
+    cy.get("@accordionItems").last().click();
     cy.getByDataCy("formPreview")
       .find(`input#root${SEP}myaccordion${SEP}1`)
       .clearTypeBlur("Second item");
     cy.getByDataCy("formPreview")
-      .find(`.ant-collapse-content-hidden`)
-      .should("have.length", 1);
+      .find(`.ant-collapse-content`)
+      .should("have.length", 2);
   });
 
   it("tests layer field", () => {

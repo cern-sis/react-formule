@@ -4,6 +4,8 @@
 
 [![Try our demo](https://img.shields.io/badge/try_our-🕹️_demo_🕹️-deepskyblue.svg?style=for-the-badge)](https://cern-sis.github.io/react-formule/)
 
+</div>
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![NPM Version](https://img.shields.io/npm/v/react-formule?style=flat-square&color=orchid)](https://www.npmjs.com/package/react-formule?activeTab=readme)
 [![GitHub commits since tagged version](https://img.shields.io/github/commits-since/cern-sis/react-formule/latest?style=flat-square&color=orange)](https://github.com/cern-sis/react-formule/commits/master/)
@@ -12,8 +14,6 @@
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-blue.svg?style=flat-square)](http://commitizen.github.io/cz-cli/)
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/cern-sis/react-formule/cypress.yml?style=flat-square&label=cypress)](https://github.com/cern-sis/react-formule/actions/workflows/cypress.yml)
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/cern-sis/react-formule/deploy-demo.yml?style=flat-square&label=deploy-demo)](https://github.com/cern-sis/react-formule/actions/workflows/commit-lint.yml)
-
-</div>
 
 ## :horse: What is Formule?
 
@@ -276,9 +276,133 @@ const handleSubmit = () => {
 
 </details>
 
-> [!TIP]
-> For more examples, feel free to browse around formule-demo and the [CERN Analysis Preservation](https://github.com/cernanalysispreservation/analysispreservation.cern.ch) repository, where we use all the features mentioned above.
+## ✨ FormuleAI
+
+FormuleAI brings Artificial Intelligence capabilities to Formule, allowing users to **generate and modify form schemas using natural language** prompts. This feature leverages Large Language Models to understand user requirements and automatically create or update form structures.
+
+### How it works
+
+FormuleAI integrates AI providers (like OpenAI or Gemini) to process natural language requests and generate corresponding JSON schemas. The AI understands the current form context and can add new fields, modify existing ones, or restructure entire sections based on your prompts.
+
+By default FormuleAI includes providers for **OpenAI** and **Gemini**, and has been tested to work particularly with `GPT 4.1 Mini` and `Gemini 2.0 Flash`, although it allows you to choose any other model offered by these providers. You can also provide your own API key.
+
+Once you send a request and receive a response back from the LLM, a popover will be displayed showing the diff between the current form and the suggestion, as well as between both JSON schemas, and you will be able to either reject or approve the changes. In the FormuleAI settings, you can also activate the "Vibe Mode", which will auto-apply any change without showing you a diff and asking for approval (use at your own risk).
+
+**Note:** For the moment FormuleAI doesn't keep conversation history, so make sure to always be clear and provide all necessary details in each request.
+
+### Basic usage
+
+The main component you will need to use is **`AiChatFooter`**, a chat interface where users can input their prompts, toggle diffs, and accept or reject changes. It will also allow you to configure some settings and provide some usage instructions.
+
+It can receive the following props: `onApply` and `onReject` callbacks, `hideHelp` and `hideSettings`, and `vibeMode` (false to disable, true to enable, unset to leave the decision up to users via settings).
+
+A basic configuration would be simply:
+
+```jsx
+import { FormuleContext, AiChatFooter } from "react-formule";
+
+<FormuleContext>
+  // your other main formule components
+  <AiChatFooter />
+</FormuleContext>;
+```
+
+<details>
+<summary>Adding <b>custom providers</b> and advanced configuration</summary>
+
+### Customizing AI providers
+
+You can add a new provider, whether commercial or self-hosted, in the following way:
+
+```jsx
+import { defaultProviders } from "react-formule";
+
+const customProviders = {
+  "local-llama": {
+    label: <span>Local llama</span>,
+    // Optional, otherwise users can provide their own via settings
+    apiKey: "your-api-key",
+    // Optional, otherwise users can select one via settings (you need to define fetchModels for that)
+    model: "llama3.1",
+    // Optional (not needed when providing a model), it preselects that model in the model list
+    recommendedModel: { id: "llama3.1", name: "LLaMA 3.1" }
+    // Optional, needed only if you don't provide a model
+    fetchModels: async (apiKey) => {
+      const response = await fetch("https://your-ai-endpoint/models", {
+        headers: { Authorization: `Bearer ${apiKey}` },
+      });
+      const data = await response.json();
+      return data.models.map((model) => ({
+        id: model.id,
+        name: model.display_name,
+      }));
+    },
+    generateSchema: async (
+      prompt,
+      currentSchema,
+      fieldTypes,
+      apiKey,
+      model
+    ) => {
+      const response = await fetch("https://your-ai-endpoint", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${apiKey}` },
+        body: JSON.stringify({
+          model: model,
+          messages: [
+            {
+              role: "system",
+              content: "<your system prompt>",
+            },
+            {
+              role: "user",
+              content: "<your user prompt including fieldTpes and currentSchema>"
+            }
+          ],
+          response_format: { type: "json_object" }
+        }),
+      });
+      return {
+        schema: content.schema,
+        uiSchema: content.uiSchema,
+        usage,  // Optionally you can include token usage stats to be displayed to users
+      };
+      // If error, `return { error: "the error message" }` instead
+    },
+  },
+};
+
+<FormuleContext ai={{ providers: { ...defaultProviders, ...customProviders } }}>
+  // ...
+</FormuleContext>;
+```
+
+If you want to keep the default providers along with your custom ones, you can import `defaultProviders` and include it in your providers object (as you can see in the previous example). Otherwise your new providers will override that configuration.
+
+If an API key or a model is defined in a provider, users will not be able to modify them in the settings for that provider.
+
+### Utility functions, hooks and components
+
+FormuleAI exports several utilities for advanced use cases:
+
+- **`useGenerateSchema`**: Hook for triggering schema generation programmatically
+- **`useGetProvider`**: Hook to access configured AI providers. It will return the provider selected by the user (from localStorage) or otherwise a valid provider which is fully configured (with API key and model) in `ai.providers` if any.
+- **`generatePatches`**: Utility to create JSON patches between schemas, used by FormuleAI for the form diff.
+- **`defaultProviders`**: Configuration of the default providers, mentioned in the examples above.
+- **`defaultGenerationPrompt`**: The default system prompt used by the current providers. It can help as a starting point to experiment with custom providers, but you will likely have to do some adjustments for each one.
+
+There are also two more components that you would normally not need to use explicitly (they are already used by default from `AiChatFooter`) but which are still exposed to give you more flexiility in case you want further customization or to use them on your own custom chat interface implementation:
+
+- **`AiDiff`**: Shows a visual diff of proposed changes before applying them
+- **`AiSettingsDialog`**: Configuration panel for API keys and model selection
+
+For implementation examples and advanced configurations, refer to the default provider implementations in the codebase.
+
+</details>
 
 ## :space_invader: Local demo & how to contribute
 
 Apart from trying the online [demo](https://cern-sis.github.io/react-formule/) you can clone the repo and run `formule-demo` to play around. Follow the instructions in its [README](./formule-demo/README.md): it will explain how to install `react-formule` as a local dependency so that you can modify Formule and test the changes live in your host app, which will be ideal if you want to troubleshoot or contribute to the project. Your contributions are welcome! :rocket:
+
+> [!TIP]
+> For more examples, feel free to browse around formule-demo and the [CERN Analysis Preservation](https://github.com/cernanalysispreservation/analysispreservation.cern.ch) repository, where we use most of the features mentioned above.

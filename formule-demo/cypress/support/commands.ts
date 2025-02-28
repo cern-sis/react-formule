@@ -51,7 +51,7 @@ Cypress.Commands.add("moveField", (fromAlias, toAlias, overAlias) => {
 Cypress.Commands.add("addFieldWithName", (fieldType, name, targetAlias) => {
   cy.addField(fieldType, targetAlias);
   cy.getByDataCy("treeItem").last().click();
-  cy.getByDataCy("editFieldId").find("div[role=button]").click();
+  cy.getByDataCy("editFieldId").find("button").click();
   cy.getByDataCy("editFieldId").find("textarea").clearTypeBlur(name);
   cy.getByDataCy("fieldSettings").find(".anticon-arrow-left").click();
 });

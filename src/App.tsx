@@ -5,6 +5,7 @@ import { ConfigProvider, Layout } from "antd";
 import SchemaWizard from "./admin/components/SchemaWizard";
 import CustomizationContext from "./contexts/CustomizationContext";
 import fieldTypes from "./admin/utils/fieldTypes";
+import { defaultProviders } from "./ai/defaults";
 
 const PRIMARY_COLOR = "#006996";
 
@@ -23,10 +24,17 @@ const App = () => {
           },
         }}
       >
-        <CustomizationContext.Provider value={{ allFieldTypes: fieldTypes}}>
+        <CustomizationContext.Provider
+          value={{
+            allFieldTypes: fieldTypes,
+            separator: "::",
+            transformSchema: (schema) => schema,
+            ai: { providers: defaultProviders },
+          }}
+        >
           <Layout className="__mainLayout__">
             <Layout.Content>
-                <SchemaWizard />
+              <SchemaWizard />
             </Layout.Content>
           </Layout>
         </CustomizationContext.Provider>

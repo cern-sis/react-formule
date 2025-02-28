@@ -13,7 +13,7 @@ const CodeEditorField = ({
   readonly,
 }) => {
   const { validateWith, validateWithUrl, validateWithJson } = schema;
-  const uiOptions = uiSchema["ui:options"];
+  const uiOptions = uiSchema["ui:options"] || {};
   const {
     language = uiOptions.codeEditor?.language,
     height = uiOptions.codeEditor?.height,
