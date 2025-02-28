@@ -1,12 +1,13 @@
 import { useState } from "react";
 import MaskedInput from "./MaskedInput";
-import { Button, InputNumber } from "antd";
+import { Button, Descriptions, InputNumber, Popover } from "antd";
 import PropTypes from "prop-types";
 import { isRegExp } from "lodash-es";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { updateFormData } from "../../../store/schemaWizard";
 import { set, cloneDeep } from "lodash-es";
+import { InfoCircleOutlined } from "@ant-design/icons";
 
 const INPUT_STYLE = {
   width: "100%",
@@ -102,7 +103,7 @@ const TextWidget = ({
           setApiCalling(false);
           setMessage({
             status: "success",
-            message: "Navigate to the next tab to review the fetched values.",
+            message: "Fields successfully autofilled",
           });
         } else {
           setApiCalling(false);
@@ -167,13 +168,37 @@ const TextWidget = ({
       mask={mask}
       convertToUppercase={convertToUppercase}
       message={message}
+      autofillInfo={
+        autofill_from && (
+          <Popover
+            content={
+              <div style={{ maxWidth: "400px", width: "100%" }}>
+                <Descriptions
+                  title="Autofill mappings"
+                  column={1}
+                  size="small"
+                  items={options.autofill_fields.map((field, id) => ({
+                    key: id,
+                    label: field[0].join("."),
+                    children: field[1].join(" > "),
+                  }))}
+                />
+              </div>
+            }
+            trigger="hover"
+          >
+            <InfoCircleOutlined style={{ cursor: "help" }} />
+          </Popover>
+        )
+      }
       buttons={
         autofill_from &&
         autofill_on &&
         autofill_on.includes("onClick") &&
         ((enabled) => (
           <Button
-            type="primary"
+            color="primary"
+            variant="solid"
             disabled={!enabled || readonly}
             loading={apiCalling}
             onClick={() => autoFillOtherFields({ target: { value: value } })}

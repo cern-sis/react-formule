@@ -2,11 +2,13 @@ import Form from "antd/lib/form";
 import PropTypes from "prop-types";
 import FieldHeader from "./FieldHeader";
 
-import { Col, Row, Tag } from "antd";
+import { Col, Row, theme } from "antd";
 import { SIZE_OPTIONS } from "../../../admin/utils";
 import WrapIfAdditional from "./WrapIfAdditional";
 import FieldModal from "./FieldModal";
 import FieldCollapsible from "./FieldCollapsible";
+import { stylePatches } from "../utils";
+import { FieldMessageTag } from "../../../utils/FieldMessageTag";
 
 const VERTICAL_LABEL_COL = { span: 24 };
 const VERTICAL_WRAPPER_COL = { span: 24 };
@@ -37,7 +39,10 @@ const FieldTemplate = ({
     wrapperCol = VERTICAL_WRAPPER_COL,
     wrapperStyle,
     hideAnchors,
+    patches,
   } = formContext;
+
+  const { token } = theme.useToken();
 
   if (hidden) {
     return <div className="field-hidden">{children}</div>;
@@ -104,17 +109,9 @@ const FieldTemplate = ({
           hasFeedback={schema.type !== "array" && schema.type !== "object"}
           help={
             !!rawHelp || !!rawErrors ? (
-              <Tag
-                color="error"
-                bordered={false}
-                style={{
-                  whiteSpace: "normal",
-                  padding: "1px 4px",
-                  lineHeight: "14px",
-                }}
-              >
+              <FieldMessageTag color="error">
                 {(!!rawHelp && help) || (!!rawErrors && renderFieldErrors())}
-              </Tag>
+              </FieldMessageTag>
             ) : undefined
           }
           htmlFor={id}
@@ -129,7 +126,7 @@ const FieldTemplate = ({
           }
           labelCol={labelCol}
           required={required}
-          style={wrapperStyle}
+          style={{ ...wrapperStyle, ...stylePatches(id, patches, token) }}
           validateStatus={rawErrors ? "error" : undefined}
           wrapperCol={wrapperCol}
           tooltip={schema.tooltip}

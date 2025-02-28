@@ -16,4 +16,18 @@ module.exports = {
       { allowConstantExport: true },
     ],
   },
+  overrides: [
+    {
+      files: ["**/builder.cy.ts"],
+      rules: {
+        "no-restricted-properties": [
+          "error",
+          {
+            object: "it",
+            property: "only",
+          },
+        ],
+      },
+    },
+  ],
 };

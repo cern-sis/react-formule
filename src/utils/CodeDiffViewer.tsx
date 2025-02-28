@@ -2,7 +2,7 @@ import { MutableRefObject, useEffect, useRef } from "react";
 import { basicSetup } from "codemirror";
 import { EditorState } from "@codemirror/state";
 import { EditorView } from "@codemirror/view";
-import { MergeView } from "@codemirror/merge";
+import { MergeView, unifiedMergeView } from "@codemirror/merge";
 import { CODEMIRROR_LANGUAGES } from ".";
 
 type CodeDiffViewerProps = {
@@ -10,9 +10,16 @@ type CodeDiffViewerProps = {
   right: string;
   lang?: string;
   height?: string;
+  unified?: boolean;
 };
 
-const CodeDiffViewer = ({ left, right, lang, height }: CodeDiffViewerProps) => {
+const CodeDiffViewer = ({
+  left,
+  right,
+  lang,
+  height,
+  unified,
+}: CodeDiffViewerProps) => {
   const editorRef = useRef() as MutableRefObject<HTMLDivElement>;
 
   useEffect(() => {
@@ -52,19 +59,48 @@ const CodeDiffViewer = ({ left, right, lang, height }: CodeDiffViewerProps) => {
       }),
     ];
 
-    new MergeView({
-      a: {
-        doc: left,
-        extensions: [...extensions, ...leftExtensions],
-      },
-      b: {
-        doc: right,
-        extensions: [...extensions, ...rightExtensions],
-      },
-      parent: editorRef.current,
-      collapseUnchanged: {},
-    });
-  }, [lang, left, right]);
+    const unifiedExtensions = [
+      unifiedMergeView({ original: left, mergeControls: false }),
+      EditorView.theme({
+        ".cm-mergeView & .cm-scroller, .cm-mergeView &": {
+          height: "100% !important",
+        },
+        ".cm-deletedChunk": {
+          "background-color": "#ffeded !important",
+        },
+        ".cm-deletedText": {
+          "background-color": "#ffbaba !important",
+        },
+        del: {
+          "text-decoration": "none",
+        },
+      }),
+      ...rightExtensions,
+    ];
+
+    if (unified) {
+      new EditorView({
+        state: EditorState.create({
+          doc: right,
+          extensions: [...extensions, ...unifiedExtensions],
+        }),
+        parent: editorRef.current,
+      });
+    } else {
+      new MergeView({
+        a: {
+          doc: left,
+          extensions: [...extensions, ...leftExtensions],
+        },
+        b: {
+          doc: right,
+          extensions: [...extensions, ...rightExtensions],
+        },
+        parent: editorRef.current,
+        collapseUnchanged: {},
+      });
+    }
+  }, [lang, left, right, unified]);
 
   return <div style={{ height }} ref={editorRef} />;
 };

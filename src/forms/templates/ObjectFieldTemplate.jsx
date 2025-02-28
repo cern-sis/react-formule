@@ -96,9 +96,11 @@ const ObjectFieldTemplate = ({
     );
   return (
     <fieldset
-      style={{
-        padding: uiSchema["ui:padding"],
-      }}
+      style={
+        "ui:padding" in uiSchema
+          ? { padding: uiSchema["ui:padding"] }
+          : undefined
+      }
       id={idSchema.$id}
     >
       <Row gutter={rowGutter} style={{ margin: 0 }}>
@@ -124,7 +126,11 @@ const ObjectFieldTemplate = ({
         <Col
           span={24}
           className="nestedObject"
-          style={{ padding: uiSchema["ui:padding"] }}
+          style={
+            "ui:padding" in uiSchema
+              ? { padding: uiSchema["ui:padding"] }
+              : undefined
+          }
         >
           <Row gutter={10}>
             {properties
