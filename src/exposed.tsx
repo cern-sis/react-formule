@@ -3,34 +3,17 @@ import { MultiBackend } from "react-dnd-multi-backend";
 import { HTML5toTouch } from "rdndmb-html5-to-touch";
 import { combineFieldTypes } from "./admin/utils";
 import CustomizationContext from "./contexts/CustomizationContext";
-import { ConfigProvider, ThemeConfig } from "antd";
+import { ConfigProvider } from "antd";
 import { Provider } from "react-redux";
 import store from "./store/configureStore";
 import fieldTypes from "./admin/utils/fieldTypes";
-import { ReactNode, SetStateAction } from "react";
+import { SetStateAction } from "react";
 import { RJSFSchema } from "@rjsf/utils";
-import {
-  SchemaWizardState,
-  initialState,
-  schemaInit,
-} from "./store/schemaWizard";
+import { initialState, schemaInit } from "./store/schemaWizard";
 import StateSynchronizer from "./StateSynchronizer";
 import { isEqual, pick } from "lodash-es";
 import { itemIdGenerator } from "./utils";
-
-type FormuleContextProps = {
-  children: ReactNode;
-  customFieldTypes?: object;
-  customFields?: object;
-  customWidgets?: object;
-  customPublishedFields?: object;
-  customPublishedWidgets?: object;
-  theme?: ThemeConfig;
-  separator?: string;
-  errorBoundary?: ReactNode;
-  synchronizeState?: (state: SchemaWizardState) => void;
-  transformSchema?: (schema: object) => object;
-};
+import { FormuleContextProps } from "./types";
 
 const LOCAL_STORAGE_KEY = "formuleForm_";
 
@@ -41,6 +24,7 @@ export const FormuleContext = ({
   customWidgets,
   customPublishedFields,
   customPublishedWidgets,
+  customFunctions,
   theme,
   separator = "::",
   errorBoundary,
@@ -71,6 +55,7 @@ export const FormuleContext = ({
               customWidgets,
               customPublishedFields,
               customPublishedWidgets,
+              customFunctions,
               separator,
               errorBoundary,
               transformSchema,

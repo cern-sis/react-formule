@@ -73,7 +73,7 @@ Formule includes a variety of predefined field types, grouped in three categorie
   - `Accordion`: When containing a `List`, it works as a `List` with collapsible entries.
   - `Layer`: When containing a `List`, it works as a `List` whose entries will open in a dialog window.
   - `Tab`: It's commonly supposed to be used as a wrapper around the rest of the elements. You will normally want to add an `Object` inside and you can use it to separate the form in different pages or sections.
-- **Advanced fields**: More complex or situational fields such as `URI`, `Rich/Latex editor`, `Tags`, `ID Fetcher` and `Code Editor`.
+- **Advanced fields**: More complex or situational fields such as `URI`, `Rich/Latex editor`, `Tags`, `ID Fetcher`, `Code Editor` and `Files`.
 
 You can freely remove some of these predefined fields and add your own custom fields and widgets following the JSON Schema specifications. More details below.
 
@@ -175,6 +175,94 @@ const handleFormuleStateChange = (newState) => {
 ```
 
 Alternatively, you can pull the current state on demand by calling `getFormuleState` at any moment.
+
+### Loading form data / prefill form
+
+If you want to prefill the form with existing data, you can provide the form data to `FormuleForm`. This will fill in the corresponding fields with the information in `formData`:
+
+```jsx
+<FormuleForm
+  formData={{
+    name: "Mule",
+    age: 20,
+    weight: 370,
+  }}
+/>
+```
+
+### Using the Files field
+
+In order to keep Formule's philosophy of storing forms and completion data as simple JSON objects, Formule doesn't directly store files. Instead, it stores only UIDs and leaves the specifics of how, where and when to store the corresponding files up to the user.
+
+<details>
+<summary>More info about <b>fetching and storing files</b> with examples</summary>
+
+#### Fetching files
+
+In order to fetch files from a URL (which can be your backend or a public URL), you will have to provide a `fetchFile` callback function in `customFunctions`. Formule will call this function when first loading a Files field for each of the file UIDs associated to this field, passing the file UID. This function should return a file URL.
+
+```jsx
+<FormuleContext
+  customFunctions={{
+    file: {
+      // You can either directly return the file URL (useful also if you want
+      // to do some kind of caching):
+      fetchFile: (uid) => {
+        return `https://example.com/files/${uid}`;
+      },
+      // Or, if you need to manage e.g. authentication, you can always fetch
+      // the image yourself, doing any processing you find necessary and finally
+      // create an object URL with URL.createObjectURL() and return it:
+      fetchFile: (uid) => {
+        return fetch(`https://example.com/files/${uid}`)
+          .then((response) => response.blob())
+          .then((blob) => URL.createObjectURL(blob));
+      },
+    },
+  }}
+>
+  // ...
+</FormuleContext>
+```
+
+#### Storing files
+
+Formule temporarily stores object URLs of files uploaded in the current session in the Formule state under `files.new`. If you want to persist files you can simply monitor the formule state (see [Syncing Formule state](#syncing-formule-state)) and whenever you want to save them (usually you will want to do it on submission, but you could do it on change) you can read new files from `files.new` and deleted files from `files.deleted`. You can then use that data to trigger the corresponding upload and delete actions in your backend.
+
+```jsx
+// Example of a custom function to handle form submission
+// Only showing file-related logic
+// Assumes you have synchronized the formule state on formuleState
+const handleSubmit = () => {
+  // Upload new files
+  formuleState.files.new.map({uid, url} => {
+    const response = await fetch(url);
+    const blob = await response.blob();
+
+    const formData = new FormData();
+    formData.append('file', blob);
+    formData.append('uid', uid);
+
+    const uploadResponse = await fetch('https://example.com/upload', {
+      method: 'POST',
+      body: formData,
+    });
+    // handle response...
+  })
+
+  // Remove deleted files. You only need to handle this for form edition
+  // (forms already filled-in and saved that are being further modified)
+  // unless you are persisting files on change instead of on submission.
+  formuleState.files.deleted.map(uid => {
+    const response = await fetch(`https://example.com/files/${uid}`, {
+      method: 'DELETE',
+    });
+    // handle response...
+  });
+};
+```
+
+</details>
 
 > [!TIP]
 > For more examples, feel free to browse around formule-demo and the [CERN Analysis Preservation](https://github.com/cernanalysispreservation/analysispreservation.cern.ch) repository, where we use all the features mentioned above.

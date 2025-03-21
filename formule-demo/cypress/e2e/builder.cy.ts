@@ -770,4 +770,109 @@ describe("test basic functionality", () => {
       .invoke("html", JSON.stringify(json2));
     shouldHaveValidationErrors(false, false);
   });
+
+  it("tests file field", () => {
+    cy.get("span").contains("Advanced fields").click();
+    cy.addFieldWithName("file", "myfile");
+    cy.getByDataCy("treeItem").click();
+
+    // Test upload
+    cy.get(".ant-upload-select input[type=file]").selectFile(
+      "cypress/fixtures/sample.pdf",
+      { force: true, action: "drag-drop" }, // testing also drag-drop upload
+    );
+
+    cy.getByDataCy("formPreview")
+      .find(".ant-upload-list-item-name")
+      .contains("sample.pdf")
+      .should("exist");
+
+    // Test thumbnails
+    cy.get(".ant-upload-select input[type=file]").selectFile(
+      "cypress/fixtures/sample.png",
+      { force: true },
+    );
+
+    cy.getByDataCy("formPreview")
+      .find(".ant-upload-list-item-name")
+      .contains("sample.png")
+      .parents(".ant-upload-list-item")
+      .as("uploadItemPng");
+
+    cy.get("@uploadItemPng")
+      .find(".ant-upload-list-item-thumbnail img")
+      .should("be.visible");
+
+    // Test preview
+    cy.get("@uploadItemPng").trigger("mouseover");
+    cy.get("@uploadItemPng").find(".anticon-eye").click();
+
+    cy.get(".ant-image-preview-wrap").should("be.visible");
+    cy.get(".ant-image-preview-close").click();
+
+    // Test deletion
+    cy.get("@uploadItemPng").trigger("mouseover");
+    cy.get("@uploadItemPng").find(".anticon-delete").click();
+
+    cy.getByDataCy("formPreview")
+      .find(".ant-upload-list-item-name")
+      .contains("sample.png")
+      .should("not.exist");
+
+    // Test disable preview
+    cy.get(`button#root${SEP}disablePreview`).click();
+
+    cy.get(".ant-upload-select input[type=file]").selectFile(
+      "cypress/fixtures/sample.png",
+      { force: true },
+    );
+
+    cy.get("@uploadItemPng")
+      .find(".ant-upload-list-item-thumbnail img")
+      .should("not.exist");
+
+    cy.get("@uploadItemPng").find(".anticon-picture").should("be.visible");
+
+    cy.get("@uploadItemPng").trigger("mouseover");
+    cy.get("@uploadItemPng").find(".anticon-eye").should("not.exist");
+
+    // Test max files
+    cy.getByDataCy("formPreview")
+      .find(".ant-upload-list-item")
+      .each(($el) => {
+        cy.wrap($el).trigger("mouseover");
+        cy.wrap($el).find(".anticon-delete").click();
+      });
+
+    cy.get(`input#root${SEP}maxFiles`).clearTypeBlur("1");
+
+    cy.get(".ant-upload-select input[type=file]").selectFile(
+      "cypress/fixtures/sample.pdf",
+      { force: true },
+    );
+
+    cy.getByDataCy("formPreview")
+      .find(".ant-upload-list-item-name")
+      .contains("sample.pdf")
+      .should("exist");
+
+    // simply checking if the upload button is now hidden
+    // (not trying with selectFile as it would success since the input file would still be there, just hidden)
+    cy.get(".ant-upload-select").should("have.css", "display", "none");
+
+    // Test allowed extensions
+    // (can't test the actual logic as selectFile seems to ignore the html file accept attribute)
+    cy.get(`fieldset#root${SEP}accept`).getByDataCy("addItemButton").click();
+    cy.get(`input#root${SEP}accept${SEP}0`).clearTypeBlur(".pdf");
+
+    cy.get(".ant-upload-select input[type=file]").should(
+      "have.attr",
+      "accept",
+      ".pdf",
+    );
+
+    cy.getByDataCy("formPreview")
+      .find('[data-cy="fileAllowedExtensionsText"]')
+      .should("contain.text", "Allowed file extensions: .pdf");
+  });
 });

@@ -18,6 +18,7 @@ import {
   FieldNumberOutlined,
   FileMarkdownOutlined,
   NodeIndexOutlined,
+  UploadOutlined,
 } from "@ant-design/icons";
 import { placeholder } from "@codemirror/view";
 
@@ -1348,6 +1349,75 @@ const advanced = {
         "ui:options": {
           language: "none",
         },
+      },
+    },
+  },
+  file: {
+    title: "Files",
+    icon: <UploadOutlined />,
+    description: "Upload files",
+    child: {},
+    optionsSchema: {
+      type: "object",
+      title: "Files Schema",
+      properties: {
+        ...common.optionsSchema,
+        maxFiles: {
+          title: "Maximum number of files",
+          description: "Default or 0 = infinite",
+          type: "integer",
+          minimum: 0,
+        },
+        accept: {
+          title: "Allowed extensions",
+          description:
+            "E.g. `.pdf`, `.png` (include the dot). Leave empty to allow all extensions",
+          type: "array",
+          uniqueItems: true,
+          items: {
+            type: "string",
+            pattern: "^\\.[a-zA-Z0-9]+$",
+          },
+        },
+        disablePreview: {
+          title: "Disable preview",
+          description: "Disables image thumbnails and previews",
+          type: "boolean",
+        },
+        readOnly: extra.optionsSchema.readOnly,
+        isRequired: extra.optionsSchema.isRequired,
+      },
+    },
+    optionsSchemaUiSchema: {
+      readOnly: extra.optionsSchemaUiSchema.readOnly,
+      isRequired: extra.optionsSchemaUiSchema.isRequired,
+      accept: {
+        "ui:options": {
+          descriptionIsMarkdown: true,
+        },
+        items: {
+          "ui:label": false,
+        },
+      },
+      disablePreview: {
+        "ui:widget": "switch",
+      },
+    },
+    optionsUiSchema: {
+      ...common.optionsUiSchema,
+    },
+    optionsUiSchemaUiSchema: {
+      ...common.optionsUiSchemaUiSchema,
+    },
+    default: {
+      schema: {
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
+      uiSchema: {
+        "ui:field": "file",
       },
     },
   },

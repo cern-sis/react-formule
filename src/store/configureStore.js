@@ -8,13 +8,25 @@ const preloadedState = () => {
   } catch (error) {
     console.error("Error parsing formuleCurrent from localStorage: ", error);
   }
-  return parsedData || { schemaWizard: initialState };
+  return {
+    schemaWizard: {
+      ...initialState,
+      ...(parsedData?.schemaWizard || {}),
+    },
+  };
 };
 
 export const persistMiddleware = ({ getState }) => {
   return (next) => (action) => {
     const result = next(action);
-    localStorage.setItem("formuleCurrent", JSON.stringify(getState()));
+    const state = getState();
+    const persistedData = {
+      schemaWizard: {
+        current: state.schemaWizard.current,
+        id: state.schemaWizard.id,
+      },
+    };
+    localStorage.setItem("formuleCurrent", JSON.stringify(persistedData));
     return result;
   };
 };

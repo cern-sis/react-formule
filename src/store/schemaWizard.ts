@@ -21,6 +21,10 @@ export const initialState = {
   id: itemIdGenerator(),
   field: {},
   formData: {},
+  files: {
+    new: {},
+    deleted: [] as string[],
+  },
 };
 
 export type SchemaWizardState = typeof initialState;
@@ -237,6 +241,18 @@ const schemaWizard = createSlice({
       const { value } = action.payload;
       state["formData"] = value;
     },
+    addFile(state, action: PayloadAction<{ uid: string; objectUrl: string }>) {
+      const { uid, objectUrl } = action.payload;
+      state.files.new[uid] = objectUrl;
+    },
+    removeNewFile(state, action: PayloadAction<{ uid: string }>) {
+      const { uid } = action.payload;
+      delete state.files.new[uid];
+    },
+    removeExistingFile(state, action: PayloadAction<{ uid: string }>) {
+      const { uid } = action.payload;
+      state.files.deleted.push(uid);
+    },
   },
 });
 
@@ -251,6 +267,9 @@ export const {
   renameIdByPath,
   updateRequired,
   updateFormData,
+  addFile,
+  removeNewFile,
+  removeExistingFile,
 } = schemaWizard.actions;
 
 export default schemaWizard.reducer;
