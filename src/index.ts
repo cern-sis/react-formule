@@ -6,6 +6,7 @@ export { saveToLocalStorage } from "./exposed";
 export { deleteFromLocalStorage } from "./exposed";
 export { loadFromLocalStorage } from "./exposed";
 export { isUnsaved } from "./exposed";
+export { FormuleForm } from "./exposed";
 
 export { default as PropertyEditor } from "./admin/components/PropertyEditor";
 export { default as SelectFieldType } from "./admin/components/SelectFieldType";
@@ -13,8 +14,6 @@ export { default as SchemaPreview } from "./admin/components/SchemaPreview";
 export { default as FormPreview } from "./admin/components/FormPreview";
 export { default as EditablePreview } from "./admin/components/EditablePreview";
 export { default as SelectOrEdit } from "./admin/components/SelectOrEdit";
-
-export { default as FormuleForm } from "./forms/Form";
 
 export {
   common as commonFields,

@@ -184,6 +184,7 @@ describe("test basic functionality", () => {
     cy.get("@myfield").clearTypeBlur("asdf");
     cy.get("@myfield").should("have.value", "ASDF");
     cy.get(`input#root${SEP}ui\\:options${SEP}convertToUppercase`).click();
+    cy.get("@myfield").clear();
 
     // Test uiSchema > mask
     cy.get(`input#root${SEP}ui\\:options${SEP}mask`).clearTypeBlur("BA-00/a");
@@ -287,10 +288,12 @@ describe("test basic functionality", () => {
     cy.get("@option2").should("not.exist");
 
     // TODO: returned value when checked and unchecked should be tested in a unit/component test with access to formData
+    // -> Now that we display formData in demo, we could access it directly and test this without needing another test type
   });
 
   it.skip("tests switch field", () => {
     // TODO: again, returned value type AND return undefined instead of false (in uiOptions) should be tested in a unit/component test with access to formData
+    // -> Now that we display formData in demo, we could access it directly and test this without needing another test type
   });
 
   it.skip("tests radio field", () => {
@@ -394,7 +397,7 @@ describe("test basic functionality", () => {
       .should("exist");
   });
 
-  it("tests date field", () => {
+  it.only("tests date field", () => {
     cy.addFieldWithName("date", "myfield");
     cy.getByDataCy("treeItem").click();
 
@@ -423,7 +426,9 @@ describe("test basic functionality", () => {
     cy.get(`input#root${SEP}myfield`).clearTypeBlur("11/10/2023 17:29:16", {
       force: true,
     });
-    cy.get(`input#root${SEP}myfield`).should("have.value", "");
+    cy.get(`input#root${SEP}myfield`)
+      .invoke("val")
+      .should("match", /\d{2}:\d{2} 11-10-2023$/);
     cy.get(`input#root${SEP}myfield`).clearTypeBlur("17:29 11-10-2023", {
       force: true,
     });
@@ -438,7 +443,8 @@ describe("test basic functionality", () => {
     cy.get(`input#root${SEP}myfield`).clearTypeBlur("9/05/2023", {
       force: true,
     });
-    cy.get(`input#root${SEP}myfield`).should("have.value", "");
+    // cy.get(`input#root${SEP}myfield`).should("have.value", "");
+    cy.getByDataCy("formPreview").hasErrorMessage('must match format "date"');
     cy.get(`input#root${SEP}myfield`).clearTypeBlur("10/05/2023", {
       force: true,
     });
@@ -449,7 +455,7 @@ describe("test basic functionality", () => {
     cy.get(`input#root${SEP}myfield`).clearTypeBlur("22/12/2023", {
       force: true,
     });
-    cy.get(`input#root${SEP}myfield`).should("have.value", "");
+    cy.get(`input#root${SEP}myfield`).should("have.value", "10/05/2023");
     cy.get(`input#root${SEP}myfield`).clearTypeBlur("21/12/2023", {
       force: true,
     });

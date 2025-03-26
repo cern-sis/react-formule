@@ -12,9 +12,8 @@ import { Form } from "@rjsf/antd";
 import validator from "@rjsf/validator-ajv8";
 import CustomizationContext from "../contexts/CustomizationContext";
 import { useContext } from "react";
-import { Provider, useDispatch } from "react-redux";
+import { Provider } from "react-redux";
 import store from "../store/configureStore";
-import { updateFormData } from "../store/schemaWizard";
 import FormErrorBoundary from "./FormErrorBoundary";
 
 const RJSFForm = ({
@@ -41,13 +40,6 @@ const RJSFForm = ({
   isPublished,
 }) => {
   const customizationContext = useContext(CustomizationContext);
-
-  const dispatch = useDispatch();
-
-  const handleChange = (change) => {
-    onChange && onChange(change);
-    dispatch(updateFormData({ value: change.formData }));
-  };
 
   const templates = {
     FieldTemplate: Fields || FieldTemplate,
@@ -90,7 +82,7 @@ const RJSFForm = ({
           customValidate={validate}
           validator={validator}
           extraErrors={extraErrors}
-          onChange={handleChange}
+          onChange={onChange}
           readonly={readonly || isPublished}
           transformErrors={transformErrors}
           formContext={{

@@ -2,13 +2,16 @@ import { useContext } from "react";
 import Form from "../../forms/Form";
 import { shoudDisplayGuideLinePopUp } from "../utils";
 import { Row, Empty, Space, Typography } from "antd";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CustomizationContext from "../../contexts/CustomizationContext";
+import { updateFormData } from "../../store/schemaWizard";
 
 const EditablePreview = ({ hideTitle, liveValidate }) => {
   const schema = useSelector((state) => state.schemaWizard.current.schema);
   const uiSchema = useSelector((state) => state.schemaWizard.current.uiSchema);
   const formData = useSelector((state) => state.schemaWizard.formData);
+
+  const dispatch = useDispatch();
 
   const customizationContext = useContext(CustomizationContext);
 
@@ -47,7 +50,9 @@ const EditablePreview = ({ hideTitle, liveValidate }) => {
           schema={customizationContext.transformSchema(schema)}
           uiSchema={uiSchema}
           formData={formData || {}}
-          onChange={() => {}}
+          onChange={(change) =>
+            dispatch(updateFormData({ value: change.formData }))
+          }
           liveValidate={liveValidate}
         />
       )}

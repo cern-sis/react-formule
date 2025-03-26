@@ -4,16 +4,17 @@ import { HTML5toTouch } from "rdndmb-html5-to-touch";
 import { combineFieldTypes } from "./admin/utils";
 import CustomizationContext from "./contexts/CustomizationContext";
 import { ConfigProvider } from "antd";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import store from "./store/configureStore";
 import fieldTypes from "./admin/utils/fieldTypes";
 import { SetStateAction } from "react";
 import { RJSFSchema } from "@rjsf/utils";
-import { initialState, schemaInit } from "./store/schemaWizard";
+import { initialState, schemaInit, updateFormData } from "./store/schemaWizard";
 import StateSynchronizer from "./StateSynchronizer";
 import { isEqual, pick } from "lodash-es";
 import { itemIdGenerator } from "./utils";
 import { FormuleContextProps } from "./types";
+import RJSFForm from "./forms";
 
 const LOCAL_STORAGE_KEY = "formuleForm_";
 
@@ -69,10 +70,23 @@ export const FormuleContext = ({
   );
 };
 
+export const FormuleForm = (props) => {
+  const dispatch = useDispatch();
+
+  return (
+    <RJSFForm
+      {...props}
+      onChange={(change) =>
+        dispatch(updateFormData({ value: change.formData }))
+      }
+    />
+  );
+};
+
 export const initFormuleSchema = (
   data?: RJSFSchema,
   title?: string,
-  description?: string,
+  description?: string
 ) => {
   const { schema, uiSchema, id } = data || {};
   store.dispatch(
@@ -86,7 +100,7 @@ export const initFormuleSchema = (
         uiSchema: uiSchema || initialState.current.uiSchema,
       },
       id: id || itemIdGenerator(),
-    }),
+    })
   );
 };
 
@@ -122,7 +136,7 @@ const storagePromise = (func) => {
       window.addEventListener("storage", () => handleStorageEvent(resolve));
       func();
       window.dispatchEvent(new Event("storage"));
-    },
+    }
   );
 };
 
@@ -132,20 +146,20 @@ export const saveToLocalStorage = () => {
     const localStorageKey = `${LOCAL_STORAGE_KEY}${formuleState.id}`;
     localStorage.setItem(
       localStorageKey,
-      JSON.stringify({ ...formuleState.current, id: formuleState.id }),
+      JSON.stringify({ ...formuleState.current, id: formuleState.id })
     );
   });
 };
 
 export const deleteFromLocalStorage = (id: string) => {
   return storagePromise(() =>
-    localStorage.removeItem(`${LOCAL_STORAGE_KEY}${id}`),
+    localStorage.removeItem(`${LOCAL_STORAGE_KEY}${id}`)
   );
 };
 
 export const loadFromLocalStorage = (id: string) => {
   const localState = JSON.parse(
-    localStorage.getItem(`${LOCAL_STORAGE_KEY}${id}`) || "{}",
+    localStorage.getItem(`${LOCAL_STORAGE_KEY}${id}`) || "{}"
   );
   initFormuleSchema(localState);
 };
@@ -153,10 +167,10 @@ export const loadFromLocalStorage = (id: string) => {
 export const isUnsaved = () => {
   const formuleState = store.getState().schemaWizard;
   const localState = JSON.parse(
-    localStorage.getItem(`${LOCAL_STORAGE_KEY}${formuleState.id}`) ?? "{}",
+    localStorage.getItem(`${LOCAL_STORAGE_KEY}${formuleState.id}`) ?? "{}"
   );
   return !isEqual(
     formuleState.current,
-    pick(localState, ["schema", "uiSchema"]),
+    pick(localState, ["schema", "uiSchema"])
   );
 };
