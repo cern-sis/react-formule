@@ -39,6 +39,7 @@ const RJSFForm = ({
   transformErrors,
   hideAnchors,
   isPublished,
+  saveFormData = false,
 }) => {
   const customizationContext = useContext(CustomizationContext);
 
@@ -46,7 +47,7 @@ const RJSFForm = ({
 
   const handleChange = (change) => {
     onChange && onChange(change);
-    dispatch(updateFormData({ value: change.formData }));
+    saveFormData && dispatch(updateFormData({ value: change.formData }));
   };
 
   const templates = {

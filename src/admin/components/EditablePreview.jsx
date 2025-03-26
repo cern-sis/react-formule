@@ -49,6 +49,7 @@ const EditablePreview = ({ hideTitle, liveValidate }) => {
           formData={formData || {}}
           onChange={() => {}}
           liveValidate={liveValidate}
+          saveFormData
         />
       )}
     </>
