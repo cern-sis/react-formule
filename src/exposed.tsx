@@ -17,6 +17,7 @@ import {
 import StateSynchronizer from "./StateSynchronizer";
 import { isEqual, pick } from "lodash-es";
 import { itemIdGenerator } from "./utils";
+import RJSFForm from "./forms";
 
 type FormuleContextProps = {
   children: ReactNode;
@@ -83,6 +84,10 @@ export const FormuleContext = ({
     </Provider>
   );
 };
+
+export const FormuleForm = (props) => (
+  <RJSFForm {...props} saveFormData={true} />
+);
 
 export const initFormuleSchema = (
   data?: RJSFSchema,
