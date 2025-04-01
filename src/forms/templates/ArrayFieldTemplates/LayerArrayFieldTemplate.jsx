@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { List, Modal, Typography } from "antd";
+import { List, Modal, theme, Typography } from "antd";
 import { render } from "squirrelly";
 import { isFieldContainsError } from "../utils";
 import ArrayUtils from "./ArrayUtils";
+import { ExpandOutlined } from "@ant-design/icons";
 
 const LayerArrayFieldTemplate = ({ items = [], uiSchema }) => {
   const [itemToDisplay, setItemToDisplay] = useState(null);
   const [visible, setVisible] = useState(false);
+
+  const { token } = theme.useToken();
 
   // FIXME: stringifyTmpl and stringify are deprecated and will be removed in favor of itemsDisplayTitle
   const stringifyItem = (options, item) => {
@@ -95,16 +98,26 @@ const LayerArrayFieldTemplate = ({ items = [], uiSchema }) => {
               "layerListItem",
               isFieldContainsError(item) && "layerItemError",
             ]}
+            onClick={() => {
+              setVisible(true);
+              setItemToDisplay({
+                index: item.index,
+                children: item.children,
+              });
+            }}
             actions={getActionsButtons(item)}
             style={{
-              border: "1px solid #f0f0f0",
-              padding: "0 10px",
+              border: `1px solid ${token.colorBorder}`,
+              padding: "0px 16px",
               marginBottom: "5px",
               backgroundColor: "white",
             }}
+            extra={
+              item.readonly && <ExpandOutlined style={{ fontSize: "10px" }} />
+            }
           >
             <List.Item.Meta
-              title={
+              description={
                 <Typography.Text ellipsis>
                   {stringifyItem(
                     item?.children?.props?.uiSchema?.["ui:options"] ?? null,
@@ -112,14 +125,7 @@ const LayerArrayFieldTemplate = ({ items = [], uiSchema }) => {
                   ) || `Item #${item.index + 1}`}
                 </Typography.Text>
               }
-              onClick={() => {
-                setVisible(true);
-                setItemToDisplay({
-                  index: item.index,
-                  children: item.children,
-                });
-              }}
-              style={{ padding: "10px 0" }}
+              style={{ padding: "12px 0" }}
             />
           </List.Item>
         )}

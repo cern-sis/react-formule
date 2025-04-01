@@ -10,7 +10,7 @@ import {
 } from "@rjsf/utils";
 import PropTypes from "prop-types";
 import FixedArrayFieldTemplate from "./FixedArrayFieldTemplate";
-import NormalArrayFieldTemplate from "./NormalArrayFieldTemplate";
+import NormalArrayFieldTemplate from "./ArrayFieldTemplate";
 
 const ArrayFieldTemplate = ({
   autofocus,

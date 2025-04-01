@@ -27,7 +27,10 @@ const ArrayUtils = ({
                     <ArrowUpOutlined />
                   </Row>
                 }
-                onClick={onReorderClick(index, index - 1)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onReorderClick(index, index - 1)();
+                }}
                 type="link"
                 size="small"
                 style={{ height: "16px" }}
@@ -41,7 +44,10 @@ const ArrayUtils = ({
                     <ArrowDownOutlined />
                   </Row>
                 }
-                onClick={onReorderClick(index, index + 1)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onReorderClick(index, index + 1)();
+                }}
                 type="link"
                 size="small"
                 style={{ height: "16px" }}
@@ -55,7 +61,10 @@ const ArrayUtils = ({
               danger
               disabled={disabled}
               icon={<DeleteOutlined />}
-              onClick={onDropIndexClick(index)}
+              onClick={(e) => {
+                e.stopPropagation();
+                onDropIndexClick(index)();
+              }}
               type="link"
               size="small"
               style={{ height: "32px" }}
