@@ -8,6 +8,7 @@ const AccordionArrayFieldTemplate = ({ items = [], formContext, id }) => {
 
   return (
     <Collapse
+      accordion
       expandIconPosition="right"
       items={items.map((item, index) => ({
         key: index,
