@@ -6,6 +6,7 @@ import {
   Grid,
   Popconfirm,
   Row,
+  Space,
   Typography,
 } from "antd";
 import { PageHeader } from "@ant-design/pro-layout";
@@ -114,26 +115,38 @@ const PropertyEditor = () => {
           <Typography.Title
             level={5}
             editable={
-              path.length && {
+              path.length &&
+              path[path.length - 1] != "items" && {
                 text: name,
-                onChange: (value) =>
+                onChange: (value) => {
                   dispatch(
                     renameIdByPath({
                       path: { path, uiPath },
                       newName: value,
                       separator: customizationContext.separator,
                     }),
-                  ),
+                  );
+                },
+                onStart: () => {
+                  // using setTimeout to ensure the input is mounted
+                  setTimeout(() => {
+                    document
+                      .querySelector(".ant-typography-edit-content textarea")
+                      ?.select();
+                  }, 0);
+                },
               }
             }
             style={{ textAlign: "center", margin: "10px 0" }}
           >
-            {getIconByType(
-              schema,
-              uiSchema,
-              customizationContext.allFieldTypes,
-            )}{" "}
-            {name}
+            <Space wrap={false}>
+              {getIconByType(
+                schema,
+                uiSchema,
+                customizationContext.allFieldTypes,
+              )}
+              {name}
+            </Space>
           </Typography.Title>
         </Col>
       </Row>

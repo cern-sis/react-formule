@@ -4,8 +4,6 @@
 
 [![Try our demo](https://img.shields.io/badge/try_our-🕹️_demo_🕹️-deepskyblue.svg?style=for-the-badge)](https://cern-sis.github.io/react-formule/)
 
-</div>
-
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![NPM Version](https://img.shields.io/npm/v/react-formule?style=flat-square&color=orchid)](https://www.npmjs.com/package/react-formule?activeTab=readme)
 [![GitHub commits since tagged version](https://img.shields.io/github/commits-since/cern-sis/react-formule/latest?style=flat-square&color=orange)](https://github.com/cern-sis/react-formule/commits/master/)
@@ -14,6 +12,8 @@
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-blue.svg?style=flat-square)](http://commitizen.github.io/cz-cli/)
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/cern-sis/react-formule/cypress.yml?style=flat-square&label=cypress)](https://github.com/cern-sis/react-formule/actions/workflows/cypress.yml)
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/cern-sis/react-formule/deploy-demo.yml?style=flat-square&label=deploy-demo)](https://github.com/cern-sis/react-formule/actions/workflows/commit-lint.yml)
+
+</div>
 
 ## :horse: What is Formule?
 
@@ -70,8 +70,8 @@ Formule includes a variety of predefined field types, grouped in three categorie
 - **Collections**:
   - `Object`: Use it of you want to group fields or to add several of them inside of a `List`.
   - `List`: It allows you to have as many instances of a field or `Object` as you want.
-  - `Accordion`: When containing a `List`, it works as a `List` with collapsible entries.
-  - `Layer`: When containing a `List`, it works as a `List` whose entries will open in a dialog window.
+  - `Accordion`: It works as a `List` with collapsible entries.
+  - `Layer`: It works as a `List` whose entries will open in a dialog window.
   - `Tab`: It's commonly supposed to be used as a wrapper around the rest of the elements. You will normally want to add an `Object` inside and you can use it to separate the form in different pages or sections.
 - **Advanced fields**: More complex or situational fields such as `URI`, `Rich/Latex editor`, `Tags`, `ID Fetcher`, `Code Editor` and `Files`.
 
@@ -110,27 +110,39 @@ return (
 
 ### Customizing and adding new field types
 
-Override (if existing) or create your own field types (rjsf type definitions) similarly to how it's done in `fieldTypes.jsx`, passing them as `customFieldTypes`. Implement your own custom fields and widgets (react components) by passing them as `customFields` and/or `customWidgets` (see `forms/fields/` and `forms/widgets/` for examples). If you also want to use a different published version of a field or widget, pass the component in `customPublishedFields` or `customPublishedWidgets`.
+Override (if existing) or create your own field types (rjsf type definitions) similarly to how it's done in `fieldTypes.jsx`, passing them as `customFieldTypes`. Implement your own custom fields and widgets (react components) by passing them as `customFields` and/or `customWidgets` (see `forms/fields/` and `forms/widgets/` for examples). If you also want to use a different published version of a field or widget, pass the component in `customPublishedFields` or `customPublishedWidgets`. You can read more about the difference between fields and widgets and how to customize or wrap them in the [rjsf docs](https://rjsf-team.github.io/react-jsonschema-form/docs/advanced-customization/custom-widgets-fields), but make sure you provide Formule with something like the following:
 
 ```jsx
+const CustomWidget = ({value, required, onChange}) => {
+  return (
+    <input
+      type='text'
+      className='custom'
+      value={value}
+      required={required}
+      onChange={(event) => onChange(event.target.value)}
+    />
+  );
+};
+
 const customFieldTypes = {
   advanced: {
-    myfield: {
+    myCustomWidget: {
       title: ...
       ...
     }
   }
 }
 
-const customFields: {
-  myfield: MyField  // react component
+const customWidgets: {
+  myCustomWidget: CustomWidget
 }
 
 <FormuleContext
   theme={{token: {colorPrimary: "blue"}}} // antd theme
   customFieldTypes={customFieldTypes}
-  customFields={customFields}
-  customWidgets={...}
+  customFields={...}
+  customWidgets={customWidgets}
   customPublishedFields={...}
   customPublishedWidgets={...}>
 // ...

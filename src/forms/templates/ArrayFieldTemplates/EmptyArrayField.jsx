@@ -13,9 +13,9 @@ const EmptyArrayField = ({
     <Empty
       image={Empty.PRESENTED_IMAGE_SIMPLE}
       imageStyle={{
-        height: 35,
+        height: 30,
       }}
-      style={{ margin: "5px" }}
+      style={{ margin: "15px" }}
       description={"No Items added"}
     >
       {canAdd && !readonly && (

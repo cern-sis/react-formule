@@ -108,7 +108,10 @@ const FieldTemplate = (props) => {
       // The HoverBox wrapper here is needed to allow dropping items into objects
       // or arrays directly without having to expand them first
       <HoverBox
-        addProperty={(path, value) => dispatch(addByPath({ path, value }))}
+        addProperty={(path, value) => {
+          setDisplay(true);
+          dispatch(addByPath({ path, value }));
+        }}
         key={id}
         path={path}
         shouldHideChildren={shouldBoxHideChildren(uiSchema)}

@@ -32,11 +32,6 @@
     visibility: visible;
   }
 
-  .nestedObject {
-    padding-top: 10px;
-    padding-bottom: 10px;
-  }
-
   .nestedObject .nestedObject .nestedObject,
   .nestedObject .nestedObject .nestedObject .nestedObject .nestedObject,
   .nestedObject
@@ -119,6 +114,21 @@
     .ant-modal-content .ant-modal-body {
       margin-top: 20px;
       padding: 10px 0;
+    }
+  }
+
+  .formule-field-collapsible > .ant-collapse-item {
+    > .ant-collapse-header {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      padding-top: 0 !important;
+
+      .ant-collapse-expand-icon {
+        margin: 0 !important;
+      }
+    }
+    > .ant-collapse-content > .ant-collapse-content-box {
+      padding: 0 !important;
     }
   }
 

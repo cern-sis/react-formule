@@ -1,6 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
 import { notification } from "antd";
-import { set, get } from "lodash-es";
+import { set, get, isEmpty } from "lodash-es";
 import { findParentPath, itemIdGenerator } from "../utils";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
@@ -67,21 +67,53 @@ const schemaWizard = createSlice({
       const { path, value } = action.payload;
       const { schema: schemaPath, uiSchema: uiSchemaPath } = path;
       const schema = get(state, ["current", "schema", ...schemaPath]);
+      const uiSchema = get(state, ["current", "uiSchema", ...uiSchemaPath]);
 
       let _path = schemaPath;
       let _uiPath = uiSchemaPath;
-
-      const random_name = `item_${itemIdGenerator()}`;
+      const randomName = `item_${itemIdGenerator()}`;
 
       if (schema.type) {
         if (schema.type == "object") {
-          if (!schema.properties) schema.properties = {};
-          _path = [...schemaPath, "properties", random_name];
-          _uiPath = [...uiSchemaPath, random_name];
+          schema.properties = schema.properties || {};
+          _path = [...schemaPath, "properties", randomName];
+          _uiPath = [...uiSchemaPath, randomName];
         } else if (schema.type == "array") {
-          if (!schema.items) schema.items = {};
-          _path = [...schemaPath, "items"];
-          _uiPath = [...uiSchemaPath, "items"];
+          schema.items = schema.items || {};
+
+          if (Object.keys(schema.items).length === 1) {
+            const randomNameForExisting = `item_${itemIdGenerator()}`;
+            const objWithExisting = {
+              schema: {
+                type: "object",
+                properties: {
+                  [randomNameForExisting]: { ...current(schema.items) },
+                },
+              },
+              uiSchema: {
+                [randomNameForExisting]: { ...current(uiSchema.items) },
+              },
+            };
+            // Replace items with an object, then add the existing item to object's properties
+            schemaWizard.caseReducers.updateByPath(state, {
+              payload: {
+                path: {
+                  schema: [..._path, "items"],
+                  uiSchema: [..._uiPath, "items"],
+                },
+                value: objWithExisting,
+              },
+              type: "schemaWizard/updateByPath",
+            });
+          }
+
+          _path = !isEmpty(schema.items.properties)
+            ? [...schemaPath, "items", "properties", randomName]
+            : [...schemaPath, "items"];
+
+          _uiPath = !isEmpty(schema.items.properties)
+            ? [...uiSchemaPath, "items", randomName]
+            : [...uiSchemaPath, "items"];
         }
       }
 
@@ -97,35 +129,53 @@ const schemaWizard = createSlice({
       const { path } = action.payload;
       const { path: schemaPath, uiPath: uiSchemaPath } = path;
 
+      // Remove the field from required fields
       schemaWizard.caseReducers.updateRequired(state, {
         payload: { path: schemaPath, isRequired: false },
         type: "schemaWizard/updateRequired",
       });
 
-      // Schema:
       const newSchemaPath = [...schemaPath];
       let itemToDelete = newSchemaPath.pop();
-      // if the last item is items then pop again since it is an array, in order to fetch the proper id
-      itemToDelete =
-        itemToDelete === "items" ? newSchemaPath.pop() : itemToDelete;
+      // If the last item is items we know it's an array, pop again to fetch the proper id
+      if (itemToDelete === "items") {
+        itemToDelete = newSchemaPath.pop();
+      }
 
-      const schema = get(state, ["current", "schema", ...newSchemaPath]);
-      const updatedSchema = { ...schema };
-      delete updatedSchema[itemToDelete];
-
-      // uiSchema:
       const newUiSchemaPath = [...uiSchemaPath];
-      const uiItemToDelete = newUiSchemaPath.pop();
+      newUiSchemaPath.pop();
 
-      const uiSchema = get(state, ["current", "uiSchema", ...newUiSchemaPath]);
-      const updatedUiSchema = { ...uiSchema };
-      delete updatedUiSchema[uiItemToDelete];
+      const currentSchema =
+        get(state, ["current", "schema", ...newSchemaPath]) || {};
+      const currentUiSchema =
+        get(state, ["current", "uiSchema", ...newUiSchemaPath]) || {};
+
+      let updatedSchemas;
+
+      const isArrayItems = newSchemaPath[newSchemaPath.length - 2] === "items";
+
+      // Special handling for array items with exactly 2 fields: we need to remove
+      // the object inside and put the other field directly in the array
+      if (isArrayItems && Object.keys(currentSchema).length === 2) {
+        const remainingKey = Object.keys(currentSchema).find(
+          (key) => key !== itemToDelete,
+        );
+        updatedSchemas = {
+          schema: remainingKey ? currentSchema[remainingKey] : {},
+          uiSchema: remainingKey ? currentUiSchema[remainingKey] : {},
+        };
+        newSchemaPath.pop();
+      } else {
+        updatedSchemas = { schema: currentSchema, uiSchema: currentUiSchema };
+        delete updatedSchemas.schema[itemToDelete];
+        delete updatedSchemas.uiSchema[itemToDelete];
+      }
 
       // Update changes:
       schemaWizard.caseReducers.updateByPath(state, {
         payload: {
           path: { schema: newSchemaPath, uiSchema: newUiSchemaPath },
-          value: { schema: updatedSchema, uiSchema: updatedUiSchema },
+          value: updatedSchemas,
         },
         type: "schemaWizard/updateByPath",
       });

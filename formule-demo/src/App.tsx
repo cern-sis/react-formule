@@ -350,11 +350,7 @@ function App() {
               <Col
                 xs={24}
                 md={14}
-                style={{
-                  overflowX: "hidden",
-                  height: "100%",
-                  padding: "0px 25px",
-                }}
+                style={{ overflowX: "hidden", height: "100%" }}
               >
                 <FormPreview liveValidate={true} hideAnchors={false} />
               </Col>

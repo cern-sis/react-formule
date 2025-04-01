@@ -20,7 +20,7 @@ import {
 import FieldHeader from "../Field/FieldHeader";
 import TitleField from "../../fields/internal/TitleField";
 
-const NormalArrayFieldTemplate = ({
+const ArrayFieldTemplate = ({
   canAdd,
   className,
   disabled,
@@ -63,21 +63,18 @@ const NormalArrayFieldTemplate = ({
     uiEmailDefaults = uiSchema["ui:options"].emailDefaults || [];
   }
 
-  let typeOfArrayToDisplay =
-    uiSchema && uiSchema.items && uiSchema.items["ui:object"]
-      ? uiSchema.items["ui:object"]
-      : "default";
+  let arrayType = uiSchema?.["ui:array"] || "default";
 
   const getArrayContent = (type) => {
     const choices = {
-      layerObjectField: (
+      layer: (
         <LayerArrayFieldTemplate
           items={items}
           uiSchema={uiSchema}
           id={idSchema.$id}
         />
       ),
-      accordionObjectField: (
+      accordion: (
         <AccordionArrayFieldTemplate
           items={items}
           formContext={formContext}
@@ -272,12 +269,19 @@ const NormalArrayFieldTemplate = ({
             />
           </div>
         )}
-        <Col span={24} style={{ marginTop: "5px" }} className="nestedObject">
+        <Col
+          span={24}
+          style={{
+            marginTop: "5px",
+            ...(arrayType != "default" && { padding: 0 }),
+          }}
+          className={arrayType === "default" && "nestedObject"}
+        >
           <Row>
             {items && (
               <Col span={24}>
                 {items.length > 0 ? (
-                  getArrayContent(typeOfArrayToDisplay)
+                  getArrayContent(arrayType)
                 ) : (
                   <EmptyArrayField
                     canAdd={canAdd}
@@ -294,7 +298,7 @@ const NormalArrayFieldTemplate = ({
         {items && items.length > 0 && canAdd && !readonly && (
           <Col span={24} style={{ marginTop: "10px" }}>
             <Row gutter={rowGutter} justify="end">
-              <Col flex="192px">
+              <Col style={{ padding: 0 }}>
                 <Button
                   block
                   disabled={disabled || readonly}
@@ -322,7 +326,7 @@ const NormalArrayFieldTemplate = ({
   );
 };
 
-NormalArrayFieldTemplate.propTypes = {
+ArrayFieldTemplate.propTypes = {
   canAdd: PropTypes.bool,
   className: PropTypes.string,
   disabled: PropTypes.bool,
@@ -339,4 +343,4 @@ NormalArrayFieldTemplate.propTypes = {
   formData: PropTypes.object,
 };
 
-export default NormalArrayFieldTemplate;
+export default ArrayFieldTemplate;

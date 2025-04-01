@@ -44,23 +44,26 @@ const ArrayFieldTemplate = (props) => {
           {Object.keys(props.schema.items).length == 0 ? (
             <DropArea />
           ) : (
-            <Form
-              schema={props.schema.items}
-              uiSchema={props.uiSchema.items}
-              formData={{}}
-              tagName="div"
-              showErrorList={false}
-              FieldTemplate={FieldTemplate}
-              ObjectFieldTemplate={ObjectFieldTemplate}
-              ArrayFieldTemplate={ArrayFieldTemplate}
-              liveValidate={true}
-              validate={_validate}
-              noHtml5Validate={true}
-              onChange={() => {}}
-              formContext={{ ..._path, nestedForm: true }}
-            >
-              <span />
-            </Form>
+            <>
+              <Form
+                schema={props.schema.items}
+                uiSchema={props.uiSchema.items}
+                formData={{}}
+                tagName="div"
+                showErrorList={false}
+                FieldTemplate={FieldTemplate}
+                ObjectFieldTemplate={ObjectFieldTemplate}
+                ArrayFieldTemplate={ArrayFieldTemplate}
+                liveValidate={true}
+                validate={_validate}
+                noHtml5Validate={true}
+                onChange={() => {}}
+                formContext={{ ..._path, nestedForm: true }}
+              >
+                <span />
+              </Form>
+              {!props.schema.items.properties && <DropArea />}
+            </>
           )}
         </div>
       )}

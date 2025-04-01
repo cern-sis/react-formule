@@ -28,7 +28,7 @@ export const _validate = function (formData, errors) {
 };
 
 export const shoudDisplayGuideLinePopUp = (schema) => {
-  return schema.properties && schema.properties.size === 0;
+  return schema.properties && Object.keys(schema.properties).length === 0;
 };
 
 export const isItTheArrayField = (schema, uiSchema) => {
@@ -62,7 +62,13 @@ export const getIconByType = (schema, uiSchema, fieldTypes) => {
     !uiSchema ||
     (!uiSchema["ui:widget"] && !uiSchema["ui:field"] && !uiSchema["ui:object"])
   ) {
-    type = schema.type === "string" ? "text" : schema.type;
+    if (schema.type === "string") {
+      type = "text";
+    } else if (schema.type === "array" && uiSchema?.["ui:array"]) {
+      type = uiSchema["ui:array"];
+    } else {
+      type = schema.type;
+    }
   } else {
     if (uiSchema["ui:widget"]) {
       type = schema.format === "uri" ? schema.format : uiSchema["ui:widget"];

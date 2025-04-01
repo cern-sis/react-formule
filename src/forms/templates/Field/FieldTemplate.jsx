@@ -2,10 +2,11 @@ import Form from "antd/lib/form";
 import PropTypes from "prop-types";
 import FieldHeader from "./FieldHeader";
 
-import { Col, Row } from "antd";
+import { Col, Row, Tag } from "antd";
 import { SIZE_OPTIONS } from "../../../admin/utils";
 import WrapIfAdditional from "./WrapIfAdditional";
 import FieldModal from "./FieldModal";
+import FieldCollapsible from "./FieldCollapsible";
 
 const VERTICAL_LABEL_COL = { span: 24 };
 const VERTICAL_WRAPPER_COL = { span: 24 };
@@ -50,6 +51,7 @@ const FieldTemplate = ({
   const { ["ui:options"]: uiOptions = {} } = uiSchema;
 
   const shouldShowAsModal = uiOptions?.showAsModal === true;
+  const collapsible = uiOptions?.collapsible === true;
 
   const FieldHeaderWithProps = (
     <FieldHeader
@@ -74,6 +76,8 @@ const FieldTemplate = ({
         tooltip={schema.tooltip}
       />
     );
+  } else if (collapsible) {
+    _children = <FieldCollapsible id={id} label={label} content={children} />;
   } else {
     _children = children;
   }
@@ -99,14 +103,25 @@ const FieldTemplate = ({
           colon={colon}
           hasFeedback={schema.type !== "array" && schema.type !== "object"}
           help={
-            (!!rawHelp && help) ||
-            (!!rawErrors && renderFieldErrors()) ||
-            undefined
+            !!rawHelp || !!rawErrors ? (
+              <Tag
+                color="error"
+                bordered={false}
+                style={{
+                  whiteSpace: "normal",
+                  padding: "1px 4px",
+                  lineHeight: "14px",
+                }}
+              >
+                {(!!rawHelp && help) || (!!rawErrors && renderFieldErrors())}
+              </Tag>
+            ) : undefined
           }
           htmlFor={id}
           // displayLabel is always false for custom fields, so we need the or condition
           label={
             !shouldShowAsModal &&
+            !collapsible &&
             (displayLabel ||
               (uiSchema["ui:field"] && uiSchema["ui:label"] != false)) &&
             label &&

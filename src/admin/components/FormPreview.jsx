@@ -28,7 +28,7 @@ const FormPreview = ({ liveValidate, hideAnchors }) => {
       }}
       data-cy="formPreview"
     >
-      <Row justify="center" style={{ margin: "15px" }}>
+      <Row justify="center" style={{ margin: "18px" }}>
         <Segmented
           options={[
             { label: "Editable", value: "editable", icon: <EditOutlined /> },
@@ -39,17 +39,26 @@ const FormPreview = ({ liveValidate, hideAnchors }) => {
           onChange={handleSegmentChange}
         />
       </Row>
-      {segment === "editable" ? (
-        <EditablePreview hideTitle liveValidate={liveValidate} />
-      ) : (
-        <Form
-          schema={customizationContext.transformSchema(schema)}
-          uiSchema={uiSchema}
-          formData={formData}
-          hideAnchors={hideAnchors}
-          isPublished
-        />
-      )}
+      <div
+        style={{
+          padding: "0 25px",
+          flex: 1,
+          overflowY: "auto",
+          overflowX: "hidden",
+        }}
+      >
+        {segment === "editable" ? (
+          <EditablePreview hideTitle liveValidate={liveValidate} />
+        ) : (
+          <Form
+            schema={customizationContext.transformSchema(schema)}
+            uiSchema={uiSchema}
+            formData={formData}
+            hideAnchors={hideAnchors}
+            isPublished
+          />
+        )}
+      </div>
     </div>
   );
 };
