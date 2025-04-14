@@ -1,7 +1,7 @@
 import { useDrop } from "react-dnd";
 import PropTypes from "prop-types";
 
-import { theme } from "antd"
+import { theme } from "antd";
 
 const getStyle = (isOverCurrent, token) => {
   const style = {
@@ -12,11 +12,10 @@ const getStyle = (isOverCurrent, token) => {
   return isOverCurrent
     ? {
         outline: `1px solid ${token.colorPrimary}`,
-        outlineOffset: "-1px",
         ...style,
       }
     : style;
-}
+};
 
 const HoverBox = ({
   path,
@@ -25,8 +24,7 @@ const HoverBox = ({
   children,
   shouldHideChildren,
 }) => {
-
-  const {token} = theme.useToken()
+  const { token } = theme.useToken();
 
   const [{ isOverCurrent }, drop] = useDrop({
     accept: "FIELD_TYPE",
@@ -38,18 +36,22 @@ const HoverBox = ({
         return { item, path, propKey };
       }
     },
-    collect: monitor => ({
+    collect: (monitor) => ({
       isOver: monitor.isOver(),
       isOverCurrent: monitor.isOver({ shallow: true }),
     }),
   });
 
   return (
-    <div ref={drop} style={getStyle(isOverCurrent, token)} data-cy="hoverBox">
+    <div
+      ref={drop}
+      style={getStyle(isOverCurrent, token, path)}
+      data-cy="hoverBox"
+    >
       {children}
     </div>
   );
-}
+};
 
 HoverBox.propTypes = {
   children: PropTypes.element,
@@ -59,5 +61,4 @@ HoverBox.propTypes = {
   shouldHideChildren: PropTypes.bool,
 };
 
-
-export default HoverBox
+export default HoverBox;

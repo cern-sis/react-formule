@@ -1,9 +1,9 @@
-import { useState, useEffect, useCallback } from "react";
+import { useMemo, useCallback, useState, useRef } from "react";
 import PropTypes from "prop-types";
-import RenderSortable from "./RenderSortable";
-import update from "immutability-helper";
 import { useDispatch } from "react-redux";
 import { updateUiSchemaByPath } from "../../store/schemaWizard";
+import SortableBox from "./SortableBox";
+import { theme } from "antd";
 
 const ObjectFieldTemplate = ({
   properties,
@@ -11,137 +11,107 @@ const ObjectFieldTemplate = ({
   formContext,
   idSchema,
 }) => {
-  const [cards, setCards] = useState([]);
+  const [tempItems, setTempItems] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
+
+  const originalOrderRef = useRef(null);
+
+  const { token } = theme.useToken();
 
   const dispatch = useDispatch();
 
-  useEffect(
-    () => {
-      let propertiesLength = properties.length;
-      let cardsLength = cards.length;
+  const sortedItems = useMemo(() => {
+    return properties.map((prop, index) => ({
+      id: index + 1,
+      name: prop.name,
+      prop,
+    }));
+  }, [properties]);
 
-      // if there is difference between the two arrays means that something changed
-      // an item might be deleted, and we want to re fetch everything from properties and update the cards
-      if (propertiesLength < cardsLength) {
-        let temp = [];
-        properties.map((prop, index) => {
-          let item = {
-            id: index + 1,
-            name: prop.name,
-            prop: prop,
-          };
+  const displayedItems = tempItems || sortedItems;
 
-          temp.push(item);
-        });
-        setCards(temp);
+  const updateOrderInStore = useCallback(
+    (items) => {
+      const currentOrder = (uiSchema["ui:order"] || []).filter(
+        (o) => o !== "*",
+      );
+      const newOrder = items.map((item) => item.name);
+
+      if (JSON.stringify(newOrder) === JSON.stringify(currentOrder)) {
+        return;
       }
 
-      // if there is no change with the number of the items it means that either there is a re ordering
-      // or some update at each props data
-      if (propertiesLength === cardsLength) {
-        let uiCards = cards.map((item) => item.name);
-        let uiProperties = properties.map((item) => item.name);
-        let different;
-        uiProperties.map((item) => {
-          if (!uiCards.includes(item)) {
-            different = item;
-          }
-        });
-
-        const newCards = [...cards];
-
-        // the different variable will define if there was a change in the prop keys or there is just a re ordering
-        if (different) {
-          let diffIndex;
-          uiCards.map((item, index) => {
-            if (!uiProperties.includes(item)) diffIndex = index;
-          });
-
-          let itemProps;
-          properties.map((item) => {
-            if (item.name === different) itemProps = item;
-          });
-
-          let item = {
-            id: diffIndex + 1,
-            name: different,
-            prop: itemProps,
-          };
-          newCards[diffIndex] = item;
-        } else {
-          newCards.map((card, index) => {
-            card.prop = properties[index];
-          });
-        }
-        setCards(newCards);
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [properties],
-  );
-
-  // Updates the uiSchema after the cards update with the new ui:order
-  // (so that the form preview displays the correct order)
-  useEffect(() => {
-    const uiCards = cards.map((item) => item.name);
-    const uiProperties = properties.map((item) => item.name);
-    const { ...rest } = uiSchema;
-
-    const isOrderChanged = !uiCards.every(
-      (card, index) => card === uiProperties[index],
-    );
-
-    if (isOrderChanged) {
       dispatch(
         updateUiSchemaByPath({
           path: formContext.uiSchema.length > 0 ? formContext.uiSchema : [],
           value: {
-            ...rest,
-            "ui:order": [...uiCards, "*"],
+            ...uiSchema,
+            "ui:order": [...newOrder, "*"],
           },
         }),
       );
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cards]);
-
-  // create a new array to keep track of the changes in the order
-  properties.map((prop, index) => {
-    if (index != cards.length) {
-      return;
-    }
-
-    let item = {
-      id: index + 1,
-      name: prop.name,
-      prop: prop,
-    };
-
-    setCards([...cards, item]);
-  });
-
-  const moveCard = useCallback(
-    (dragIndex, hoverIndex) => {
-      const dragCard = cards[dragIndex];
-      if (dragCard) {
-        setCards(
-          update(cards, {
-            $splice: [
-              [dragIndex, 1],
-              [hoverIndex, 0, dragCard],
-            ],
-          }),
-        );
-      }
     },
-    [cards],
+    [dispatch, formContext.uiSchema, uiSchema],
   );
-  if (idSchema.$id == "root") {
+
+  const onDragStart = useCallback(() => {
+    if (!originalOrderRef.current) {
+      originalOrderRef.current = [...sortedItems];
+    }
+    setIsDragging(true);
+  }, [sortedItems]);
+
+  // Handle drag cancellation (escape key press or drop outside container)
+  const onDragCancel = useCallback(() => {
+    if (originalOrderRef.current) {
+      updateOrderInStore(originalOrderRef.current);
+      originalOrderRef.current = null;
+    }
+    setTempItems(null);
+  }, [updateOrderInStore]);
+
+  const moveItem = useCallback(
+    (dragIndex, hoverIndex) => {
+      setTempItems((prevItems) => {
+        const items = prevItems || [...sortedItems];
+        const newItems = [...items];
+        const [movedItem] = newItems.splice(dragIndex, 1);
+        newItems.splice(hoverIndex, 0, movedItem);
+
+        updateOrderInStore(newItems);
+
+        return newItems;
+      });
+    },
+    [sortedItems, updateOrderInStore],
+  );
+
+  if (idSchema.$id === "root") {
     return (
-      <div>
-        {cards.map((card, i) =>
-          RenderSortable(formContext.uiSchema, card, i, moveCard),
-        )}
+      <div
+        style={{
+          ...(isDragging && {
+            position: "relative",
+            outline: `1px solid ${token.colorPrimary}`,
+            outlineOffset: "1px",
+          }),
+        }}
+      >
+        {displayedItems.map((item, i) => (
+          <SortableBox
+            key={item.id}
+            parent={formContext.uiSchema}
+            id={item.id}
+            index={i}
+            onDragStart={onDragStart}
+            onDragEnd={() => setIsDragging(false)}
+            onDragCancel={onDragCancel}
+            moveItem={moveItem}
+            resetTempItems={() => setTempItems(null)}
+          >
+            {item.prop.content}
+          </SortableBox>
+        ))}
       </div>
     );
   }

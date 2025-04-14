@@ -186,6 +186,14 @@ const schemaWizard = createSlice({
       // remove from the uiSchema
       delete updatedUiSchema[uiItemToDelete];
 
+      // update ui:order if it exists
+      if (updatedUiSchema["ui:order"]) {
+        const orderIndex = updatedUiSchema["ui:order"].indexOf(itemToDelete);
+        if (orderIndex !== -1) {
+          updatedUiSchema["ui:order"][orderIndex] = newName;
+        }
+      }
+
       schemaWizard.caseReducers.updateByPath(state, {
         payload: {
           path: { schema: newSchemaPath, uiSchema: newUiSchemaPath },
