@@ -1,4 +1,4 @@
-import { useMemo, useCallback, useState, useRef } from "react";
+import { useMemo, useCallback, useState } from "react";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import { updateUiSchemaByPath } from "../../store/schemaWizard";
@@ -11,10 +11,8 @@ const ObjectFieldTemplate = ({
   formContext,
   idSchema,
 }) => {
-  const [tempItems, setTempItems] = useState(null);
+  const [visualItems, setVisualItems] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
-
-  const originalOrderRef = useRef(null);
 
   const { token } = theme.useToken();
 
@@ -28,63 +26,32 @@ const ObjectFieldTemplate = ({
     }));
   }, [properties]);
 
-  const displayedItems = tempItems || sortedItems;
+  const displayedItems = visualItems || sortedItems;
 
-  const updateOrderInStore = useCallback(
-    (items) => {
-      const currentOrder = (uiSchema["ui:order"] || []).filter(
-        (o) => o !== "*",
-      );
-      const newOrder = items.map((item) => item.name);
-
-      if (JSON.stringify(newOrder) === JSON.stringify(currentOrder)) {
-        return;
-      }
-
-      dispatch(
-        updateUiSchemaByPath({
-          path: formContext.uiSchema.length > 0 ? formContext.uiSchema : [],
-          value: {
-            ...uiSchema,
-            "ui:order": [...newOrder, "*"],
-          },
-        }),
-      );
-    },
-    [dispatch, formContext.uiSchema, uiSchema],
-  );
-
-  const onDragStart = useCallback(() => {
-    if (!originalOrderRef.current) {
-      originalOrderRef.current = [...sortedItems];
-    }
-    setIsDragging(true);
-  }, [sortedItems]);
-
-  // Handle drag cancellation (escape key press or drop outside container)
-  const onDragCancel = useCallback(() => {
-    if (originalOrderRef.current) {
-      updateOrderInStore(originalOrderRef.current);
-      originalOrderRef.current = null;
-    }
-    setTempItems(null);
-  }, [updateOrderInStore]);
-
-  const moveItem = useCallback(
+  const updateVisualOrder = useCallback(
     (dragIndex, hoverIndex) => {
-      setTempItems((prevItems) => {
-        const items = prevItems || [...sortedItems];
-        const newItems = [...items];
-        const [movedItem] = newItems.splice(dragIndex, 1);
-        newItems.splice(hoverIndex, 0, movedItem);
-
-        updateOrderInStore(newItems);
-
-        return newItems;
+      setVisualItems((prevItems) => {
+        const items = prevItems ? [...prevItems] : [...sortedItems];
+        const [movedItem] = items.splice(dragIndex, 1);
+        items.splice(hoverIndex, 0, movedItem);
+        return items;
       });
     },
-    [sortedItems, updateOrderInStore],
+    [sortedItems],
   );
+
+  const moveItem = useCallback(() => {
+    dispatch(
+      updateUiSchemaByPath({
+        path: formContext.uiSchema.length > 0 ? formContext.uiSchema : [],
+        value: {
+          ...uiSchema,
+          "ui:order": [...displayedItems.map((item) => item.name), "*"],
+        },
+      }),
+    );
+    setVisualItems(null);
+  }, [dispatch, displayedItems, formContext.uiSchema, uiSchema]);
 
   if (idSchema.$id === "root") {
     return (
@@ -103,11 +70,11 @@ const ObjectFieldTemplate = ({
             parent={formContext.uiSchema}
             id={item.id}
             index={i}
-            onDragStart={onDragStart}
+            onDragStart={() => setIsDragging(true)}
             onDragEnd={() => setIsDragging(false)}
-            onDragCancel={onDragCancel}
+            onDragCancel={() => setVisualItems(null)}
+            updateVisualOrder={updateVisualOrder}
             moveItem={moveItem}
-            resetTempItems={() => setTempItems(null)}
           >
             {item.prop.content}
           </SortableBox>

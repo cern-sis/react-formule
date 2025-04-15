@@ -14,8 +14,8 @@ interface SortableBoxProps {
   onDragStart: () => void;
   onDragEnd: () => void;
   onDragCancel: () => void;
-  moveItem: (dragIndex: number, hoverIndex: number) => void;
-  resetTempItems: () => void;
+  updateVisualOrder: (dragIndex: number, hoverIndex: number) => void;
+  moveItem: () => void;
 }
 
 function SortableBox({
@@ -27,7 +27,7 @@ function SortableBox({
   onDragEnd,
   onDragCancel,
   moveItem,
-  resetTempItems,
+  updateVisualOrder,
 }: SortableBoxProps) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -47,6 +47,7 @@ function SortableBox({
     end: (_, monitor) => {
       onDragEnd();
 
+      // Handle drag cancellation (escape key press or drop outside container)
       if (!monitor.didDrop()) {
         onDragCancel();
       }
@@ -79,11 +80,11 @@ function SortableBox({
         return;
       }
 
-      moveItem(dragIndex, hoverIndex);
+      updateVisualOrder(dragIndex, hoverIndex);
       item.index = hoverIndex;
     },
     drop: () => {
-      resetTempItems();
+      moveItem();
     },
   });
 

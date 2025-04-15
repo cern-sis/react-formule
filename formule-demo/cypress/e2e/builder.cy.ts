@@ -71,8 +71,7 @@ describe("test basic functionality", () => {
     cy.getByDataCy("treeItem").eq(1).contains("mynumber");
     cy.getByDataCy("treeItem").eq(2).contains("mytextarea");
 
-    cy.getByDataCy("dropArea").as("dropArea");
-    cy.moveField("@textField", "@dropArea", "@textAreaField");
+    cy.moveField("@textField", "@textAreaField");
 
     cy.getByDataCy("treeItem").eq(0).contains("mynumber");
     cy.getByDataCy("treeItem").eq(1).contains("mytextarea");
