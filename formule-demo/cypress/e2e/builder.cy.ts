@@ -875,4 +875,114 @@ describe("test basic functionality", () => {
       .find('[data-cy="fileAllowedExtensionsText"]')
       .should("contain.text", "Allowed file extensions: .pdf");
   });
+
+  it("tests slider field", () => {
+    cy.get("span").contains("Advanced fields").click();
+    cy.addFieldWithName("slider", "myfield");
+    cy.getByDataCy("treeItem").click();
+
+    // Test continuous type
+    cy.get(`input#root${SEP}kind`)
+      .parent()
+      .parent()
+      .find('[title="Continuous"]')
+      .should("exist");
+
+    // min, max and step
+    cy.get(`input#root${SEP}minimum`).clearTypeBlur("0");
+    cy.get(`input#root${SEP}maximum`).clearTypeBlur("100");
+    cy.get(`input#root${SEP}step`).clearTypeBlur("10", { force: true });
+
+    // slider interaction
+    cy.getByDataCy("formPreview")
+      .find(".ant-slider")
+      .as("slider")
+      .click("center");
+    cy.getByDataCy("formPreview")
+      .find(".ant-input-number-input")
+      .should("have.value", "50");
+
+    // input interaction
+    cy.getByDataCy("formPreview")
+      .find(".ant-input-number-input")
+      .clearTypeBlur("30");
+    cy.get("@slider")
+      .find(".ant-slider-handle")
+      .invoke("attr", "aria-valuenow")
+      .should("eq", "30");
+
+    // hide input
+    cy.getByDataCy("fieldSettings")
+      .find(".scrollableTabs .ant-tabs-nav-list")
+      .find("[data-node-key=2]")
+      .click();
+    cy.get(`button#root${SEP}ui\\:options${SEP}hideInput`).click();
+    cy.getByDataCy("formPreview").find(".ant-input-number").should("not.exist");
+    cy.get(`button#root${SEP}ui\\:options${SEP}hideInput`).click();
+
+    // suffix in tooltip and input
+    cy.get(`input#root${SEP}ui\\:options${SEP}suffix`).clearTypeBlur("px");
+    cy.getByDataCy("formPreview")
+      .find(".ant-slider-handle")
+      .trigger("mouseover");
+    cy.get(".ant-tooltip").should("contain.text", "px");
+    cy.getByDataCy("formPreview")
+      .find(".ant-input-number-suffix")
+      .should("contain.text", "px");
+
+    // Test discrete type
+    cy.getByDataCy("fieldSettings")
+      .find(".scrollableTabs .ant-tabs-nav-list")
+      .find("[data-node-key=1]")
+      .click({ force: true });
+    cy.get(`input#root${SEP}kind`).type("{downArrow}{enter}", { force: true });
+    cy.get(`input#root${SEP}kind`)
+      .parent()
+      .parent()
+      .find('[title="Discrete"]')
+      .should("exist");
+
+    // values and labels
+    cy.get(`fieldset#root${SEP}values`)
+      .find('[data-cy="addItemButton"]')
+      .click();
+    cy.get(`input#root${SEP}values${SEP}0`).clearTypeBlur("25");
+    cy.get(`fieldset#root${SEP}values`)
+      .find('[data-cy="addItemButton"]')
+      .click();
+    cy.get(`input#root${SEP}values${SEP}1`).clearTypeBlur("50");
+    cy.get(`fieldset#root${SEP}values`)
+      .find('[data-cy="addItemButton"]')
+      .click();
+    cy.get(`input#root${SEP}values${SEP}2`).clearTypeBlur("100");
+    cy.get(`fieldset#root${SEP}labels`)
+      .find('[data-cy="addItemButton"]')
+      .click();
+    cy.get(`input#root${SEP}labels${SEP}0`).clearTypeBlur("Small");
+    cy.get(`fieldset#root${SEP}labels`)
+      .find('[data-cy="addItemButton"]')
+      .click();
+    cy.get(`input#root${SEP}labels${SEP}1`).clearTypeBlur("Medium");
+
+    // marks and interaction
+    cy.getByDataCy("formPreview")
+      .find(".ant-slider-mark-text")
+      .first()
+      .should("contain.text", "Small");
+    cy.getByDataCy("formPreview")
+      .find(".ant-slider-mark-text")
+      .last()
+      .should("contain.text", "100"); // no label for 100 provided
+    cy.getByDataCy("formPreview").find(".ant-slider").click("right");
+    cy.getByDataCy("formPreview")
+      .find(".ant-slider-handle")
+      .invoke("attr", "aria-valuenow")
+      .should("eq", "2"); // last value (index 2)
+
+    // Test readonly
+    cy.get(`button#root${SEP}readOnly`).click();
+    cy.getByDataCy("formPreview")
+      .find(".ant-slider")
+      .should("have.class", "ant-slider-disabled");
+  });
 });
