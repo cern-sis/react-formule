@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import Form from "../../forms/Form";
 import { hiddenFields } from "../utils/fieldTypes";
-import widgets from "../formComponents/widgets";
 import { useContext } from "react";
 import CustomizationContext from "../../contexts/CustomizationContext";
 
@@ -59,7 +58,6 @@ const PropertyKeyEditorForm = ({
     <Form
       schema={objs[type]?.[`${optionsSchemaObject}`] || {}}
       uiSchema={objs[type]?.[`${optionsUiSchemaObject}`] || {}}
-      widgets={widgets}
       formData={updatedFormData}
       onChange={onChange}
       liveValidate

@@ -73,7 +73,7 @@ Formule includes a variety of predefined field types, grouped in three categorie
   - `Accordion`: It works as a `List` with collapsible entries.
   - `Layer`: It works as a `List` whose entries will open in a dialog window.
   - `Tab`: It's commonly supposed to be used as a wrapper around the rest of the elements. You will normally want to add an `Object` inside and you can use it to separate the form in different pages or sections.
-- **Advanced fields**: More complex or situational fields such as `URI`, `Rich/Latex editor`, `Tags`, `ID Fetcher`, `Code Editor` and `Files`.
+- **Advanced fields**: More complex or situational fields such as `URI`, `Rich/Latex editor`, `Tags`, `ID Fetcher`, `Code Editor`, `Files` and `Slider`.
 
 You can freely remove some of these predefined fields and add your own custom fields and widgets following the JSON Schema specifications. More details below.
 

@@ -67,7 +67,7 @@ const CodeEditorField = ({ formData, onChange, uiSchema, readonly }) => {
         // Key needed to refresh the component on settings change due to the custom logic in CodeViewer
         key={`${language}${readonly}${validationSchema}`}
         isReadOnly={readonly}
-        height={height}
+        height={height || undefined}
         initialValue={initialValue}
         handleEdit={(v) => onChange(v)}
         reset

@@ -1,10 +1,13 @@
 import { useState } from "react";
-import { Button, Modal, Space, Tooltip, theme } from "antd";
+import { Button, Grid, Modal, Space, Tooltip, theme } from "antd";
 import { EditOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 
 const FieldModal = ({ id, label, content, options, tooltip }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const { token } = theme.useToken();
+
+  const { useBreakpoint } = Grid;
+  const screens = useBreakpoint();
 
   return (
     <>
@@ -41,10 +44,13 @@ const FieldModal = ({ id, label, content, options, tooltip }) => {
         getContainer={false}
         open={modalOpen}
         onCancel={() => setModalOpen(false)}
+        title={label}
         footer={null}
         className="formule-field-modal"
         data-cy="fieldModal"
-        width={options?.modalWidth ? options?.modalWidth : 400}
+        width={
+          screens.md && (options?.modalWidth ? `${options.modalWidth}%` : "50%")
+        }
       >
         {content}
       </Modal>
