@@ -9,7 +9,18 @@ import { useRef } from "react";
 import MdEditor from "react-markdown-editor-lite";
 import "react-markdown-editor-lite/lib/index.css";
 
-const RichEditorWidget = (props) => {
+const RichEditorWidget = ({
+  onChange,
+  value,
+  readonly,
+  disabled,
+  canViewProps,
+  viewProps,
+  noBorder,
+  options,
+}) => {
+  const { height } = options;
+
   const mdParser = new MarkdownIt();
   mdParser.use(tm, {
     engine: katex,
@@ -22,7 +33,7 @@ const RichEditorWidget = (props) => {
     return mdParser.render(text);
   };
   const handleEditorChange = (values) => {
-    props.onChange(values.text);
+    onChange(values.text);
   };
 
   MdEditor.use(Toggler, {
@@ -32,21 +43,16 @@ const RichEditorWidget = (props) => {
   return (
     <MdEditor
       style={{
-        height:
-          props.height === 0
-            ? undefined
-            : props.height > 0
-              ? props.height
-              : "500px",
-        border: props.noBorder ? "none" : undefined,
+        height: height || undefined,
+        border: noBorder ? "none" : undefined,
       }}
       config={{
         canView: {
           fullScreen: false,
           md: false,
           html: false,
-          ...props.canViewProps,
-          ...(props.readonly || props.disabled
+          ...canViewProps,
+          ...(readonly || disabled
             ? {
                 md: false,
                 html: true,
@@ -60,8 +66,8 @@ const RichEditorWidget = (props) => {
           fullScreen: false,
           md: true,
           html: false,
-          ...props.viewProps,
-          ...(props.readonly || props.disabled
+          ...viewProps,
+          ...(readonly || disabled
             ? {
                 md: false,
                 html: true,
@@ -72,12 +78,12 @@ const RichEditorWidget = (props) => {
             : {}),
         },
       }}
-      readOnly={props.readonly}
+      readOnly={readonly}
       renderHTML={renderHTML}
       onChange={handleEditorChange}
-      value={props.value}
+      value={value}
       ref={myEditor}
-      key={props.noBorder}
+      key={noBorder}
     />
   );
 };
