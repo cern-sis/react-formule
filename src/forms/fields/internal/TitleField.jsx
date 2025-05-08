@@ -83,7 +83,6 @@ const TitleField = ({
             <Tooltip title="Import from a list">
               <Button
                 icon={<ImportOutlined />}
-                block
                 size="small"
                 onClick={enableImport}
               />
@@ -93,7 +92,6 @@ const TitleField = ({
             <Tooltip title="Export LaTeX">
               <Button
                 icon={<ExportOutlined />}
-                block
                 size="small"
                 title="LaTeX"
                 onClick={enableLatex}
@@ -106,7 +104,6 @@ const TitleField = ({
             <Tooltip title="Send email">
               <Button
                 icon={<MailOutlined />}
-                block
                 size="small"
                 onClick={enableEmail}
               />

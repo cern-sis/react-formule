@@ -55,7 +55,13 @@ const SchemaTreeItem = ({
         !uiSchema["ui:field"] &&
         !uiSchema["ui:object"])
     ) {
-      type = schema.type === "string" ? "text" : schema.type;
+      if (schema.type === "string") {
+        type = "text";
+      } else if (schema.type === "array" && uiSchema["ui:arrayType"]) {
+        type = uiSchema["ui:arrayType"];
+      } else {
+        type = schema.type;
+      }
     } else {
       if (uiSchema["ui:widget"]) {
         type = schema.format === "uri" ? schema.format : uiSchema["ui:widget"];

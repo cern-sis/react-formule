@@ -56,6 +56,10 @@ export const common = {
             title: "Display as Modal",
             type: "boolean",
           },
+          collapsible: {
+            title: "Collapsible",
+            type: "boolean",
+          },
         },
         // Using dependencies here instead of if-then-else simplifies reusing the common properties
         dependencies: {
@@ -115,7 +119,10 @@ export const common = {
       showAsModal: {
         "ui:widget": "switch",
       },
-      "ui:order": ["showAsModal", "modal", "*"],
+      collapsible: {
+        "ui:widget": "switch",
+      },
+      "ui:order": ["showAsModal", "modal", "collapsible", "*"],
     },
     "ui:label": {
       "ui:widget": "switch",
@@ -263,14 +270,14 @@ const collections = {
       uiSchema: {},
     },
   },
-  accordionObjectField: {
+  accordion: {
     title: "Accordion",
     icon: <BorderTopOutlined />,
-    description: "Data in JSON format, Grouped section",
+    description: "A collapsible list of fields",
     child: {},
     optionsSchema: {
       type: "object",
-      title: "Accordion Field Schema",
+      title: "Accordion Schema",
       properties: {
         ...common.optionsSchema,
       },
@@ -284,11 +291,40 @@ const collections = {
     },
     default: {
       schema: {
-        type: "object",
-        properties: {},
+        type: "array",
+        items: {},
       },
       uiSchema: {
-        "ui:object": "accordionObjectField",
+        "ui:arrayType": "accordion",
+      },
+    },
+  },
+  layer: {
+    title: "Layer",
+    icon: <BorderHorizontalOutlined />,
+    description: "A list of modal fields",
+    child: {},
+    optionsSchema: {
+      type: "object",
+      title: "Layer Schema",
+      properties: {
+        ...common.optionsSchema,
+      },
+    },
+    optionsSchemaUiSchema: {},
+    optionsUiSchema: {
+      ...common.optionsUiSchema,
+    },
+    optionsUiSchemaUiSchema: {
+      ...common.optionsUiSchemaUiSchema,
+    },
+    default: {
+      schema: {
+        type: "array",
+        items: {},
+      },
+      uiSchema: {
+        "ui:arrayType": "layer",
       },
     },
   },
@@ -420,35 +456,6 @@ const collections = {
           stepsPlacement: "horizontal",
           markAsCompleted: true,
         },
-      },
-    },
-  },
-  layerObjectField: {
-    title: "Layer",
-    icon: <BorderHorizontalOutlined />,
-    description: "Data in JSON format, Grouped section",
-    child: {},
-    optionsSchema: {
-      type: "object",
-      title: "Layer Field Schema",
-      properties: {
-        ...common.optionsSchema,
-      },
-    },
-    optionsSchemaUiSchema: {},
-    optionsUiSchema: {
-      ...common.optionsUiSchema,
-    },
-    optionsUiSchemaUiSchema: {
-      ...common.optionsUiSchemaUiSchema,
-    },
-    default: {
-      schema: {
-        type: "object",
-        properties: {},
-      },
-      uiSchema: {
-        "ui:object": "layerObjectField",
       },
     },
   },

@@ -312,7 +312,9 @@ describe("test basic functionality", () => {
       .should("exist");
     cy.get(`fieldset#root${SEP}enum`).getByDataCy("addItemButton").click();
     cy.get(`input#root${SEP}enum${SEP}0`).clearTypeBlur("First option");
-    cy.get(`fieldset#root${SEP}enum`).getByDataCy("addItemButton").click();
+    cy.get(`fieldset#root${SEP}enum`)
+      .getByDataCy("addItemButton")
+      .click({ force: true });
     cy.get(`input#root${SEP}enum${SEP}1`).clearTypeBlur("Second option");
     cy.get(`#root${SEP}enum .arrayFieldRow`)
       .eq(0)
@@ -335,7 +337,9 @@ describe("test basic functionality", () => {
       .parent()
       .find('[title="Select one value (number)"]')
       .should("exist");
-    cy.get(`fieldset#root${SEP}enum`).getByDataCy("addItemButton").click();
+    cy.get(`fieldset#root${SEP}enum`)
+      .getByDataCy("addItemButton")
+      .click({ force: true });
     cy.get(`input#root${SEP}enum${SEP}0`).clearTypeBlur("asd");
     cy.get(`input#root${SEP}enum${SEP}0`).should("have.value", "");
     cy.get(`input#root${SEP}enum${SEP}0`).clearTypeBlur("1");
@@ -551,7 +555,7 @@ describe("test basic functionality", () => {
     cy.getByDataCy("treeItem").contains("myarray").as("arrayField");
     cy.addField("text", "@arrayField");
 
-    // test basic add, move, delete functionality
+    // Test basic add, move, delete functionality
     cy.getByDataCy("formPreview")
       .find(`fieldset#root${SEP}myarray`)
       .getByDataCy("addItemButton")
@@ -576,29 +580,76 @@ describe("test basic functionality", () => {
     cy.getByDataCy("formPreview")
       .find(`input#root${SEP}myarray${SEP}1`)
       .should("not.exist");
+
+    // Test multiple fields inside
+    // check that with one item the array contains the item as direct child
+    cy.getByDataCy("treeItem")
+      .contains("items")
+      .parents("[data-cy=treeItem]")
+      .find(".anticon-font-size");
+    // check that with two items the array now contains an object containing the items
+    cy.addField("text", "@arrayField");
+    cy.getByDataCy("treeItem")
+      .contains("items")
+      .parents("[data-cy=treeItem]")
+      .contains("{ }");
+    cy.getByDataCy("treeItem")
+      .find(".anticon-font-size")
+      .should("have.length", 2);
+    // remove one item and check that the object is removed and the remaining item is a direct child of the array
+    cy.getByDataCy("treeItem").find(".anticon-font-size").first().click();
+    cy.getByDataCy("deleteField").click();
+    cy.get("div.ant-popconfirm").find("button").contains("Delete").click();
+    cy.getByDataCy("treeItem")
+      .contains("items")
+      .parents("[data-cy=treeItem]")
+      .find(".anticon-font-size")
+      .should("have.length", 1);
+    cy.getByDataCy("treeItem")
+      .contains("items")
+      .parents("[data-cy=treeItem]")
+      .contains("{ }")
+      .should("not.exist");
   });
 
-  it.skip("tests accordion field", () => {
-    // cy.addFieldWithName("array", "myarray")
-    // cy.getByDataCy("treeItem").contains("myarray").as("arrayField")
-    // cy.addField("accordionObjectField", "@arrayField")
-    // cy.getByDataCy("treeItem").contains("items").as("accordionItems")
-    // cy.addField("text", "@accordionItems")
-    // cy.getByDataCy("formPreview").find(`fieldset#root${SEP}myarray`).getByDataCy("addItemButton").as("addItem").click()
-    // cy.get("@addItem").click()
-    // cy.getByDataCy("formPreview").find(".ant-collapse-item").first().click()
-    // FIXME: To be properly tested once the accordion field is reviewed and its function is more clearly defined
+  it("tests accordion field", () => {
+    cy.addFieldWithName("accordion", "myaccordion");
+    cy.getByDataCy("treeItem").contains("myaccordion").as("accordionField");
+    cy.addField("text", "@accordionField");
+
+    cy.getByDataCy("formPreview")
+      .find(`fieldset#root${SEP}myaccordion`)
+      .getByDataCy("addItemButton")
+      .as("addItem")
+      .click();
+    cy.get("@addItem").click();
+    cy.getByDataCy("formPreview")
+      .find(".ant-collapse-item")
+      .as("accordionItems")
+      .first()
+      .click();
+    cy.getByDataCy("formPreview")
+      .find(`input#root${SEP}myaccordion${SEP}0`)
+      .clearTypeBlur("First item");
+    cy.get("@accordionItems").last().click();
+    cy.getByDataCy("formPreview")
+      .find(`.ant-collapse-content-hidden`)
+      .should("have.length", 1);
+    cy.getByDataCy("formPreview")
+      .find(`input#root${SEP}myaccordion${SEP}1`)
+      .clearTypeBlur("Second item");
+    cy.getByDataCy("formPreview")
+      .find(`.ant-collapse-content-hidden`)
+      .should("have.length", 1);
   });
 
   it("tests layer field", () => {
-    cy.addFieldWithName("array", "myarray");
-    cy.getByDataCy("treeItem").contains("myarray").as("arrayField");
-    cy.addField("layerObjectField", "@arrayField");
-    cy.getByDataCy("treeItem").contains("items").as("layerItems");
-    cy.addFieldWithName("text", "myfield", "@layerItems");
+    cy.addFieldWithName("layer", "mylayer");
+    cy.getByDataCy("treeItem").contains("mylayer").as("layerField");
+    cy.addField("text", "@layerField");
 
     cy.getByDataCy("formPreview")
-      .find(`fieldset#root${SEP}myarray`)
+      .find(`fieldset#root${SEP}mylayer`)
       .getByDataCy("addItemButton")
       .as("addItem")
       .click();
@@ -610,14 +661,14 @@ describe("test basic functionality", () => {
       .first()
       .click();
     cy.getByDataCy("layerModal")
-      .find(`input#root${SEP}myarray${SEP}0${SEP}myfield`)
+      .find(`input#root${SEP}mylayer${SEP}0`)
       .as("input0")
       .clearTypeBlur("First item");
     cy.getByDataCy("layerModal").find("button").contains("OK").click();
 
     cy.get("@layerItem").last().click();
     cy.getByDataCy("layerModal")
-      .find(`input#root${SEP}myarray${SEP}1${SEP}myfield`)
+      .find(`input#root${SEP}mylayer${SEP}1`)
       .as("input1")
       .should("exist");
     cy.getByDataCy("layerModal").find("button").contains("Cancel").click();
