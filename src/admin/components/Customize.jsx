@@ -75,6 +75,7 @@ const Customize = () => {
       className="scrollableTabs"
       centered
       style={{ height: "100%", width: "100%" }}
+      tabBarStyle={{ marginBottom: "0px" }}
       items={[
         {
           key: "1",

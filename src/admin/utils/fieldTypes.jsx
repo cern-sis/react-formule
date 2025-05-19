@@ -21,8 +21,7 @@ import {
   UploadOutlined,
 } from "@ant-design/icons";
 import { placeholder } from "@codemirror/view";
-import PropKeyEditorObjectFieldTemplate from "../../forms/templates/PropKeyEditorObjectFieldTemplate";
-import UiOptionsObjectFieldTemplate from "../../forms/templates/UiOptionsObjectFieldTemplate";
+import PropKeyEditorObjectFieldTemplate from "../formComponents/PropKeyEditorObjectFieldTemplate";
 
 // COMMON / EXTRA PROPERTIES:
 
@@ -121,7 +120,8 @@ export const common = {
         "ui:widget": "switch",
       },
       "ui:order": ["showAsModal", "modal", "*"],
-      "ui:ObjectFieldTemplate": UiOptionsObjectFieldTemplate,
+      "ui:padding": 0,
+      "ui:label": false,
     },
     "ui:label": {
       "ui:widget": "switch",
@@ -545,6 +545,9 @@ const simple = {
             descriptionIsMarkdown: true,
             tooltipIsMarkdown: true,
           },
+        },
+        convertToUppercase: {
+          "ui:widget": "switch",
         },
       },
     },

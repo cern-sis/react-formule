@@ -22,7 +22,6 @@ const ObjectFieldTemplate = ({
   schema,
   title,
   uiSchema,
-  isUiOptions,
 }) => {
   const {
     colSpan = 24,
@@ -98,12 +97,12 @@ const ObjectFieldTemplate = ({
   return (
     <fieldset
       style={{
-        padding: isUiOptions && 0,
+        padding: uiSchema["ui:padding"],
       }}
       id={idSchema.$id}
     >
       <Row gutter={rowGutter} style={{ margin: 0 }}>
-        {!isUiOptions && (
+        {(uiSchema["ui:label"] || title) && (
           <Col
             style={{
               padding: "0",
@@ -125,7 +124,7 @@ const ObjectFieldTemplate = ({
         <Col
           span={24}
           className="nestedObject"
-          style={{ padding: isUiOptions && 0 }}
+          style={{ padding: uiSchema["ui:padding"] }}
         >
           <Row gutter={10}>
             {properties
