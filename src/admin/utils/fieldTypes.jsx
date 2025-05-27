@@ -19,6 +19,7 @@ import {
   FileMarkdownOutlined,
   NodeIndexOutlined,
   UploadOutlined,
+  DashOutlined,
 } from "@ant-design/icons";
 import { placeholder } from "@codemirror/view";
 import PropKeyEditorObjectFieldTemplate from "../formComponents/PropKeyEditorObjectFieldTemplate";
@@ -52,6 +53,7 @@ export const common = {
           span: {
             title: "Field Width",
             type: "integer",
+            kind: "discrete",
             defaultValue: 24,
             values: [6, 8, 12, 16, 18, 24],
             labels: ["25%", "33%", "50%", "66%", "75%", "100%"],
@@ -82,7 +84,23 @@ export const common = {
                     type: "object",
                     properties: {
                       buttonText: { title: "Button title", type: "string" },
-                      modalWidth: { title: "Modal width", type: "integer" },
+                      modalWidth: {
+                        title: "Modal width",
+                        type: "integer",
+                        tooltip:
+                          "On small screens modals will ignore this setting and use full screen width",
+                        kind: "discrete",
+                        values: [0, 25, 33, 50, 66, 75, 100],
+                        labels: [
+                          "auto",
+                          "25%",
+                          "33%",
+                          "50%",
+                          "66%",
+                          "75%",
+                          "100%",
+                        ],
+                      },
                       buttonInNewLine: {
                         title: "Button in new line",
                         type: "boolean",
@@ -113,7 +131,14 @@ export const common = {
           showAsModal: true,
           modal: {
             buttonInNewLine: true,
+            modalWidth: 33,
           },
+        },
+        buttonInNewLine: {
+          "ui:widget": "switch",
+        },
+        modalWidth: {
+          "ui:widget": "slider",
         },
       },
       showAsModal: {
@@ -1128,10 +1153,40 @@ const advanced = {
       isRequired: extra.optionsSchemaUiSchema.isRequired,
     },
     optionsUiSchema: {
-      ...common.optionsUiSchema,
+      type: "object",
+      title: "UI Schema",
+      properties: {
+        "ui:options": {
+          type: "object",
+          title: "UI Options",
+          dependencies:
+            common.optionsUiSchema.properties["ui:options"].dependencies,
+          properties: {
+            ...common.optionsUiSchema.properties["ui:options"].properties,
+            height: {
+              title: "Height",
+              type: "integer",
+              kind: "continuous",
+              minimum: 200,
+              maximum: 1000,
+              step: 100,
+            },
+          },
+        },
+        "ui:label": common.optionsUiSchema.properties["ui:label"],
+      },
     },
     optionsUiSchemaUiSchema: {
-      ...common.optionsUiSchemaUiSchema,
+      "ui:options": {
+        ...common.optionsUiSchemaUiSchema["ui:options"],
+        height: {
+          "ui:widget": "slider",
+          "ui:options": {
+            suffix: "px",
+          },
+        },
+      },
+      "ui:label": common.optionsUiSchemaUiSchema["ui:label"],
     },
     default: {
       schema: {
@@ -1139,6 +1194,9 @@ const advanced = {
       },
       uiSchema: {
         "ui:widget": "richeditor",
+        "ui:options": {
+          height: 200,
+        },
       },
     },
   },
@@ -1350,9 +1408,13 @@ const advanced = {
           properties: {
             ...common.optionsUiSchema.properties["ui:options"].properties,
             height: {
-              type: "number",
               title: "Height",
-              description: "In pixels",
+              type: "integer",
+              tooltip: "Set to 0 for auto",
+              kind: "continuous",
+              minimum: 0,
+              maximum: 1000,
+              step: 100,
             },
             language: {
               type: "string",
@@ -1373,6 +1435,16 @@ const advanced = {
     },
     optionsUiSchemaUiSchema: {
       ...common.optionsUiSchemaUiSchema,
+      "ui:options": {
+        ...common.optionsUiSchemaUiSchema["ui:options"],
+        height: {
+          "ui:widget": "slider",
+          "ui:options": {
+            suffix: "px",
+          },
+        },
+      },
+      "ui:label": common.optionsUiSchemaUiSchema["ui:label"],
     },
     default: {
       schema: {
@@ -1453,6 +1525,155 @@ const advanced = {
       },
       uiSchema: {
         "ui:field": "file",
+      },
+    },
+  },
+  slider: {
+    title: "Slider",
+    icon: <DashOutlined />,
+    description: "Select a value within a range",
+    child: {},
+    optionsSchema: {
+      type: "object",
+      title: "Slider Schema",
+      properties: {
+        ...common.optionsSchema,
+        readOnly: extra.optionsSchema.readOnly,
+        isRequired: extra.optionsSchema.isRequired,
+      },
+      oneOf: [
+        {
+          title: "Simple slider",
+          properties: {
+            minimum: {
+              type: "number",
+              title: "Minimum value",
+            },
+            maximum: {
+              type: "number",
+              title: "Maximum value",
+            },
+            step: {
+              type: "number",
+              title: "Step size",
+            },
+          },
+        },
+        {
+          title: "Descrete options",
+          description:
+            "Create a slider with predefined points/marks to select on",
+          properties: {
+            oneOf: {
+              title: "Marks/Labels",
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  const: {
+                    type: "number",
+                    default: 0,
+                  },
+                  title: {
+                    type: "string",
+                  },
+                  type: {
+                    type: "string",
+                    default: "number",
+                  },
+                },
+              },
+            },
+          },
+        },
+      ],
+    },
+    optionsSchemaUiSchema: {
+      ...common.optionsSchemaUiSchema,
+      readOnly: extra.optionsSchemaUiSchema.readOnly,
+      isRequired: extra.optionsSchemaUiSchema.isRequired,
+      minimum: {
+        "ui:options": {
+          span: 12,
+          label: false,
+          placeholder: "Minimum",
+        },
+      },
+      maximum: {
+        "ui:options": {
+          span: 12,
+          label: false,
+          placeholder: "Maximum",
+        },
+      },
+      oneOf: {
+        items: {
+          "ui:label": false,
+          const: {
+            "ui:options": {
+              span: 12,
+              placeholder: "value",
+              label: false,
+            },
+          },
+          title: {
+            "ui:options": {
+              span: 12,
+              placeholder: "label",
+              label: false,
+            },
+          },
+          type: {
+            "ui:widget": "hidden",
+          },
+        },
+      },
+    },
+    optionsUiSchema: {
+      type: "object",
+      title: "UI Schema",
+      properties: {
+        "ui:options": {
+          type: "object",
+          title: "UI Options",
+          dependencies:
+            common.optionsUiSchema.properties["ui:options"].dependencies,
+          properties: {
+            ...common.optionsUiSchema.properties["ui:options"].properties,
+            suffix: {
+              title: "Suffix",
+              type: "string",
+              tooltip:
+                "For visual purposes. Only the plain numeric value will be stored on the form data.",
+            },
+            hideInput: {
+              type: "boolean",
+              title: "Hide input",
+              tooltip:
+                "Hide numeric input field at the right. On `discrete` sliders the input is never shown and this setting is ignored.",
+            },
+          },
+        },
+        "ui:label": common.optionsUiSchema.properties["ui:label"],
+      },
+    },
+    optionsUiSchemaUiSchema: {
+      ...common.optionsUiSchemaUiSchema,
+      "ui:options": {
+        ...common.optionsUiSchemaUiSchema["ui:options"],
+        hideInput: {
+          "ui:widget": "switch",
+        },
+      },
+      "ui:label": common.optionsUiSchemaUiSchema["ui:label"],
+    },
+    default: {
+      schema: {
+        type: "number",
+        kind: "continuous",
+      },
+      uiSchema: {
+        "ui:widget": "slider",
       },
     },
   },
