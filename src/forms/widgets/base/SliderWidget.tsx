@@ -3,12 +3,10 @@ import { useState } from "react";
 
 interface SliderSchema {
   defaultValue?: number;
-  values?: number[];
-  labels?: string[];
+  oneOf?: [];
   minimum?: number;
   maximum?: number;
   step?: number;
-  kind?: "continuous" | "discrete";
 }
 
 interface SliderOptions {
@@ -31,32 +29,24 @@ const SliderWidget = ({
   options,
   readonly,
 }: SliderWidgetProps) => {
-  const { defaultValue, values, labels, minimum, maximum, step, kind } = schema;
+  const { defaultValue, minimum, maximum, step, oneOf = [] } = schema;
   const { suffix, hideInput } = options;
-
-  const isDiscrete = kind === "discrete";
-
-  const marks = values?.reduce((acc, _, index) => {
-    const label = labels?.[index] ?? values[index];
-    acc[index] = suffix ? (
+  const marks = {};
+  oneOf?.map((i) => {
+    const label = i.title || i.const;
+    marks[i.const] = suffix ? (
       <span>
         {label}&nbsp;{suffix}
       </span>
     ) : (
       label
     );
-    return acc;
-  }, {});
-
+  });
   const [inputValue, setInputValue] = useState<number | undefined>(
     value || defaultValue,
   );
 
-  const handleChangeDiscrete = (event: number): void => {
-    values && onChange(values[event]);
-  };
-
-  const handleChangeContinuous = (event: number | null): void => {
+  const handleChange = (event: number | null): void => {
     if (event === null) return;
 
     setInputValue(event);
@@ -66,18 +56,21 @@ const SliderWidget = ({
   return (
     <Row gutter={10}>
       <Col flex="auto">
-        {isDiscrete ? (
+        {oneOf.length > 0 ? (
           <Slider
             marks={marks}
-            defaultValue={
-              values &&
-              (value
-                ? values.indexOf(value)
-                : defaultValue && values.indexOf(defaultValue))
+            defaultValue={value || defaultValue}
+            max={
+              marks
+                ? Math.max(...Object.keys(marks))
+                : maximum
+                  ? maximum
+                  : undefined
             }
-            max={marks ? Object.keys(marks).length - 1 : 0}
-            onChange={handleChangeDiscrete}
+            onChange={handleChange}
             tooltip={{ open: false }}
+            included={true}
+            step={null}
             disabled={readonly}
           />
         ) : (
@@ -86,7 +79,7 @@ const SliderWidget = ({
             step={step || 0}
             min={minimum || 0}
             max={maximum || 100}
-            onChange={handleChangeContinuous}
+            onChange={handleChange}
             dots={!!step}
             value={inputValue}
             tooltip={{ formatter: (val) => val + (suffix ? ` ${suffix}` : "") }}
@@ -94,14 +87,14 @@ const SliderWidget = ({
           />
         )}
       </Col>
-      {!isDiscrete && !hideInput && (
+      {!oneOf && !hideInput && (
         <Col flex={"none"}>
           <InputNumber
             type="number"
             min={minimum}
             max={maximum}
             value={inputValue}
-            onChange={handleChangeContinuous}
+            onChange={handleChange}
             suffix={suffix}
             disabled={readonly}
           />
