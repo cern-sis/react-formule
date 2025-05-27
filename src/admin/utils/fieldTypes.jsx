@@ -1655,65 +1655,49 @@ const advanced = {
       title: "Slider Schema",
       properties: {
         ...common.optionsSchema,
-        kind: {
-          title: "Type",
-          type: "string",
-          oneOf: [
-            { const: "continuous", title: "Continuous" },
-            { const: "discrete", title: "Discrete" },
-          ],
-        },
         readOnly: extra.optionsSchema.readOnly,
         isRequired: extra.optionsSchema.isRequired,
       },
-      allOf: [
+      oneOf: [
         {
-          if: {
-            properties: {
-              kind: {
-                const: "continuous",
-              },
+          title: "Simple slider",
+          properties: {
+            minimum: {
+              type: "number",
+              title: "Minimum value",
             },
-          },
-          then: {
-            properties: {
-              minimum: {
-                type: "number",
-                title: "Minimum value",
-              },
-              maximum: {
-                type: "number",
-                title: "Maximum value",
-              },
-              step: {
-                type: "number",
-                title: "Step size",
-              },
+            maximum: {
+              type: "number",
+              title: "Maximum value",
+            },
+            step: {
+              type: "number",
+              title: "Step size",
             },
           },
         },
         {
-          if: {
-            properties: {
-              kind: {
-                const: "discrete",
-              },
-            },
-          },
-          then: {
-            properties: {
-              values: {
-                title: "Values",
-                type: "array",
-                items: {
-                  type: "number",
-                },
-              },
-              labels: {
-                title: "Labels",
-                type: "array",
-                items: {
-                  type: "string",
+          title: "Descrete options",
+          description:
+            "Create a slider with predefined points/marks to select on",
+          properties: {
+            oneOf: {
+              title: "Marks/Labels",
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  const: {
+                    type: "number",
+                    default: 0,
+                  },
+                  title: {
+                    type: "string",
+                  },
+                  type: {
+                    type: "string",
+                    default: "number",
+                  },
                 },
               },
             },
@@ -1722,8 +1706,45 @@ const advanced = {
       ],
     },
     optionsSchemaUiSchema: {
+      ...common.optionsSchemaUiSchema,
       readOnly: extra.optionsSchemaUiSchema.readOnly,
       isRequired: extra.optionsSchemaUiSchema.isRequired,
+      minimum: {
+        "ui:options": {
+          span: 12,
+          label: false,
+          placeholder: "Minimum",
+        },
+      },
+      maximum: {
+        "ui:options": {
+          span: 12,
+          label: false,
+          placeholder: "Maximum",
+        },
+      },
+      oneOf: {
+        items: {
+          "ui:label": false,
+          const: {
+            "ui:options": {
+              span: 12,
+              placeholder: "value",
+              label: false,
+            },
+          },
+          title: {
+            "ui:options": {
+              span: 12,
+              placeholder: "label",
+              label: false,
+            },
+          },
+          type: {
+            "ui:widget": "hidden",
+          },
+        },
+      },
     },
     optionsUiSchema: {
       type: "object",
@@ -1754,6 +1775,7 @@ const advanced = {
       },
     },
     optionsUiSchemaUiSchema: {
+      ...common.optionsUiSchemaUiSchema,
       "ui:options": {
         ...common.optionsUiSchemaUiSchema["ui:options"],
         hideInput: {
