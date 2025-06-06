@@ -2,11 +2,12 @@ import Form from "antd/lib/form";
 import PropTypes from "prop-types";
 import FieldHeader from "./FieldHeader";
 
-import { Col, Row, Tag } from "antd";
+import { Col, Row, Tag, theme } from "antd";
 import { SIZE_OPTIONS } from "../../../admin/utils";
 import WrapIfAdditional from "./WrapIfAdditional";
 import FieldModal from "./FieldModal";
 import FieldCollapsible from "./FieldCollapsible";
+import { stylePatches } from "../utils";
 
 const VERTICAL_LABEL_COL = { span: 24 };
 const VERTICAL_WRAPPER_COL = { span: 24 };
@@ -37,7 +38,10 @@ const FieldTemplate = ({
     wrapperCol = VERTICAL_WRAPPER_COL,
     wrapperStyle,
     hideAnchors,
+    patches,
   } = formContext;
+
+  const { token } = theme.useToken();
 
   if (hidden) {
     return <div className="field-hidden">{children}</div>;
@@ -129,7 +133,7 @@ const FieldTemplate = ({
           }
           labelCol={labelCol}
           required={required}
-          style={wrapperStyle}
+          style={{ ...wrapperStyle, ...stylePatches(id, patches, token) }}
           validateStatus={rawErrors ? "error" : undefined}
           wrapperCol={wrapperCol}
           tooltip={schema.tooltip}

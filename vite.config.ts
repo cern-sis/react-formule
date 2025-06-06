@@ -1,4 +1,5 @@
-import { defineConfig } from "vitest/config";
+import { defineConfig } from "vite";
+import { defineConfig as defineTestConfig } from "vitest/config";
 import { resolve } from "path";
 import react from "@vitejs/plugin-react-swc";
 import dts from "vite-plugin-dts";
@@ -6,7 +7,7 @@ import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 import { visualizer } from "rollup-plugin-visualizer";
 
 // https://vitejs.dev/config/
-export default defineConfig({
+const config = defineConfig({
   plugins: [
     react(),
     dts({
@@ -21,21 +22,22 @@ export default defineConfig({
 
   build: {
     lib: {
-      // Could also be a dictionary or array of multiple entry points
       entry: resolve(__dirname, "src/index.ts"),
       name: "Formule",
-      // the proper extensions will be added
       fileName: "react-formule",
     },
     rollupOptions: {
-      // make sure to externalize deps that shouldn't be bundled
-      // into your library
+      // externalize deps that shouldn't be bundled into the library
       external: ["react", "react-dom", "./docs"],
     },
   },
+});
 
+const testConfig = defineTestConfig({
   test: {
     globals: true,
     environment: "happy-dom",
   },
 });
+
+export default { ...config, ...testConfig };

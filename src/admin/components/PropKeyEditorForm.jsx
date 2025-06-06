@@ -57,8 +57,8 @@ const PropertyKeyEditorForm = ({
 
   return (
     <Form
-      schema={objs[type][`${optionsSchemaObject}`] || {}}
-      uiSchema={objs[type][`${optionsUiSchemaObject}`] || {}}
+      schema={objs[type]?.[`${optionsSchemaObject}`] || {}}
+      uiSchema={objs[type]?.[`${optionsUiSchemaObject}`] || {}}
       widgets={widgets}
       formData={updatedFormData}
       onChange={onChange}
