@@ -1,9 +1,14 @@
 import { useDispatch } from "react-redux";
 import { PropTypes } from "prop-types";
 
-import { DownOutlined, UpOutlined, CopyOutlined } from "@ant-design/icons";
+import {
+  DownOutlined,
+  UpOutlined,
+  CopyOutlined,
+  QuestionOutlined,
+} from "@ant-design/icons";
 import { Col, Dropdown, Row, Tag, Typography } from "antd";
-import { getIconByType, isItTheArrayField } from "../utils";
+import { getFieldSpec, isItTheArrayField } from "../utils";
 import { useContext } from "react";
 import CustomizationContext from "../../contexts/CustomizationContext";
 import { selectProperty } from "../../store/schemaWizard";
@@ -69,11 +74,8 @@ const SchemaTreeItem = ({
       >
         <Row gutter={8} onClick={handleClick} align="middle" wrap={false}>
           <Col flex="none">
-            {getIconByType(
-              schema,
-              uiSchema,
-              customizationContext.allFieldTypes,
-            )}
+            {getFieldSpec(schema, uiSchema, customizationContext.allFieldTypes)
+              .icon || <QuestionOutlined />}
           </Col>
           <Col flex="auto">
             <Row

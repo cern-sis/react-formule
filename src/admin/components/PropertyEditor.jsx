@@ -7,11 +7,12 @@ import {
   Popconfirm,
   Row,
   Space,
+  Tooltip,
   Typography,
 } from "antd";
 import { PageHeader } from "@ant-design/pro-layout";
 import Customize from "../components/Customize";
-import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined, QuestionOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteByPath,
@@ -20,7 +21,7 @@ import {
 } from "../../store/schemaWizard";
 import CustomizationContext from "../../contexts/CustomizationContext";
 import { get } from "lodash-es";
-import { getIconByType } from "../utils";
+import { getFieldSpec } from "../utils";
 
 const { useBreakpoint } = Grid;
 
@@ -70,6 +71,12 @@ const PropertyEditor = () => {
 
   const dispatch = useDispatch();
 
+  const fieldSpec = getFieldSpec(
+    schema,
+    uiSchema,
+    customizationContext.allFieldTypes,
+  );
+
   useEffect(() => {
     if (path) {
       if (path.length) {
@@ -84,12 +91,39 @@ const PropertyEditor = () => {
 
   return (
     <div
-      style={{ display: "flex", flexDirection: "column", width: "100%" }}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        width: "100%",
+        marginTop: "5px",
+      }}
       data-cy="fieldSettings"
     >
       <PageHeader
         onBack={() => dispatch(enableCreateMode())}
-        title={(screens.xl || path.length == 0) && "Field settings"}
+        title={
+          path.length == 0 ? (
+            "Root"
+          ) : (
+            <Space wrap={false}>
+              {screens.xl && fieldSpec.title}
+              <Tooltip
+                title={
+                  <>
+                    {!screens.xl && (
+                      <div style={{ fontWeight: "bold" }}>
+                        {fieldSpec.title}
+                      </div>
+                    )}
+                    <div>{fieldSpec.description}</div>
+                  </>
+                }
+              >
+                {fieldSpec.icon || <QuestionOutlined />}
+              </Tooltip>
+            </Space>
+          )
+        }
         extra={
           path.length > 0 && (
             <Popconfirm
@@ -102,7 +136,12 @@ const PropertyEditor = () => {
                 dispatch(enableCreateMode());
               }}
             >
-              <Button danger icon={<DeleteOutlined />} data-cy="deleteField" />
+              <Button
+                color="danger"
+                variant="text"
+                icon={<DeleteOutlined />}
+                data-cy="deleteField"
+              />
             </Popconfirm>
           )
         }
@@ -139,14 +178,7 @@ const PropertyEditor = () => {
             }
             style={{ textAlign: "center", margin: "10px 0" }}
           >
-            <Space wrap={false}>
-              {getIconByType(
-                schema,
-                uiSchema,
-                customizationContext.allFieldTypes,
-              )}
-              {name}
-            </Space>
+            <Space wrap={false}>{name}</Space>
           </Typography.Title>
         </Col>
       </Row>

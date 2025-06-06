@@ -350,7 +350,7 @@ const App = () => {
                   value={JSON.stringify(
                     formuleState?.current.uiSchema,
                     null,
-                    2,
+                    2
                   )}
                   lang="json"
                   height="25vh"
@@ -434,7 +434,7 @@ const App = () => {
                       const reader = new FileReader();
                       reader.onload = (event) => {
                         const newSchema = JSON.parse(
-                          event?.target?.result as string,
+                          event?.target?.result as string
                         );
                         const { schema, uiSchema } = newSchema;
                         if (schema && uiSchema) {
@@ -443,7 +443,7 @@ const App = () => {
                           message.success("Uploaded and loaded successfully");
                         } else {
                           message.error(
-                            "Your json should include a schema and a uiSchema key",
+                            "Your json should include a schema and a uiSchema key"
                           );
                         }
                       };
@@ -528,7 +528,12 @@ const App = () => {
               )}
             />
           </Drawer>
-          <Content style={{ overflowY: "scroll" }}>
+          <Content
+            style={{
+              overflowY: "scroll",
+              scrollSnapType: screens.md ? "none" : "y mandatory",
+            }}
+          >
             <Row style={{ height: "100%" }}>
               <Col
                 xs={10}
@@ -537,6 +542,7 @@ const App = () => {
                   overflowX: "hidden",
                   height: "100%",
                   display: "flex",
+                  scrollSnapAlign: screens.md ? "none" : "start",
                 }}
               >
                 <SelectOrEdit />
@@ -548,6 +554,7 @@ const App = () => {
                   overflowX: "hidden",
                   padding: "0px 15px",
                   backgroundColor: "#F6F7F8",
+                  scrollSnapAlign: screens.md ? "none" : "start",
                 }}
               >
                 <SchemaPreview hideSchemaKey={false} />
@@ -555,7 +562,11 @@ const App = () => {
               <Col
                 xs={24}
                 md={14}
-                style={{ overflowX: "hidden", height: "100%" }}
+                style={{
+                  overflowX: "hidden",
+                  height: "100%",
+                  scrollSnapAlign: screens.md ? "none" : "start",
+                }}
               >
                 <FormPreview liveValidate={true} hideAnchors={false} />
               </Col>

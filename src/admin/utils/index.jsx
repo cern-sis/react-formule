@@ -1,6 +1,4 @@
-import { QuestionOutlined } from "@ant-design/icons";
 import { hiddenFields } from "./fieldTypes";
-import { Tooltip } from "antd";
 
 export const SIZE_OPTIONS = {
   xsmall: 8,
@@ -54,7 +52,7 @@ export const combineFieldTypes = (fieldTypes, customFieldTypes) => {
 
 export const timer = (ms) => new Promise((res) => setTimeout(res, ms));
 
-export const getIconByType = (schema, uiSchema, fieldTypes) => {
+export const getFieldSpec = (schema, uiSchema, fieldTypes) => {
   let type = "unknown";
   // in case we can not define the type of the element from the uiSchema,
   // extract the type from the schema
@@ -91,9 +89,8 @@ export const getIconByType = (schema, uiSchema, fieldTypes) => {
       fieldTypesWithHidden[category].fields,
     )) {
       if (key === type) {
-        return <Tooltip title={value.title}>{value.icon}</Tooltip>;
+        return value;
       }
     }
   }
-  return <QuestionOutlined />;
 };
