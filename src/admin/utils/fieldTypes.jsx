@@ -1279,79 +1279,15 @@ const advanced = {
       type: "object",
       properties: {
         ...common.optionsSchema,
-        validateWith: {
-          type: "string",
-          title: "Validate with",
-          description:
-            "You can either provide a URL of a UI Schema to validate against or paste the JSON schema directly",
-          oneOf: [
-            { const: "none", title: "None" },
-            { const: "url", title: "URL" },
-            { const: "json", title: "JSON" },
-          ],
-        },
         readOnly: extra.optionsSchema.readOnly,
         isRequired: extra.optionsSchema.isRequired,
-      },
-      dependencies: {
-        validateWith: {
-          oneOf: [
-            {
-              properties: {
-                validateWith: {
-                  enum: ["url"],
-                },
-                validateWithUrl: {
-                  title: "Validation schema URL",
-                  type: "string",
-                },
-              },
-            },
-            {
-              properties: {
-                validateWith: {
-                  enum: ["json"],
-                },
-                validateWithJson: {
-                  title: "Validation JSON schema",
-                  type: "string",
-                },
-              },
-            },
-            {
-              properties: {
-                validateWith: {
-                  enum: ["none"],
-                },
-              },
-            },
-          ],
-        },
       },
     },
     optionsSchemaUiSchema: {
       ...common.optionsSchemaUiSchema,
       readOnly: extra.optionsSchemaUiSchema.readOnly,
       isRequired: extra.optionsSchemaUiSchema.isRequired,
-      validateWithUrl: {
-        "ui:widget": "uri",
-      },
-      validateWithJson: {
-        "ui:field": "codeEditor",
-        "ui:options": {
-          showAsModal: true,
-          modal: {
-            buttonInNewLine: true,
-            modalWidth: "800px",
-          },
-          codeEditor: {
-            minimal: true,
-            language: "json",
-            height: "600px",
-            extraExtensions: [placeholder("Paste your JSON Schema here")],
-          },
-        },
-      },
+
       "ui:order": [
         "title",
         "description",
@@ -1368,8 +1304,43 @@ const advanced = {
         "ui:options": {
           type: "object",
           title: "UI Options",
-          dependencies:
-            common.optionsUiSchema.properties["ui:options"].dependencies,
+          dependencies: {
+            ...common.optionsUiSchema.properties["ui:options"].dependencies,
+            validateWith: {
+              oneOf: [
+                {
+                  properties: {
+                    validateWith: {
+                      enum: ["url"],
+                    },
+                    validateWithUrl: {
+                      title: "Validation schema URL",
+                      type: "string",
+                    },
+                  },
+                },
+                {
+                  properties: {
+                    validateWith: {
+                      enum: ["json"],
+                    },
+                    validateWithJson: {
+                      title: "Validation JSON schema",
+                      aiHint: "The JSON must be stringified",
+                      type: "string",
+                    },
+                  },
+                },
+                {
+                  properties: {
+                    validateWith: {
+                      enum: ["none"],
+                    },
+                  },
+                },
+              ],
+            },
+          },
           properties: {
             ...common.optionsUiSchema.properties["ui:options"].properties,
             height: {
@@ -1389,6 +1360,17 @@ const advanced = {
               tooltip:
                 "This setting will be ignored when passing a validation schema in the schema settings",
             },
+            validateWith: {
+              type: "string",
+              title: "Validate with",
+              tooltip:
+                "You can either provide a URL of a UI Schema to validate against or paste the JSON schema directly",
+              oneOf: [
+                { const: "none", title: "None" },
+                { const: "url", title: "URL" },
+                { const: "json", title: "JSON" },
+              ],
+            },
           },
         },
         "ui:label": common.optionsUiSchema.properties["ui:label"],
@@ -1396,6 +1378,28 @@ const advanced = {
     },
     optionsUiSchemaUiSchema: {
       ...common.optionsUiSchemaUiSchema,
+      "ui:options": {
+        ...common.optionsUiSchemaUiSchema["ui:options"],
+        validateWithUrl: {
+          "ui:widget": "uri",
+        },
+        validateWithJson: {
+          "ui:field": "codeEditor",
+          "ui:options": {
+            showAsModal: true,
+            modal: {
+              buttonInNewLine: true,
+              modalWidth: "800px",
+            },
+            codeEditor: {
+              minimal: true,
+              language: "json",
+              height: "600px",
+              extraExtensions: [placeholder("Paste your JSON Schema here")],
+            },
+          },
+        },
+      },
     },
     default: {
       schema: {
