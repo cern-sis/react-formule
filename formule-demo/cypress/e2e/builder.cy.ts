@@ -782,16 +782,21 @@ describe("test basic functionality", () => {
     shouldHaveValidationErrors(false, false);
     cy.getByDataCy("codeEditorFieldError").should("have.text", "");
 
+    cy.getByDataCy("fieldSettings")
+      .find(".scrollableTabs .ant-tabs-nav-list")
+      .find("[data-node-key=2]")
+      .click();
+
     // TODO: Test URL validation
 
     // JSON validation, wrong validation schema
-    cy.get(`input#root${SEP}validateWith`).type(
+    cy.get(`input#root${SEP}ui\\:options${SEP}validateWith`).type(
       "{downArrow}{downArrow}{enter}",
       {
         force: true,
       },
     );
-    cy.get(`button#root${SEP}validateWithJson`).click();
+    cy.get(`button#root${SEP}ui\\:options${SEP}validateWithJson`).click();
     cy.getByDataCy("fieldModal")
       .find(".cm-content")
       .invoke("html", "this is an invalid schema");
@@ -807,7 +812,7 @@ describe("test basic functionality", () => {
     );
 
     // JSON validation, good validation schema
-    cy.get(`button#root${SEP}validateWithJson`).click();
+    cy.get(`button#root${SEP}ui\\:options${SEP}validateWithJson`).click();
     cy.getByDataCy("fieldModal")
       .find(".cm-content")
       .invoke("html", JSON.stringify(validationSchema));

@@ -5,19 +5,15 @@ import { Typography } from "antd";
 import { debounce } from "lodash-es";
 import { URL_REGEX } from "../../../utils";
 
-const CodeEditorField = ({
-  formData,
-  onChange,
-  schema,
-  uiSchema,
-  readonly,
-}) => {
-  const { validateWith, validateWithUrl, validateWithJson } = schema;
+const CodeEditorField = ({ formData, onChange, uiSchema, readonly }) => {
   const uiOptions = uiSchema["ui:options"] || {};
   const {
     language = uiOptions.codeEditor?.language,
     height = uiOptions.codeEditor?.height,
     codeEditor,
+    validateWith,
+    validateWithUrl,
+    validateWithJson,
   } = uiOptions || {};
 
   const [initialValue] = useState(formData);
@@ -54,15 +50,12 @@ const CodeEditorField = ({
         fetchSchema.cancel();
       };
     } else if (validateWith === "json" && validateWithJson) {
-      const parsed = (() => {
-        try {
-          return JSON.parse(validateWithJson);
-        } catch {
-          setError("Error parsing validation JSON");
-          return;
-        }
-      }).call();
-      setValidationSchema(parsed);
+      try {
+        setValidationSchema(JSON.parse(validateWithJson));
+      } catch {
+        setError("Error parsing validation JSON");
+        setValidationSchema();
+      }
     } else {
       setValidationSchema();
     }
