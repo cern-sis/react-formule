@@ -163,8 +163,8 @@ export const extra = {
 const collections = {
   object: {
     title: "Object",
-    icon: <span>&#123;&#32;&#125;</span>,
-    description: "Data in JSON format, Grouped section",
+    icon: <span>&#123;&nbsp;&#125;</span>,
+    description: "Group of fields, useful for nesting",
     className: "tour-object-field",
     child: {},
     optionsSchema: {
@@ -212,8 +212,7 @@ const collections = {
   array: {
     title: "List",
     icon: <UnorderedListOutlined />,
-    description:
-      "A list of things. List of strings, numbers, objects, references",
+    description: "List of fields supporting addition, deletion and reordering",
     className: "tour-list-field",
     child: {},
     optionsSchema: {
@@ -284,7 +283,7 @@ const collections = {
   accordion: {
     title: "Accordion",
     icon: <BorderTopOutlined />,
-    description: "A collapsible list of fields",
+    description: "List of collapsible fields",
     child: {},
     optionsSchema: {
       type: "object",
@@ -315,7 +314,7 @@ const collections = {
   layer: {
     title: "Layer",
     icon: <BorderHorizontalOutlined />,
-    description: "A list of modal fields",
+    description: "List of modal fields",
     child: {},
     optionsSchema: {
       type: "object",
@@ -346,7 +345,7 @@ const collections = {
   tabView: {
     title: "Tab",
     icon: <LayoutOutlined />,
-    description: "Data in JSON format, Grouped section",
+    description: "Group of fields separated in tabs",
     child: {},
     optionsSchema: {
       type: "object",
@@ -376,6 +375,7 @@ const collections = {
   },
   stepsView: {
     title: "Steps",
+    description: "Group of fields separated in steps",
     icon: <NodeIndexOutlined />,
     child: {},
     optionsSchema: {
@@ -484,7 +484,7 @@ const simple = {
   text: {
     title: "Text",
     icon: <FontSizeOutlined />,
-    description: "Titles, names, paragraphs, IDs, list of names",
+    description: "Text field supporting validation",
     className: "tour-text-field",
     child: {},
     optionsSchema: {
@@ -570,7 +570,7 @@ const simple = {
   textarea: {
     title: "Text area",
     icon: <AlignCenterOutlined />,
-    description: "Text Area field",
+    description: "Text area that can grow vertically",
     child: {},
     optionsSchema: {
       type: "object",
@@ -637,7 +637,7 @@ const simple = {
   number: {
     title: "Number",
     icon: <FieldNumberOutlined />,
-    description: "IDs, order number, rating, quantity",
+    description: "Number field (integer or float)",
     child: {},
     optionsSchema: {
       type: "object",
@@ -677,7 +677,8 @@ const simple = {
   checkbox: {
     title: "Checkbox",
     icon: <CheckSquareOutlined />,
-    description: "IDs, order number, rating, quantity",
+    description:
+      "Checkbox field with one or multiple options and customizable return values",
     child: {},
     optionsSchema: {
       type: "object",
@@ -723,7 +724,6 @@ const simple = {
                 items: {
                   title: "Define your options",
                   type: "object",
-                  description: "The options for the widget",
                   properties: {
                     enum: {
                       title: "Options List",
@@ -743,6 +743,13 @@ const simple = {
     },
     optionsSchemaUiSchema: {
       ...common.optionsSchemaUiSchema,
+      items: {
+        enum: {
+          items: {
+            "ui:label": false,
+          },
+        },
+      },
       readOnly: extra.optionsSchemaUiSchema.readOnly,
       isRequired: extra.optionsSchemaUiSchema.isRequired,
     },
@@ -769,7 +776,7 @@ const simple = {
   switch: {
     title: "Switch",
     icon: <SwapOutlined />,
-    description: "IDs, order number, rating, quantity",
+    description: "Switch field with customizable return types",
     child: {},
     optionsSchema: {
       type: "object",
@@ -832,7 +839,7 @@ const simple = {
   radio: {
     title: "Radio",
     icon: <AimOutlined />,
-    description: "IDs, order number, rating, quantity",
+    description: "Radio button with multiple options and only one selection",
     child: {},
     optionsSchema: {
       type: "object",
@@ -876,7 +883,7 @@ const simple = {
   select: {
     title: "Select",
     icon: <AppstoreOutlined />,
-    description: "IDs, order number, rating, quantity",
+    description: "Dropdown select with multiselect support",
     child: {},
     optionsSchema: {
       type: "object",
@@ -971,6 +978,13 @@ const simple = {
     },
     optionsSchemaUiSchema: {
       ...common.optionsSchemaUiSchema,
+      items: {
+        enum: {
+          items: {
+            "ui:label": false,
+          },
+        },
+      },
       readOnly: extra.optionsSchemaUiSchema.readOnly,
       isRequired: extra.optionsSchemaUiSchema.isRequired,
     },
@@ -993,7 +1007,8 @@ const simple = {
   date: {
     title: "Date",
     icon: <CalendarOutlined />,
-    description: "Date",
+    description:
+      "Date field with date and date-time support and date range validation",
     child: {},
     optionsSchema: {
       type: "object",
@@ -1065,7 +1080,7 @@ const advanced = {
   uri: {
     title: "URI",
     icon: <LinkOutlined />,
-    description: "Add uri text",
+    description: "URI/URL field with quick action buttons",
     child: {},
     optionsSchema: {
       type: "object",
@@ -1118,7 +1133,7 @@ const advanced = {
   richeditor: {
     title: "Rich/LaTeX editor",
     icon: <FileMarkdownOutlined />,
-    description: "Rich/LaTeX Editor Field",
+    description: "Interactive editor with support for LaTeX and Markdown",
     child: {},
     optionsSchema: {
       type: "object",
@@ -1152,7 +1167,7 @@ const advanced = {
   tags: {
     title: "Tags",
     icon: <TagOutlined />,
-    description: "Add keywords, tags, etc",
+    description: "List of tags with pattern validation",
     child: {},
     optionsSchema: {
       title: "Tags Schema",
@@ -1256,7 +1271,8 @@ const advanced = {
   codeEditor: {
     title: "Code Editor",
     icon: <CodeOutlined />,
-    description: "Code editor with syntax highlighting",
+    description:
+      "Code editor with syntax highlighting and JSONSchema validation",
     child: {},
     optionsSchema: {
       title: "Code Editor Schema",
@@ -1397,7 +1413,7 @@ const advanced = {
   file: {
     title: "Files",
     icon: <UploadOutlined />,
-    description: "Upload files",
+    description: "File upload with previews and extension whitelisting",
     child: {},
     optionsSchema: {
       type: "object",
@@ -1472,7 +1488,7 @@ export const hiddenFields = {
   integer: {
     title: "Integer",
     icon: <NumberOutlined />,
-    description: "IDs, order number, rating, quantity",
+    description: "Number field (integer or float)",
     child: {},
     optionsSchema: {
       type: "object",

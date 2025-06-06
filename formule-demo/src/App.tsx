@@ -17,6 +17,7 @@ import {
   Col,
   Drawer,
   FloatButton,
+  Grid,
   Layout,
   List,
   message,
@@ -48,6 +49,7 @@ import { theme } from "./theme";
 import "./style.css";
 
 const { Content, Footer } = Layout;
+const { useBreakpoint } = Grid;
 
 function App() {
   const [formuleState, setFormuleState] = useState<SchemaWizardState>();
@@ -58,6 +60,8 @@ function App() {
   const [justSaved, setJustSaved] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [openFloatButtons, setOpenFloatButtons] = useState(true);
+
+  const screens = useBreakpoint();
 
   useEffect(() => {
     setHasUnsavedChanges(isUnsaved());
@@ -319,7 +323,12 @@ function App() {
         />
       </Drawer>
       <Layout style={{ height: "100%" }}>
-        <Content style={{ overflowY: "scroll" }}>
+        <Content
+          style={{
+            overflowY: "scroll",
+            scrollSnapType: screens.md ? "none" : "y mandatory",
+          }}
+        >
           <FormuleContext
             theme={theme}
             synchronizeState={handleFormuleStateChange}
@@ -332,6 +341,7 @@ function App() {
                   overflowX: "hidden",
                   height: "100%",
                   display: "flex",
+                  scrollSnapAlign: screens.md ? "none" : "start",
                 }}
               >
                 <SelectOrEdit />
@@ -343,6 +353,7 @@ function App() {
                   overflowX: "hidden",
                   padding: "0px 15px",
                   backgroundColor: "#F6F7F8",
+                  scrollSnapAlign: screens.md ? "none" : "start",
                 }}
               >
                 <SchemaPreview hideSchemaKey={false} />
@@ -350,7 +361,11 @@ function App() {
               <Col
                 xs={24}
                 md={14}
-                style={{ overflowX: "hidden", height: "100%" }}
+                style={{
+                  overflowX: "hidden",
+                  height: "100%",
+                  scrollSnapAlign: screens.md ? "none" : "start",
+                }}
               >
                 <FormPreview liveValidate={true} hideAnchors={false} />
               </Col>
