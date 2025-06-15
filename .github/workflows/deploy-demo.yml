@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   build-and-deploy-demo:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     name: Build and deploy demo
     runs-on: ubuntu-latest
     defaults:
