@@ -19,6 +19,12 @@ const preloadedState = () => {
 export const persistMiddleware = ({ getState }) => {
   return (next) => (action) => {
     const result = next(action);
+
+    // Skip formData updates for better performance since formData is not persisted
+    if (action.type.includes("updateFormData")) {
+      return result;
+    }
+
     const state = getState();
     const persistedData = {
       schemaWizard: {

@@ -35,7 +35,10 @@ const TextWidget = ({
     useState(false);
   const [apiCalling, setApiCalling] = useState(false);
 
-  const formData = useSelector((state) => state.schemaWizard.formData);
+  const needsFormData = autofill_from && autofill_on;
+  const formData = useSelector((state) =>
+    needsFormData ? state.schemaWizard.formData : null,
+  );
 
   const dispatch = useDispatch();
 

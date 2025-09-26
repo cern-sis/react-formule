@@ -48,7 +48,13 @@ const FormPreview = ({ liveValidate, hideAnchors }) => {
         }}
       >
         {segment === "editable" ? (
-          <EditablePreview hideTitle liveValidate={liveValidate} />
+          <EditablePreview
+            hideTitle
+            liveValidate={liveValidate}
+            schema={schema}
+            uiSchema={uiSchema}
+            formData={formData}
+          />
         ) : (
           <Form
             schema={customizationContext.transformSchema(schema)}

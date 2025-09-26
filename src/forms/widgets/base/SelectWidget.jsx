@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import Select from "antd/lib/select";
 import { debounce } from "lodash-es";
 import axios from "axios";
-import { Empty } from "antd";
+import { Empty, Select } from "antd";
 import PropTypes from "prop-types";
 
 import {
@@ -35,7 +34,10 @@ const SelectWidget = ({
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
 
-  const formData = useSelector((state) => state.schemaWizard.formData);
+  const needsFormData = suggestions && params;
+  const formData = useSelector((state) =>
+    needsFormData ? state.schemaWizard.formData : null,
+  );
 
   const handleChange = (nextValue) => {
     onChange(
@@ -149,10 +151,10 @@ SelectWidget.propTypes = {
   autofocus: PropTypes.bool,
   formContext: PropTypes.object,
   id: PropTypes.string,
-  multiple: PropTypes.string,
+  multiple: PropTypes.bool,
   placeholder: PropTypes.string,
   readonly: PropTypes.bool,
-  value: PropTypes.object,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   options: PropTypes.object,
   onBlur: PropTypes.func,
   onChange: PropTypes.func,
