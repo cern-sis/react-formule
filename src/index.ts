@@ -1,5 +1,6 @@
 export { initFormuleSchema } from "./exposed";
 export { getFormuleState } from "./exposed";
+export { getFormState } from "./exposed";
 export { FormuleContext } from "./exposed";
 export { getAllFromLocalStorage } from "./exposed";
 export { saveToLocalStorage } from "./exposed";

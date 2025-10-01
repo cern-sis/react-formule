@@ -47,7 +47,7 @@ import {
   saveToLocalStorage,
   loadFromLocalStorage,
   AiChatFooter,
-  getFormuleState,
+  getFormState,
 } from "react-formule";
 import { theme } from "./theme";
 import formuleLogo from "./assets/logo.png";
@@ -128,7 +128,7 @@ const App = () => {
   };
 
   return (
-    <FormuleContext theme={theme} synchronizeState={handleFormuleStateChange}>
+    <FormuleContext theme={theme} syncFormuleState={handleFormuleStateChange}>
       <Layout hasSider style={{ height: "100vh" }}>
         <Layout.Sider
           hidden={menuHidden}
@@ -367,7 +367,7 @@ const App = () => {
               >
                 <Typography.Text strong>Form data</Typography.Text>
                 <CodeViewer
-                  value={JSON.stringify(getFormuleState().formData, null, 2)}
+                  value={JSON.stringify(getFormState().formData, null, 2)}
                   lang="json"
                   height="25vh"
                   reset

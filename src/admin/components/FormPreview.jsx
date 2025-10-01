@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useMemo } from "react";
 import Form from "../../forms/Form";
 import { Segmented, Row } from "antd";
 import { useSelector } from "react-redux";
@@ -9,9 +9,13 @@ import CustomizationContext from "../../contexts/CustomizationContext";
 const FormPreview = ({ liveValidate, hideAnchors }) => {
   const schema = useSelector((state) => state.schemaWizard.current.schema);
   const uiSchema = useSelector((state) => state.schemaWizard.current.uiSchema);
-  const formData = useSelector((state) => state.schemaWizard.formData);
+  const formData = useSelector((state) => state.form.formData);
 
   const customizationContext = useContext(CustomizationContext);
+
+  const transformedSchema = useMemo(() => {
+    return customizationContext.transformSchema(schema);
+  }, [customizationContext, schema]);
 
   const [segment, setSegment] = useState("editable");
 
@@ -51,13 +55,13 @@ const FormPreview = ({ liveValidate, hideAnchors }) => {
           <EditablePreview
             hideTitle
             liveValidate={liveValidate}
-            schema={schema}
+            schema={transformedSchema}
             uiSchema={uiSchema}
             formData={formData}
           />
         ) : (
           <Form
-            schema={customizationContext.transformSchema(schema)}
+            schema={transformedSchema}
             uiSchema={uiSchema}
             formData={formData}
             hideAnchors={hideAnchors}

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import { debounce } from "lodash-es";
 import axios from "axios";
 import { Empty, Select } from "antd";
@@ -11,6 +10,7 @@ import {
   enumOptionsValueForIndex,
 } from "@rjsf/utils";
 import isString from "lodash-es";
+import store from "../../../store/configureStore";
 
 const SelectWidget = ({
   autofocus,
@@ -33,11 +33,6 @@ const SelectWidget = ({
 
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
-
-  const needsFormData = suggestions && params;
-  const formData = useSelector((state) =>
-    needsFormData ? state.schemaWizard.formData : null,
-  );
 
   const handleChange = (nextValue) => {
     onChange(
@@ -83,7 +78,7 @@ const SelectWidget = ({
   };
 
   const updateSearch = (value, callback) => {
-    let data = formData;
+    const data = store.getState().form.formData;
     if (params) {
       Object.entries(params).map((param) => {
         const path = _replace_hash_with_current_indexes(param[1]);
@@ -142,6 +137,7 @@ const SelectWidget = ({
           },
         )
       }
+      style={{ width: "100%" }}
     />
   );
 };

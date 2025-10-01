@@ -1,24 +1,17 @@
 import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-import { isEqual, cloneDeep } from "lodash-es";
+import { isEqual } from "lodash-es";
 
-const StateSynchronizer = ({ synchronizeState, children }) => {
-  const state = useSelector((state) => state.schemaWizard);
-  const previousStateRef = useRef();
-
-  function stripFormData(obj) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { formData, ...rest } = obj;
-    return rest;
-  }
+const StateSynchronizer = ({ callback, slice = "schemaWizard", children }) => {
+  const state = useSelector((state) => state[slice]);
+  const previousStateRef = useRef(state);
 
   useEffect(() => {
-    const prev = previousStateRef.current;
-    if (!prev || !isEqual(stripFormData(state), stripFormData(prev))) {
-      synchronizeState(state);
+    if (!isEqual(previousStateRef.current, state)) {
+      callback(state);
+      previousStateRef.current = state;
     }
-    previousStateRef.current = cloneDeep(state);
-  }, [state, synchronizeState]);
+  }, [state, callback]);
 
   return children;
 };

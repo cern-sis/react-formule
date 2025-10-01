@@ -1,12 +1,10 @@
-import React, { useContext, useMemo } from "react";
+import React, { useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { debounce } from "lodash-es";
 import Form from "../../forms/Form";
 import { shoudDisplayGuideLinePopUp } from "../utils";
 import { Row, Empty, Space, Typography } from "antd";
-import { updateFormData } from "../../store/schemaWizard";
-
-import CustomizationContext from "../../contexts/CustomizationContext";
+import { updateFormData } from "../../store/form";
 
 const EditablePreview = ({
   hideTitle,
@@ -15,17 +13,12 @@ const EditablePreview = ({
   uiSchema,
   formData,
 }) => {
-  const customizationContext = useContext(CustomizationContext);
   const dispatch = useDispatch();
-
-  const transformedSchema = useMemo(() => {
-    return customizationContext.transformSchema(schema);
-  }, [customizationContext, schema]);
 
   const debouncedDispatch = useMemo(() => {
     return debounce((newFormData) => {
       dispatch(updateFormData({ value: newFormData }));
-    }, 300);
+    }, 500);
   }, [dispatch]);
 
   const handleFormChange = (change) => {
@@ -64,7 +57,7 @@ const EditablePreview = ({
         </Row>
       ) : (
         <Form
-          schema={transformedSchema}
+          schema={schema}
           uiSchema={uiSchema}
           formData={formData || {}}
           onChange={handleFormChange}

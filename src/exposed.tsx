@@ -9,7 +9,8 @@ import store from "./store/configureStore";
 import fieldTypes from "./admin/utils/fieldTypes";
 import { SetStateAction } from "react";
 import { RJSFSchema } from "@rjsf/utils";
-import { initialState, schemaInit, updateFormData } from "./store/schemaWizard";
+import { initialState, schemaInit } from "./store/schemaWizard";
+import { updateFormData } from "./store/form.ts";
 import StateSynchronizer from "./StateSynchronizer";
 import { isEqual, pick } from "lodash-es";
 import { itemIdGenerator } from "./utils";
@@ -30,17 +31,26 @@ export const FormuleContext = ({
   theme,
   separator = "::",
   errorBoundary,
-  synchronizeState,
+  syncFormuleState,
+  syncFormState,
   transformSchema = (schema: RJSFSchema) => schema,
   ai = { providers: defaultProviders },
 }: FormuleContextProps) => {
-  const content = synchronizeState ? (
-    <StateSynchronizer synchronizeState={synchronizeState}>
-      {children}
-    </StateSynchronizer>
-  ) : (
-    children
-  );
+  let content = children;
+
+  [
+    { callback: syncFormState, slice: "form" },
+    { callback: syncFormuleState, slice: "schemaWizard" },
+  ].forEach(({ callback, slice }) => {
+    if (callback) {
+      content = (
+        <StateSynchronizer callback={callback} slice={slice}>
+          {content}
+        </StateSynchronizer>
+      );
+    }
+  });
+
   return (
     <Provider store={store}>
       {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
@@ -109,6 +119,10 @@ export const initFormuleSchema = (
 
 export const getFormuleState = () => {
   return store.getState().schemaWizard;
+};
+
+export const getFormState = () => {
+  return store.getState().form;
 };
 
 export const getAllFromLocalStorage = () => {
