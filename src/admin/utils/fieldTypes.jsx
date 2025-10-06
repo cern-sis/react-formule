@@ -64,6 +64,12 @@ export const common = {
             title: "Collapsible",
             type: "boolean",
           },
+          hidden: {
+            type: "boolean",
+            title: "Hidden",
+            tooltip:
+              "When enabled, this field will not be visible in the form, but data can exist and be validated",
+          },
         },
         // Using dependencies here instead of if-then-else simplifies reusing the common properties
         dependencies: {
@@ -126,7 +132,10 @@ export const common = {
       collapsible: {
         "ui:widget": "switch",
       },
-      "ui:order": ["showAsModal", "modal", "collapsible", "*"],
+      hidden: {
+        "ui:widget": "switch",
+      },
+      "ui:order": ["showAsModal", "modal", "hidden", "collapsible", "*"],
       "ui:padding": 0,
       "ui:label": false,
     },
@@ -174,30 +183,8 @@ const collections = {
         ...common.optionsSchema,
       },
     },
-    optionsSchemaUiSchema: {
-      ...common.optionsSchemaUiSchema,
-    },
-    optionsUiSchema: {
-      type: "object",
-      title: "UI Schema",
-      properties: {
-        "ui:options": {
-          type: "object",
-          title: "UI Options",
-          dependencies:
-            common.optionsUiSchema.properties["ui:options"].dependencies,
-          properties: {
-            ...common.optionsUiSchema.properties["ui:options"].properties,
-            hidden: {
-              type: "boolean",
-              title: "Do you want this field to be hidden?",
-              description: "If yes, this field will not be visible in the form",
-            },
-          },
-        },
-        "ui:label": common.optionsUiSchema.properties["ui:label"],
-      },
-    },
+    optionsSchemaUiSchema: common.optionsSchemaUiSchema,
+    optionsUiSchema: common.optionsUiSchema,
     optionsUiSchemaUiSchema: {
       ...common.optionsUiSchemaUiSchema,
     },

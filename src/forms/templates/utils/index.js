@@ -1,9 +1,10 @@
 const _checkIfHidden = (name, uiSchema) => {
   return (
-    uiSchema &&
-    uiSchema[name] &&
-    uiSchema[name]["ui:options"] &&
-    uiSchema[name]["ui:options"].hidden
+    (uiSchema &&
+      uiSchema[name] &&
+      uiSchema[name]["ui:options"] &&
+      uiSchema[name]["ui:options"].hidden) ||
+    (uiSchema && uiSchema["ui:options"] && uiSchema["ui:options"].hidden)
   );
 };
 
@@ -20,7 +21,9 @@ export const _filterTabs = (tabs, options, properties) => {
     return options.tabs;
   }
   return properties.filter(
-    (item) => !_checkIfHidden(item.name) && item.name !== "analysis_reuse_mode",
+    (item) =>
+      !_checkIfHidden(item.name, item?.content?.props?.uiSchema) &&
+      item.name !== "analysis_reuse_mode",
   );
 };
 

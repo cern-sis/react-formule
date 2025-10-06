@@ -43,6 +43,7 @@ const FieldTemplate = ({
   } = formContext;
 
   const { token } = theme.useToken();
+  const { ["ui:options"]: uiOptions = {} } = uiSchema;
 
   if (hidden) {
     return <div className="field-hidden">{children}</div>;
@@ -52,8 +53,6 @@ const FieldTemplate = ({
     [...new Set(rawErrors)].map((error) => (
       <div key={`field-${id}-error-${error}`}>{error}</div>
     ));
-
-  const { ["ui:options"]: uiOptions = {} } = uiSchema;
 
   const shouldShowAsModal = uiOptions?.showAsModal === true;
   const collapsible = uiOptions?.collapsible === true;
@@ -124,6 +123,7 @@ const FieldTemplate = ({
             label &&
             FieldHeaderWithProps
           }
+          hidden={hidden || uiOptions?.hidden}
           labelCol={labelCol}
           required={required}
           style={{ ...wrapperStyle, ...stylePatches(id, patches, token) }}
