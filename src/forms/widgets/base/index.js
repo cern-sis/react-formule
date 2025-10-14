@@ -19,6 +19,7 @@ const widgets = {
   date: DateWidget,
   select: SelectWidget,
   slider: SliderWidget,
+  slider_markers: SliderWidget,
 };
 
 export default widgets;

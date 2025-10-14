@@ -52,11 +52,19 @@ export const common = {
         properties: {
           span: {
             title: "Field Width",
-            type: "integer",
-            kind: "discrete",
-            defaultValue: 24,
-            values: [6, 8, 12, 16, 18, 24],
-            labels: ["25%", "33%", "50%", "66%", "75%", "100%"],
+            type: "number",
+            default: 24,
+            minimum: 0,
+            maximum: 24,
+            oneOf: [
+              { title: "auto", const: 0 },
+              { title: "1/4", const: 6 },
+              { title: "1/3", const: 8 },
+              { title: "1/2", const: 12 },
+              { title: "2/3", const: 16 },
+              { title: "3/4", const: 18 },
+              { title: "full", const: 24 },
+            ],
           },
           showAsModal: {
             title: "Display as Modal",
@@ -99,16 +107,17 @@ export const common = {
                         type: "integer",
                         tooltip:
                           "On small screens modals will ignore this setting and use full screen width",
-                        kind: "discrete",
-                        values: [0, 25, 33, 50, 66, 75, 100],
-                        labels: [
-                          "auto",
-                          "25%",
-                          "33%",
-                          "50%",
-                          "66%",
-                          "75%",
-                          "100%",
+                        default: 24,
+                        minimum: 0,
+                        maximum: 24,
+                        oneOf: [
+                          { title: "auto", const: 0 },
+                          { title: "1/4", const: 6 },
+                          { title: "1/3", const: 8 },
+                          { title: "1/2", const: 12 },
+                          { title: "2/3", const: 16 },
+                          { title: "3/4", const: 18 },
+                          { title: "full", const: 24 },
                         ],
                       },
                       buttonInNewLine: {
@@ -134,7 +143,7 @@ export const common = {
   optionsUiSchemaUiSchema: {
     "ui:options": {
       span: {
-        "ui:widget": "slider",
+        "ui:widget": "slider_markers",
       },
       modal: {
         "ui:options": {
@@ -148,7 +157,7 @@ export const common = {
           "ui:widget": "switch",
         },
         modalWidth: {
-          "ui:widget": "slider",
+          "ui:widget": "slider_markers",
         },
       },
       showAsModal: {
@@ -1287,7 +1296,6 @@ const advanced = {
             height: {
               title: "Height",
               type: "integer",
-              kind: "continuous",
               minimum: 200,
               maximum: 1000,
               step: 100,
@@ -1504,7 +1512,6 @@ const advanced = {
               title: "Height",
               type: "integer",
               tooltip: "Set to 0 for auto",
-              kind: "continuous",
               minimum: 0,
               maximum: 1000,
               step: 100,
@@ -1657,53 +1664,122 @@ const advanced = {
         ...common.optionsSchema,
         readOnly: extra.optionsSchema.readOnly,
         isRequired: extra.optionsSchema.isRequired,
+        minimum: {
+          type: "number",
+          title: "Minimum value",
+        },
+        maximum: {
+          type: "number",
+          title: "Maximum value",
+        },
+        step: {
+          type: "number",
+          title: "Step size",
+          // default: 0,
+        },
       },
-      oneOf: [
-        {
-          title: "Simple slider",
+      // required: ["step"],
+    },
+    optionsSchemaUiSchema: {
+      ...common.optionsSchemaUiSchema,
+      readOnly: extra.optionsSchemaUiSchema.readOnly,
+      isRequired: extra.optionsSchemaUiSchema.isRequired,
+      minimum: {
+        "ui:options": {
+          span: 12,
+          label: false,
+          placeholder: "Minimum",
+        },
+      },
+      maximum: {
+        "ui:options": {
+          span: 12,
+          label: false,
+          placeholder: "Maximum",
+        },
+      },
+    },
+    optionsUiSchema: {
+      type: "object",
+      title: "UI Schema",
+      properties: {
+        "ui:options": {
+          type: "object",
+          title: "UI Options",
+          dependencies:
+            common.optionsUiSchema.properties["ui:options"].dependencies,
           properties: {
-            minimum: {
-              type: "number",
-              title: "Minimum value",
+            ...common.optionsUiSchema.properties["ui:options"].properties,
+            suffix: {
+              title: "Suffix",
+              type: "string",
+              tooltip:
+                "For visual purposes. Only the plain numeric value will be stored on the form data.",
             },
-            maximum: {
-              type: "number",
-              title: "Maximum value",
-            },
-            step: {
-              type: "number",
-              title: "Step size",
+            hideInput: {
+              type: "boolean",
+              title: "Hide input",
+              tooltip:
+                "Hide numeric input field at the right. On `discrete` sliders the input is never shown and this setting is ignored.",
             },
           },
         },
-        {
-          title: "Descrete options",
-          description:
-            "Create a slider with predefined points/marks to select on",
-          properties: {
-            oneOf: {
-              title: "Marks/Labels",
-              type: "array",
-              items: {
-                type: "object",
-                properties: {
-                  const: {
-                    type: "number",
-                    default: 0,
-                  },
-                  title: {
-                    type: "string",
-                  },
-                  type: {
-                    type: "string",
-                    default: "number",
-                  },
-                },
+        "ui:label": common.optionsUiSchema.properties["ui:label"],
+      },
+    },
+    optionsUiSchemaUiSchema: {
+      ...common.optionsUiSchemaUiSchema,
+      "ui:options": {
+        ...common.optionsUiSchemaUiSchema["ui:options"],
+        hideInput: {
+          "ui:widget": "switch",
+        },
+      },
+      "ui:label": common.optionsUiSchemaUiSchema["ui:label"],
+    },
+    default: {
+      schema: {
+        type: "number",
+      },
+      uiSchema: {
+        "ui:widget": "slider",
+      },
+    },
+  },
+  slider_markers: {
+    title: "Slider (with markers)",
+    icon: <DashOutlined />,
+    description: "Select a value within a range",
+    child: {},
+    optionsSchema: {
+      type: "object",
+      title: "Slider with makers Schema",
+      properties: {
+        ...common.optionsSchema,
+        readOnly: extra.optionsSchema.readOnly,
+        isRequired: extra.optionsSchema.isRequired,
+        oneOf: {
+          title: "Marks/Labels",
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              const: {
+                type: "number",
+                default: 0,
+              },
+              title: {
+                type: "string",
+              },
+              type: {
+                type: "string",
+                default: "number",
               },
             },
+            required: ["const"],
           },
         },
-      ],
+      },
     },
     optionsSchemaUiSchema: {
       ...common.optionsSchemaUiSchema,
@@ -1787,10 +1863,14 @@ const advanced = {
     default: {
       schema: {
         type: "number",
-        kind: "continuous",
+        oneOf: [
+          { title: "Option 1", const: 0 },
+          { title: "Option 2", const: 2 },
+          { title: "Option 10", const: 10 },
+        ],
       },
       uiSchema: {
-        "ui:widget": "slider",
+        "ui:widget": "slider_markers",
       },
     },
   },

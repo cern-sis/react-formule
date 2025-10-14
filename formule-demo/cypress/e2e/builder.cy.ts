@@ -154,7 +154,7 @@ describe("test basic functionality", () => {
       .find("[data-node-key=2]")
       .click();
     cy.getByDataCy("spanColWrapper").should("have.class", "ant-col-24");
-    cy.get(".ant-slider-mark").contains("50%").click();
+    cy.get(".ant-slider-mark").contains("1/2").click();
     cy.getByDataCy("spanColWrapper").should("have.class", "ant-col-12");
   });
 
@@ -954,13 +954,6 @@ describe("test basic functionality", () => {
     cy.addFieldWithName("slider", "myfield");
     cy.getByDataCy("treeItem").click();
 
-    // Test continuous type
-    cy.get(`input#root${SEP}kind`)
-      .parent()
-      .parent()
-      .find('[title="Continuous"]')
-      .should("exist");
-
     // min, max and step
     cy.get(`input#root${SEP}minimum`).clearTypeBlur("0");
     cy.get(`input#root${SEP}maximum`).clearTypeBlur("100");
@@ -1002,45 +995,37 @@ describe("test basic functionality", () => {
     cy.getByDataCy("formPreview")
       .find(".ant-input-number-suffix")
       .should("contain.text", "px");
+  });
 
-    // Test discrete type
-    cy.getByDataCy("fieldSettings")
-      .find(".scrollableTabs .ant-tabs-nav-list")
-      .find("[data-node-key=1]")
-      .click({ force: true });
-    cy.get(`input#root${SEP}kind`).type("{downArrow}{enter}", { force: true });
-    cy.get(`input#root${SEP}kind`)
-      .parent()
-      .parent()
-      .find('[title="Discrete"]')
-      .should("exist");
+  // Test discrete type
+  it("tests slider with markers field", () => {
+    cy.get("span").contains("Advanced fields").click();
+    cy.addFieldWithName("slider_markers", "myfield");
+    cy.getByDataCy("treeItem").click();
 
     // values and labels
-    cy.get(`fieldset#root${SEP}values`)
+    cy.get(`fieldset#root${SEP}oneOf`)
+      .find('[data-cy="addItemButton"]')
+      .should("exist")
+      .click();
+
+    cy.get(`input#root${SEP}oneOf${SEP}3${SEP}const`).clearTypeBlur("25", {
+      force: true,
+    });
+    cy.get(`input#root${SEP}oneOf${SEP}3${SEP}title`).clearTypeBlur("Small");
+
+    cy.get(`fieldset#root${SEP}oneOf`)
       .find('[data-cy="addItemButton"]')
       .click();
-    cy.get(`input#root${SEP}values${SEP}0`).clearTypeBlur("25");
-    cy.get(`fieldset#root${SEP}values`)
-      .find('[data-cy="addItemButton"]')
-      .click();
-    cy.get(`input#root${SEP}values${SEP}1`).clearTypeBlur("50");
-    cy.get(`fieldset#root${SEP}values`)
-      .find('[data-cy="addItemButton"]')
-      .click();
-    cy.get(`input#root${SEP}values${SEP}2`).clearTypeBlur("100");
-    cy.get(`fieldset#root${SEP}labels`)
-      .find('[data-cy="addItemButton"]')
-      .click();
-    cy.get(`input#root${SEP}labels${SEP}0`).clearTypeBlur("Small");
-    cy.get(`fieldset#root${SEP}labels`)
-      .find('[data-cy="addItemButton"]')
-      .click();
-    cy.get(`input#root${SEP}labels${SEP}1`).clearTypeBlur("Medium");
+    cy.get(`input#root${SEP}oneOf${SEP}4${SEP}const`).clearTypeBlur("100", {
+      force: true,
+    });
 
     // marks and interaction
     cy.getByDataCy("formPreview")
       .find(".ant-slider-mark-text")
-      .first()
+      .last()
+      .prev()
       .should("contain.text", "Small");
     cy.getByDataCy("formPreview")
       .find(".ant-slider-mark-text")
@@ -1050,7 +1035,7 @@ describe("test basic functionality", () => {
     cy.getByDataCy("formPreview")
       .find(".ant-slider-handle")
       .invoke("attr", "aria-valuenow")
-      .should("eq", "2"); // last value (index 2)
+      .should("eq", "100"); // last value (index 2)
 
     // Test readonly
     cy.get(`button#root${SEP}readOnly`).click();

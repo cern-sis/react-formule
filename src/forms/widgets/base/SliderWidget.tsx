@@ -1,9 +1,15 @@
 import { Col, InputNumber, Row, Slider } from "antd";
 import { useState } from "react";
 
+interface SliderOneOf {
+  title?: string;
+  const: number;
+  type?: string;
+}
+
 interface SliderSchema {
   defaultValue?: number;
-  oneOf?: [];
+  oneOf?: SliderOneOf[];
   minimum?: number;
   maximum?: number;
   step?: number;
@@ -32,7 +38,7 @@ const SliderWidget = ({
   const { defaultValue, minimum, maximum, step, oneOf = [] } = schema;
   const { suffix, hideInput } = options;
   const marks = {};
-  oneOf?.map((i) => {
+  oneOf?.map((i: SliderOneOf) => {
     const label = i.title || i.const;
     marks[i.const] = suffix ? (
       <span>
@@ -62,7 +68,7 @@ const SliderWidget = ({
             defaultValue={value || defaultValue}
             max={
               marks
-                ? Math.max(...Object.keys(marks))
+                ? Math.max(...Object.keys(marks).map(Number))
                 : maximum
                   ? maximum
                   : undefined
@@ -77,8 +83,8 @@ const SliderWidget = ({
           <Slider
             defaultValue={defaultValue}
             step={step || 0}
-            min={minimum || 0}
-            max={maximum || 100}
+            min={minimum}
+            max={maximum}
             onChange={handleChange}
             dots={!!step}
             value={inputValue}
@@ -87,7 +93,7 @@ const SliderWidget = ({
           />
         )}
       </Col>
-      {!oneOf && !hideInput && (
+      {!(oneOf?.length > 0) && !hideInput && (
         <Col flex={"none"}>
           <InputNumber
             type="number"
