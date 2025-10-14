@@ -45,6 +45,7 @@ It also exports the following functions:
 
 - **`initFormuleSchema`**: Inits or resets the JSONSchema. You can also load an existing schema by passing it as an argument.
 - **`getFormuleState`**: Formule has its own internal redux state. You can retrieve it at any moment if you so require for more advanced use cases. If you want to continuosly synchronize the Formule state in your app, you can pass a callback function to FormuleContext instead (see below), which will be called every time the form state changes.
+- **`getFormState`**: Formule also has a separate state for the form data, which stores the data input into each of the fields of the form. You can also synchronize this state, but keep in mind that doing it can cause performance issues with big forms.
 
 And the following utilities:
 
@@ -172,7 +173,7 @@ const transformErrors = (errors) => {
 <FormuleForm transformErrors={transformErrors} />
 ```
 
-### Syncing Formule state
+### Syncing Formule / Form state
 
 If you want to run some logic in your application every time the current Formule state changes in any way (e.g. to run some action every time a new field is added to the form) you can pass a function to be called back when that happens:
 
@@ -181,12 +182,14 @@ const handleFormuleStateChange = (newState) => {
   // Do something when the state changes
 };
 
-<FormuleContext synchonizeState={handleFormuleStateChange}>
+<FormuleContext syncFormuleState={handleFormuleStateChange}>
   // ...
 </FormuleContext>;
 ```
 
 Alternatively, you can pull the current state on demand by calling `getFormuleState` at any moment.
+
+You can also synchronize the form state (e.g. `formData`) by provinding a callback via `syncFormState`, but beware of the performance impact on big forms and prefer calling `getFormState` instead when needed.
 
 ### Loading form data / prefill form
 

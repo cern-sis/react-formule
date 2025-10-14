@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { ThemeConfig } from "antd";
 import { SchemaWizardState } from "../store/schemaWizard";
+import { FormState } from "../store/form";
 
 export type CustomFunctions = {
   file?: {
@@ -108,14 +109,19 @@ export type FormuleContextProps = {
   theme?: ThemeConfig;
   separator?: string;
   errorBoundary?: ReactNode;
-  synchronizeState?: (state: SchemaWizardState) => void;
+  syncFormuleState?: (state: SchemaWizardState) => void;
+  syncFormState?: (state: FormState) => void;
   transformSchema?: (schema: object) => object;
   ai?: AIConfig;
 };
 
 export type CustomizationContextProps = Omit<
   FormuleContextProps,
-  "children" | "customFieldTypes" | "synchronizeState" | "theme"
+  | "children"
+  | "customFieldTypes"
+  | "syncFormuleState"
+  | "syncFormState"
+  | "theme"
 > & {
   allFieldTypes: object;
   separator: string;

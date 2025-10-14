@@ -1,19 +1,29 @@
-import { useContext } from "react";
+import React, { useMemo } from "react";
+import { useDispatch } from "react-redux";
+import { debounce } from "lodash-es";
 import Form from "../../forms/Form";
 import { shoudDisplayGuideLinePopUp } from "../utils";
 import { Row, Empty, Space, Typography } from "antd";
-import { useDispatch, useSelector } from "react-redux";
-import CustomizationContext from "../../contexts/CustomizationContext";
-import { updateFormData } from "../../store/schemaWizard";
+import { updateFormData } from "../../store/form";
 
-const EditablePreview = ({ hideTitle, liveValidate }) => {
-  const schema = useSelector((state) => state.schemaWizard.current.schema);
-  const uiSchema = useSelector((state) => state.schemaWizard.current.uiSchema);
-  const formData = useSelector((state) => state.schemaWizard.formData);
-
+const EditablePreview = ({
+  hideTitle,
+  liveValidate,
+  schema,
+  uiSchema,
+  formData,
+}) => {
   const dispatch = useDispatch();
 
-  const customizationContext = useContext(CustomizationContext);
+  const debouncedDispatch = useMemo(() => {
+    return debounce((newFormData) => {
+      dispatch(updateFormData({ value: newFormData }));
+    }, 500);
+  }, [dispatch]);
+
+  const handleFormChange = (change) => {
+    debouncedDispatch(change.formData);
+  };
 
   return (
     <>
@@ -47,12 +57,10 @@ const EditablePreview = ({ hideTitle, liveValidate }) => {
         </Row>
       ) : (
         <Form
-          schema={customizationContext.transformSchema(schema)}
+          schema={schema}
           uiSchema={uiSchema}
           formData={formData || {}}
-          onChange={(change) =>
-            dispatch(updateFormData({ value: change.formData }))
-          }
+          onChange={handleFormChange}
           liveValidate={liveValidate}
         />
       )}

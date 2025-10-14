@@ -4,10 +4,11 @@ import { Button, Descriptions, InputNumber, Popover } from "antd";
 import PropTypes from "prop-types";
 import { isRegExp } from "lodash-es";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { updateFormData } from "../../../store/schemaWizard";
+import { useDispatch } from "react-redux";
+import { updateFormData } from "../../../store/form";
 import { set, cloneDeep } from "lodash-es";
 import { InfoCircleOutlined } from "@ant-design/icons";
+import store from "../../../store/configureStore";
 
 const INPUT_STYLE = {
   width: "100%",
@@ -34,8 +35,6 @@ const TextWidget = ({
   const [apiCalledWithCurrentState, setApiCalledWithCurrentState] =
     useState(false);
   const [apiCalling, setApiCalling] = useState(false);
-
-  const formData = useSelector((state) => state.schemaWizard.formData);
 
   const dispatch = useDispatch();
 
@@ -69,6 +68,7 @@ const TextWidget = ({
   };
 
   const autoFillOtherFields = (event) => {
+    const formData = store.getState().form.formData;
     let newFormData = cloneDeep(formData);
     const url = options.autofill_from;
     const fieldsMap = options.autofill_fields;
@@ -80,6 +80,7 @@ const TextWidget = ({
       return;
 
     fieldsMap.map((el) => {
+      // TODO: error on modifying root title: cannot read properties of undefined (reading 'map')
       let destination = _replace_hash_with_current_indexes(el[1]);
       set(newFormData, destination, undefined);
     });

@@ -1,12 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
+import { isEqual } from "lodash-es";
 
-const StateSynchronizer = ({ synchronizeState, children }) => {
-  const state = useSelector((state) => state.schemaWizard);
+const StateSynchronizer = ({ callback, slice = "schemaWizard", children }) => {
+  const state = useSelector((state) => state[slice]);
+  const previousStateRef = useRef(state);
 
   useEffect(() => {
-    synchronizeState(state);
-  }, [state, synchronizeState]);
+    if (!isEqual(previousStateRef.current, state)) {
+      callback(state);
+      previousStateRef.current = state;
+    }
+  }, [state, callback]);
 
   return children;
 };

@@ -20,7 +20,6 @@ export const initialState = {
   },
   id: itemIdGenerator(),
   field: {},
-  formData: {},
   files: {
     new: {},
     deleted: [] as string[],
@@ -296,10 +295,6 @@ const schemaWizard = createSlice({
         type: "schemaWizard/updateSchemaByPath",
       });
     },
-    updateFormData(state, action) {
-      const { value } = action.payload;
-      state["formData"] = value;
-    },
     addFile(state, action: PayloadAction<{ uid: string; objectUrl: string }>) {
       const { uid, objectUrl } = action.payload;
       state.files.new[uid] = objectUrl;
@@ -326,7 +321,6 @@ export const {
   deleteByPath,
   renameIdByPath,
   updateRequired,
-  updateFormData,
   addFile,
   removeNewFile,
   removeExistingFile,

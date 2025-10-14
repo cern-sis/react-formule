@@ -47,6 +47,7 @@ import {
   saveToLocalStorage,
   loadFromLocalStorage,
   AiChatFooter,
+  getFormState,
 } from "react-formule";
 import { theme } from "./theme";
 import formuleLogo from "./assets/logo.png";
@@ -127,7 +128,7 @@ const App = () => {
   };
 
   return (
-    <FormuleContext theme={theme} synchronizeState={handleFormuleStateChange}>
+    <FormuleContext theme={theme} syncFormuleState={handleFormuleStateChange}>
       <Layout hasSider style={{ height: "100vh" }}>
         <Layout.Sider
           hidden={menuHidden}
@@ -350,7 +351,7 @@ const App = () => {
                   value={JSON.stringify(
                     formuleState?.current.uiSchema,
                     null,
-                    2
+                    2,
                   )}
                   lang="json"
                   height="25vh"
@@ -366,7 +367,7 @@ const App = () => {
               >
                 <Typography.Text strong>Form data</Typography.Text>
                 <CodeViewer
-                  value={JSON.stringify(formuleState?.formData, null, 2)}
+                  value={JSON.stringify(getFormState().formData, null, 2)}
                   lang="json"
                   height="25vh"
                   reset
@@ -434,7 +435,7 @@ const App = () => {
                       const reader = new FileReader();
                       reader.onload = (event) => {
                         const newSchema = JSON.parse(
-                          event?.target?.result as string
+                          event?.target?.result as string,
                         );
                         const { schema, uiSchema } = newSchema;
                         if (schema && uiSchema) {
@@ -443,7 +444,7 @@ const App = () => {
                           message.success("Uploaded and loaded successfully");
                         } else {
                           message.error(
-                            "Your json should include a schema and a uiSchema key"
+                            "Your json should include a schema and a uiSchema key",
                           );
                         }
                       };

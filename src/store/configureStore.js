@@ -1,4 +1,5 @@
 import schemaWizard, { initialState } from "./schemaWizard";
+import form from "./form";
 import { configureStore } from "@reduxjs/toolkit";
 
 const preloadedState = () => {
@@ -19,6 +20,11 @@ const preloadedState = () => {
 export const persistMiddleware = ({ getState }) => {
   return (next) => (action) => {
     const result = next(action);
+
+    if (action.type.startsWith("form/")) {
+      return result;
+    }
+
     const state = getState();
     const persistedData = {
       schemaWizard: {
@@ -34,6 +40,7 @@ export const persistMiddleware = ({ getState }) => {
 const store = configureStore({
   reducer: {
     schemaWizard,
+    form,
   },
   preloadedState: preloadedState(),
   middleware: (getDefaultMiddleware) =>

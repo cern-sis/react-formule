@@ -1,9 +1,7 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
-import Select from "antd/lib/select";
 import { debounce } from "lodash-es";
 import axios from "axios";
-import { Empty } from "antd";
+import { Empty, Select } from "antd";
 import PropTypes from "prop-types";
 
 import {
@@ -12,6 +10,7 @@ import {
   enumOptionsValueForIndex,
 } from "@rjsf/utils";
 import isString from "lodash-es";
+import store from "../../../store/configureStore";
 
 const SelectWidget = ({
   autofocus,
@@ -34,8 +33,6 @@ const SelectWidget = ({
 
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
-
-  const formData = useSelector((state) => state.schemaWizard.formData);
 
   const handleChange = (nextValue) => {
     onChange(
@@ -81,7 +78,7 @@ const SelectWidget = ({
   };
 
   const updateSearch = (value, callback) => {
-    let data = formData;
+    const data = store.getState().form.formData;
     if (params) {
       Object.entries(params).map((param) => {
         const path = _replace_hash_with_current_indexes(param[1]);
@@ -140,6 +137,7 @@ const SelectWidget = ({
           },
         )
       }
+      style={{ width: "100%" }}
     />
   );
 };
@@ -149,10 +147,10 @@ SelectWidget.propTypes = {
   autofocus: PropTypes.bool,
   formContext: PropTypes.object,
   id: PropTypes.string,
-  multiple: PropTypes.string,
+  multiple: PropTypes.bool,
   placeholder: PropTypes.string,
   readonly: PropTypes.bool,
-  value: PropTypes.object,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   options: PropTypes.object,
   onBlur: PropTypes.func,
   onChange: PropTypes.func,
