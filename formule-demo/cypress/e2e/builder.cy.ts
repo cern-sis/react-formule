@@ -194,6 +194,20 @@ describe("test basic functionality", () => {
     // TODO test also suggestion endpoint, after that feature is migrated to formule
   });
 
+  it("tests email field", () => {
+    cy.addFieldWithName("email", "myfield");
+    cy.getByDataCy("treeItem").click();
+
+    // Test pattern allowing only one character
+    cy.getByDataCy("formPreview")
+      .find(`input#root${SEP}myfield`)
+      .as("myfield")
+      .clearTypeBlur("a");
+    cy.getByDataCy("formPreview").hasErrorMessage('must match format "email"');
+    cy.get("@myfield").clearTypeBlur("test@example.com");
+    cy.getByDataCy("formPreview").hasNoErrorMessage();
+  });
+
   it("tests number field", () => {
     cy.addFieldWithName("number", "myfield");
     cy.getByDataCy("treeItem").click();

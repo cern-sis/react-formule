@@ -486,6 +486,31 @@ const simple = {
           type: "string",
           format: "regex",
         },
+        format: {
+          title: "Format",
+          type: "string",
+          enum: [
+            "date",
+            "time",
+            "date-time",
+            "duration",
+            "regex",
+            "email",
+            "idn-email",
+            "hostname",
+            "idn-hostname",
+            "ipv4",
+            "ipv6",
+            "json-pointer",
+            "relative-json-pointer",
+            "uri",
+            "uri-reference",
+            "uri-template",
+            "iri",
+            "iri-reference",
+            "uuid",
+          ],
+        },
         readOnly: extra.optionsSchema.readOnly,
         isRequired: extra.optionsSchema.isRequired,
       },
@@ -1058,6 +1083,93 @@ const simple = {
       },
       uiSchema: {
         "ui:widget": "date",
+      },
+    },
+  },
+  email: {
+    title: "Email",
+    icon: <FontSizeOutlined />,
+    description: "Email field supporting validation",
+    className: "tour-email-field",
+    child: {},
+    optionsSchema: {
+      type: "object",
+      title: "Text Schema",
+      properties: {
+        ...common.optionsSchema,
+        pattern: {
+          title: "Validation regex",
+          description:
+            "The input will be validated against this regex on form submission",
+          type: "string",
+          format: "regex",
+        },
+        readOnly: extra.optionsSchema.readOnly,
+        isRequired: extra.optionsSchema.isRequired,
+      },
+    },
+    optionsSchemaUiSchema: {
+      ...common.optionsSchemaUiSchema,
+      readOnly: extra.optionsSchemaUiSchema.readOnly,
+      isRequired: extra.optionsSchemaUiSchema.isRequired,
+      pattern: {
+        "ui:placeholder": "^.*$",
+      },
+    },
+    optionsUiSchema: {
+      type: "object",
+      title: "UI Schema",
+      properties: {
+        "ui:options": {
+          type: "object",
+          title: "UI Options",
+          dependencies:
+            common.optionsUiSchema.properties["ui:options"].dependencies,
+          properties: {
+            ...common.optionsUiSchema.properties["ui:options"].properties,
+            suggestions: {
+              type: "string",
+              title: "Add a suggestion URL endpoint",
+              description: "Provide an URL endpoint, to fetch data from there",
+            },
+            convertToUppercase: {
+              type: "boolean",
+              title: "Convert input to uppercase",
+            },
+            mask: {
+              type: "string",
+              title: "Input mask",
+              tooltip:
+                "Add a mask to visualize and limit the format of the input. Use the following format: `0` (number), `a` (lowercase letter), `A` (uppercase letter), `*` (letter or number). You can escape all these with `\\`. The rest of the characters will be treated as constants",
+            },
+          },
+        },
+        "ui:label": common.optionsUiSchema.properties["ui:label"],
+      },
+    },
+    optionsUiSchemaUiSchema: {
+      ...common.optionsUiSchemaUiSchema,
+      "ui:options": {
+        ...common.optionsUiSchemaUiSchema["ui:options"],
+        mask: {
+          "ui:placeholder": "BN-000/aa",
+          "ui:options": {
+            descriptionIsMarkdown: true,
+            tooltipIsMarkdown: true,
+          },
+        },
+        convertToUppercase: {
+          "ui:widget": "switch",
+        },
+      },
+    },
+    default: {
+      schema: {
+        type: "string",
+        format: "email",
+      },
+      uiSchema: {
+        "ui:widget": "text",
       },
     },
   },
