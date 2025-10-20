@@ -10,6 +10,7 @@ export { FormuleForm } from "./exposed";
 
 export { default as PropertyEditor } from "./admin/components/PropertyEditor";
 export { default as SelectFieldType } from "./admin/components/SelectFieldType";
+export { default as SchemaCodeEditor } from "./admin/components/SchemaCodeEditor";
 export { default as SchemaPreview } from "./admin/components/SchemaPreview";
 export { default as FormPreview } from "./admin/components/FormPreview";
 export { default as EditablePreview } from "./admin/components/EditablePreview";

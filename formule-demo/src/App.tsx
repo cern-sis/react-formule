@@ -34,7 +34,7 @@ import {
 } from "antd";
 import { useEffect, useState } from "react";
 import {
-  CodeViewer,
+  SchemaCodeEditor,
   FormPreview,
   FormuleContext,
   SchemaPreview,
@@ -331,11 +331,11 @@ const App = () => {
                 }}
               >
                 <Typography.Text strong>Schema</Typography.Text>
-                <CodeViewer
+                <SchemaCodeEditor
                   value={JSON.stringify(formuleState?.current.schema, null, 2)}
                   lang="json"
                   height="45vh"
-                  reset
+                  valueType="schema"
                 />
               </Col>
               <Col
@@ -346,15 +346,15 @@ const App = () => {
                 }}
               >
                 <Typography.Text strong>UI Schema</Typography.Text>
-                <CodeViewer
+                <SchemaCodeEditor
                   value={JSON.stringify(
                     formuleState?.current.uiSchema,
                     null,
-                    2
+                    2,
                   )}
                   lang="json"
                   height="25vh"
-                  reset
+                  valueType="uiSchema"
                 />
               </Col>
               <Col
@@ -365,11 +365,11 @@ const App = () => {
                 }}
               >
                 <Typography.Text strong>Form data</Typography.Text>
-                <CodeViewer
+                <SchemaCodeEditor
                   value={JSON.stringify(formuleState?.formData, null, 2)}
                   lang="json"
                   height="25vh"
-                  reset
+                  isReadOnly
                 />
               </Col>
             </Row>
@@ -434,7 +434,7 @@ const App = () => {
                       const reader = new FileReader();
                       reader.onload = (event) => {
                         const newSchema = JSON.parse(
-                          event?.target?.result as string
+                          event?.target?.result as string,
                         );
                         const { schema, uiSchema } = newSchema;
                         if (schema && uiSchema) {
@@ -443,7 +443,7 @@ const App = () => {
                           message.success("Uploaded and loaded successfully");
                         } else {
                           message.error(
-                            "Your json should include a schema and a uiSchema key"
+                            "Your json should include a schema and a uiSchema key",
                           );
                         }
                       };

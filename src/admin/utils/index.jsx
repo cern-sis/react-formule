@@ -26,7 +26,7 @@ export const _validate = function (formData, errors) {
 };
 
 export const shoudDisplayGuideLinePopUp = (schema) => {
-  return schema.properties && Object.keys(schema.properties).length === 0;
+  return schema?.properties && Object.keys(schema?.properties).length === 0;
 };
 
 export const isItTheArrayField = (schema, uiSchema) => {
