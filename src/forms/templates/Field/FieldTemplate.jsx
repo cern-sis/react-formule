@@ -1,14 +1,14 @@
-import Form from "antd/lib/form";
 import PropTypes from "prop-types";
 import FieldHeader from "./FieldHeader";
 
-import { Col, Row, theme } from "antd";
+import { Col, Form, Row, theme, Tooltip } from "antd";
 import { SIZE_OPTIONS } from "../../../admin/utils";
 import WrapIfAdditional from "./WrapIfAdditional";
 import FieldModal from "./FieldModal";
 import FieldCollapsible from "./FieldCollapsible";
 import { stylePatches } from "../utils";
 import { FieldMessageTag } from "../../../utils/FieldMessageTag";
+import { CloseCircleFilled } from "@ant-design/icons";
 
 const VERTICAL_LABEL_COL = { span: 24 };
 const VERTICAL_WRAPPER_COL = { span: 24 };
@@ -58,6 +58,20 @@ const FieldTemplate = ({
   const shouldShowAsModal = uiOptions?.showAsModal === true;
   const collapsible = uiOptions?.collapsible === true;
 
+  const renderErrorMessage = () =>
+    (!!rawHelp || !!rawErrors) && (
+      <Col style={{ paddingLeft: 8 }}>
+        <Tooltip
+          title={(!!rawHelp && help) || (!!rawErrors && renderFieldErrors())}
+          color={token.colorError}
+        >
+          <CloseCircleFilled
+            style={{ color: token.colorError, cursor: "help" }}
+          />
+        </Tooltip>
+      </Col>
+    );
+
   const FieldHeaderWithProps = (
     <FieldHeader
       label={label}
@@ -65,6 +79,8 @@ const FieldTemplate = ({
       uiSchema={uiSchema}
       idSchema={{ $id: id }}
       hideAnchors={hideAnchors}
+      compact={formContext?.compact}
+      renderErrorMessage={renderErrorMessage}
     />
   );
 
@@ -105,10 +121,10 @@ const FieldTemplate = ({
         _children
       ) : (
         <Form.Item
-          colon={colon}
+          colon={colon} // TODO: do we need this?
           hasFeedback={schema.type !== "array" && schema.type !== "object"}
           help={
-            !!rawHelp || !!rawErrors ? (
+            !formContext?.compact && (!!rawHelp || !!rawErrors) ? (
               <FieldMessageTag color="error">
                 {(!!rawHelp && help) || (!!rawErrors && renderFieldErrors())}
               </FieldMessageTag>
@@ -130,8 +146,33 @@ const FieldTemplate = ({
           validateStatus={rawErrors ? "error" : undefined}
           wrapperCol={wrapperCol}
           tooltip={schema.tooltip}
+          className={uiOptions.compact ? "compact" : undefined}
         >
-          {_children}
+          <Row
+            justify="space-between"
+            align="middle"
+            wrap={false}
+            // style={{ position: "relative" }}
+          >
+            <Col flex="auto">{_children}</Col>
+            {formContext.compact && (
+              // FIXME: Tentative solution for errors in fields with label hidden. It is still problematic with select/uri fields or any field with stuff on the right side (e.g. affix).
+              // IDEA: Maybe we can pass this to the field (_children) via prop injection to be displayed as an affix?
+              <div
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  right: 0,
+                  // zIndex: 2,
+                  padding: 4,
+                  // background: "transparent",
+                  // pointerEvents: "auto",
+                }}
+              >
+                {renderErrorMessage()}
+              </div>
+            )}
+          </Row>
         </Form.Item>
       )}
     </WrapIfAdditional>

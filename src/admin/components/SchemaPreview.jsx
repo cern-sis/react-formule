@@ -38,7 +38,7 @@ const SchemaPreview = ({ hideSchemaKey }) => {
         <Typography.Title
           level={5}
           style={{ margin: 0 }}
-          ellipsis
+          ellipsis={{ tooltip: true }}
           data-cy="rootTitle"
         >
           {(schema && schema.title) || "root"}

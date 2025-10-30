@@ -14,12 +14,13 @@ const ArrayFieldTemplateItem = ({
   onReorderClick,
   readonly,
   uiSchema,
+  formContext,
 }) => {
   return (
     <Row
-      align={uiSchema && uiSchema["ui:label"] === false ? "top" : "middle"}
+      align={uiSchema && uiSchema["ui:label"] === false ? "top" : "middle"} // TODO: Maybe align always middle? Check what it breaks
       key={`array-item-${index}`}
-      style={{ margin: "10px 0px" }}
+      style={{ margin: formContext.compact ? "0" : "10px 0" }}
       className="arrayFieldRow"
     >
       <Col
@@ -53,7 +54,7 @@ ArrayFieldTemplateItem.propTypes = {
   hasMoveUp: PropTypes.bool,
   hasRemove: PropTypes.bool,
   hasToolbar: PropTypes.bool,
-  index: PropTypes.string,
+  index: PropTypes.number,
   onDropIndexClick: PropTypes.func,
   onReorderClick: PropTypes.func,
   readonly: PropTypes.bool,

@@ -92,6 +92,7 @@ const ObjectFieldTemplate = ({
         uiSchema={uiSchema}
         properties={properties}
         idSchema={idSchema}
+        formContext={formContext}
       />
     );
   return (
@@ -108,7 +109,7 @@ const ObjectFieldTemplate = ({
           <Col
             style={{
               padding: "0",
-              marginBottom: "12px",
+              marginBottom: formContext.compact ? 1 : "12px",
             }}
             className={labelColClassName}
             span={24}
@@ -120,18 +121,11 @@ const ObjectFieldTemplate = ({
               uiSchema={uiSchema}
               idSchema={idSchema}
               hideAnchors={hideAnchors}
+              compact={formContext?.compact}
             />
           </Col>
         )}
-        <Col
-          span={24}
-          className="nestedObject"
-          style={
-            "ui:padding" in uiSchema
-              ? { padding: uiSchema["ui:padding"] }
-              : undefined
-          }
-        >
+        <Col span={24} className="nestedObject" style={{ padding: 0 }}>
           <Row gutter={10}>
             {properties
               .filter((e) => !e.hidden)
@@ -140,6 +134,7 @@ const ObjectFieldTemplate = ({
                   key={element.name}
                   span={calculateColSpan(element)}
                   data-cy="spanColWrapper"
+                  style={{ padding: 0 }} // TODO: review
                 >
                   {element.content}
                 </Col>
@@ -153,7 +148,6 @@ const ObjectFieldTemplate = ({
             <Col flex="192px">
               <Button
                 block
-                className="object-property-expand"
                 disabled={disabled}
                 onClick={onAddClick(schema)}
                 type="primary"

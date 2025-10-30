@@ -84,7 +84,7 @@ ArrayUtils.propTypes = {
   hasRemove: PropTypes.bool,
   onReorderClick: PropTypes.func,
   onDropIndexClick: PropTypes.func,
-  index: PropTypes.string,
+  index: PropTypes.number,
 };
 
 export default ArrayUtils;

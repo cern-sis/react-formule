@@ -148,7 +148,10 @@ const TabField = ({ uiSchema, properties, idSchema }) => {
       )}
 
       <Layout.Content
-        style={{ height: "100%", overflowX: "hidden", paddingBottom: "24px" }}
+        style={{
+          height: "100%",
+          overflowX: "hidden",
+        }}
       >
         <Row justify="center">
           <Col span={20} style={{ padding: "10px 0" }}>

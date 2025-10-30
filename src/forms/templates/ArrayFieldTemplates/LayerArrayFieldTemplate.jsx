@@ -6,7 +6,7 @@ import { isFieldContainsError } from "../utils";
 import ArrayUtils from "./ArrayUtils";
 import { ExpandOutlined } from "@ant-design/icons";
 
-const LayerArrayFieldTemplate = ({ items = [], uiSchema }) => {
+const LayerArrayFieldTemplate = ({ items = [], uiSchema, formContext }) => {
   const [itemToDisplay, setItemToDisplay] = useState(null);
   const [visible, setVisible] = useState(false);
 
@@ -46,6 +46,7 @@ const LayerArrayFieldTemplate = ({ items = [], uiSchema }) => {
         index: itemToDisplay.index,
         children: items[itemToDisplay.index].children,
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);
 
   const getActionsButtons = (item) => {
@@ -85,6 +86,7 @@ const LayerArrayFieldTemplate = ({ items = [], uiSchema }) => {
         width={720}
         data-cy="layerModal"
       >
+        {/* FIXME: For some reason the form in the modal does not have the antd compact algorithm */}
         {itemToDisplay && itemToDisplay.children}
       </Modal>
 
@@ -108,8 +110,8 @@ const LayerArrayFieldTemplate = ({ items = [], uiSchema }) => {
             actions={getActionsButtons(item)}
             style={{
               border: `1px solid ${token.colorBorder}`,
-              padding: "0px 16px",
-              marginBottom: "5px",
+              padding: formContext.compact ? "0 8px" : "0 16px",
+              marginBottom: formContext.compact ? "2px" : "5px",
               backgroundColor: "white",
             }}
             extra={
@@ -125,7 +127,7 @@ const LayerArrayFieldTemplate = ({ items = [], uiSchema }) => {
                   ) || `Item #${item.index + 1}`}
                 </Typography.Text>
               }
-              style={{ padding: "12px 0" }}
+              style={{ padding: formContext.compact ? "8px 0" : "12px 0" }}
             />
           </List.Item>
         )}

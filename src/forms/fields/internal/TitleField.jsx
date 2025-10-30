@@ -23,7 +23,6 @@ const TitleField = ({
   enableLatex,
   readonly,
   titleIsMarkdown,
-  isObject,
   hideAnchors,
 }) => {
   const { colon = true } = formContext;
@@ -36,7 +35,7 @@ const TitleField = ({
   const labelClassName = classNames({
     [`${prefixCls}-item-required`]: required,
     [`${prefixCls}-item-no-colon`]: !colon,
-    formItemTitle: true,
+    // formItemTitle: true,
   });
 
   const handleLabelClick = () => {
@@ -54,7 +53,11 @@ const TitleField = ({
 
   const titleText = (
     <Typography.Paragraph
-      style={{ fontSize: isObject && "12pt", marginBottom: 0 }}
+      style={{
+        // fontSize: isObject ? "11pt" : "10pt",
+        marginBottom: 0,
+      }}
+      // style={{ fontSize: "11pt", marginBottom: 0 }}
       strong
       className={labelClassName}
       htmlFor={id}

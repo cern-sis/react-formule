@@ -15,6 +15,7 @@ import { useContext } from "react";
 import { Provider } from "react-redux";
 import store from "../store/configureStore";
 import FormErrorBoundary from "./FormErrorBoundary";
+import { ConfigProvider, theme } from "antd";
 
 const RJSFForm = ({
   formRef,
@@ -39,6 +40,7 @@ const RJSFForm = ({
   hideAnchors,
   isPublished,
 }) => {
+  const { compactAlgorithm } = theme;
   const customizationContext = useContext(CustomizationContext);
 
   const templates = {
@@ -49,51 +51,70 @@ const RJSFForm = ({
 
   const ErrorBoundary = customizationContext.errorBoundary || FormErrorBoundary;
 
+  const { ["ui:options"]: uiOptions = {} } = uiSchema;
+  const { compact } = uiOptions;
+
+  const compactTheme = {
+    algorithm: compactAlgorithm,
+    components: {
+      Switch: {
+        handleSize: 12,
+        trackHeight: 16,
+        trackMinWidth: 30,
+      },
+    },
+  };
+
   return (
     <Provider store={store}>
       <ErrorBoundary>
-        <Form
-          className={["__Form__", className].join(" ")}
-          ref={formRef}
-          schema={schema}
-          uiSchema={uiSchema}
-          tagName={tagName}
-          formData={formData}
-          fields={{
-            ...CAPFields,
-            ...customizationContext.customFields,
-            ...fields,
-            ...(isPublished && PublishedFields),
-            ...(isPublished && customizationContext.customPublishedFields),
-          }}
-          widgets={{
-            ...CAPWidgets,
-            ...customizationContext.customWidgets,
-            ...widgets,
-            ...(isPublished && PublishedWidgets),
-            ...(isPublished && customizationContext.customPublishedWidgets),
-          }}
-          templates={templates}
-          liveValidate={liveValidate}
-          showErrorList={showErrorList}
-          noHtml5Validate={true}
-          onError={() => {}}
-          onBlur={() => {}}
-          customValidate={validate}
-          validator={validator}
-          extraErrors={extraErrors}
-          onChange={onChange}
-          readonly={readonly || isPublished}
-          transformErrors={transformErrors}
-          formContext={{
-            formRef,
-            ...formContext,
-            hideAnchors,
-          }}
-          idSeparator={customizationContext.separator}
-        >
-          <span />
-        </Form>
+        <ConfigProvider theme={compact ? compactTheme : {}}>
+          <Form
+            className={["__Form__", className, compact ? "compact" : ""].join(
+              " ",
+            )}
+            ref={formRef}
+            schema={schema}
+            uiSchema={uiSchema}
+            tagName={tagName}
+            formData={formData}
+            fields={{
+              ...CAPFields,
+              ...customizationContext.customFields,
+              ...fields,
+              ...(isPublished && PublishedFields),
+              ...(isPublished && customizationContext.customPublishedFields),
+            }}
+            widgets={{
+              ...CAPWidgets,
+              ...customizationContext.customWidgets,
+              ...widgets,
+              ...(isPublished && PublishedWidgets),
+              ...(isPublished && customizationContext.customPublishedWidgets),
+            }}
+            templates={templates}
+            liveValidate={liveValidate}
+            showErrorList={showErrorList}
+            noHtml5Validate={true}
+            onError={() => {}}
+            onBlur={() => {}}
+            customValidate={validate}
+            validator={validator}
+            extraErrors={extraErrors}
+            onChange={onChange}
+            readonly={readonly || isPublished}
+            transformErrors={transformErrors}
+            formContext={{
+              formRef,
+              ...formContext,
+              hideAnchors,
+              compact, // TODO: review, this should probably go only in the preview form and FormuleForm
+            }}
+            idSeparator={customizationContext.separator}
+          >
+            <span />
+          </Form>
+        </ConfigProvider>
       </ErrorBoundary>
     </Provider>
   );

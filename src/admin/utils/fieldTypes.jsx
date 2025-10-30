@@ -53,8 +53,8 @@ export const common = {
             title: "Field Width",
             type: "integer",
             defaultValue: 24,
-            values: [6, 8, 12, 16, 18, 24],
-            labels: ["25%", "33%", "50%", "66%", "75%", "100%"],
+            values: [4, 6, 8, 12, 16, 18, 20, 24],
+            labels: ["16%", "25%", "33%", "50%", "66%", "75%", "84%", "100%"],
           },
           showAsModal: {
             title: "Display as Modal",

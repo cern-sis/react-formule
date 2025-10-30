@@ -133,7 +133,7 @@ const SchemaTreeItem = ({
 SchemaTreeItem.propTypes = {
   schema: PropTypes.object,
   id: PropTypes.string,
-  path: PropTypes.array,
+  path: PropTypes.object,
   addProperty: PropTypes.func,
   addItem: PropTypes.func,
   type: PropTypes.string,

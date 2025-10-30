@@ -1,6 +1,8 @@
+import { ThemeConfig } from "antd";
+
 export const PRIMARY_COLOR = "#006996";
 
-export const theme = {
+export const theme: ThemeConfig = {
   token: {
     colorPrimary: PRIMARY_COLOR,
     colorLink: PRIMARY_COLOR,

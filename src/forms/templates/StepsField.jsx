@@ -3,7 +3,7 @@ import { _filterTabs, isFieldContainsError } from "./utils";
 import { useContext, useEffect, useRef, useState } from "react";
 import CustomizationContext from "../../contexts/CustomizationContext";
 
-const StepsField = ({ uiSchema, properties, idSchema }) => {
+const StepsField = ({ uiSchema, properties, idSchema, formContext }) => {
   const options = uiSchema["ui:options"] || {};
 
   const tabs = _filterTabs(options.tabs, options, properties);
@@ -82,6 +82,7 @@ const StepsField = ({ uiSchema, properties, idSchema }) => {
     title: screens.md && (
       <Typography.Paragraph
         ellipsis={{ rows: 2, tooltip: { placement: "right" } }}
+        style={formContext.compact ? { marginBottom: 0 } : undefined}
       >
         {tab.title || tab.content.props.schema.title || tab.name}
       </Typography.Paragraph>
@@ -112,6 +113,7 @@ const StepsField = ({ uiSchema, properties, idSchema }) => {
             <Col>
               {current < tabs.length - 1 && (
                 <Button
+                  size={formContext.compact ? "small" : "middle"}
                   type="primary"
                   onClick={() => updateCurrent(current + 1)}
                 >
@@ -132,11 +134,16 @@ const StepsField = ({ uiSchema, properties, idSchema }) => {
           percent={(current / (items.length - 1)) * 100}
           showInfo={false}
           strokeLinecap="square"
-          style={{ marginBottom: "20px" }}
+          style={{ marginBottom: formContext.compact ? 0 : "20px" }}
           strokeColor={progressColor}
         />
       ) : (
-        <Row ref={stepsRef} gutter={20} wrap={false}>
+        <Row
+          ref={stepsRef}
+          gutter={20}
+          wrap={false}
+          style={isVertical ? { paddingTop: 10 } : undefined}
+        >
           <Col xs={isVertical && 8}>
             <Steps
               className="steps"
@@ -152,7 +159,7 @@ const StepsField = ({ uiSchema, properties, idSchema }) => {
                 !isVertical && {
                   overflowX: "scroll",
                   padding: "10px",
-                  marginBottom: "10px",
+                  marginBottom: formContext.compact ? 0 : "10px",
                 }
               }
             />

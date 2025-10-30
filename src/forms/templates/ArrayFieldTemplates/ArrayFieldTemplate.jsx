@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
-import Button from "antd/lib/button";
-import { Row, Col, Modal, Space, Tag, Checkbox, Table, theme } from "antd";
+import { Row, Col, Modal, Space, Tag, Checkbox, Table, Button } from "antd";
 import PlusCircleOutlined from "@ant-design/icons/PlusCircleOutlined";
 
 import ArrayFieldTemplateItem from "./ArrayFieldTemplateItem";
@@ -36,7 +35,6 @@ const ArrayFieldTemplate = ({
   uiSchema,
   formData,
 }) => {
-  const { useToken } = theme;
   const { rowGutter = 24, hideAnchors } = formContext;
 
   const [latexData, setLatexData] = useState(null);
@@ -49,7 +47,6 @@ const ArrayFieldTemplate = ({
   );
   const [copy, setCopy] = useState(false);
   const [importModal, setImportModal] = useState(false);
-  const { token } = useToken();
 
   let uiImport = null;
   let uiLatex = null;
@@ -71,6 +68,7 @@ const ArrayFieldTemplate = ({
         <LayerArrayFieldTemplate
           items={items}
           uiSchema={uiSchema}
+          formContext={formContext}
           id={idSchema.$id}
         />
       ),
@@ -137,7 +135,26 @@ const ArrayFieldTemplate = ({
   useEffect(() => {
     if (emailModal && formData.length != selectedEmailList.length)
       setSelectedEmailList(formData.map((user) => user?.profile?.email));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [emailModal]);
+
+  const renderAddItemButton = () =>
+    items &&
+    items.length > 0 &&
+    canAdd &&
+    !readonly && (
+      <Button
+        size={formContext.compact ? "small" : "middle"}
+        disabled={disabled || readonly}
+        onClick={onAddClick}
+        type="primary"
+        data-cy="addItemButton"
+        icon={<PlusCircleOutlined />}
+      >
+        {(!formContext.compact || uiSchema["ui:label"] === false) &&
+          (options && options.addLabel ? options.addLabel : "Add Item")}
+      </Button>
+    );
 
   return (
     <fieldset className={className} id={idSchema.$id}>
@@ -243,7 +260,12 @@ const ArrayFieldTemplate = ({
       )}
       <Row gutter={rowGutter}>
         {uiSchema["ui:label"] != false && (
-          <div style={{ marginBottom: "8px", width: "100%" }}>
+          <div
+            style={{
+              marginBottom: formContext?.compact ? "1px" : "8px",
+              width: "100%",
+            }}
+          >
             <FieldHeader
               titleField={
                 <TitleField
@@ -266,14 +288,17 @@ const ArrayFieldTemplate = ({
               uiSchema={uiSchema}
               key={`array-field-header-${idSchema.$id}`}
               idSchema={idSchema}
+              compact={formContext?.compact}
+              renderAddItemButton={renderAddItemButton}
             />
           </div>
         )}
         <Col
           span={24}
           style={{
-            marginTop: "5px",
+            marginTop: formContext?.compact ? 0 : "5px",
             ...(arrayType != "default" && { padding: 0 }),
+            padding: 0,
           }}
           className={arrayType === "default" && "nestedObject"}
         >
@@ -289,35 +314,20 @@ const ArrayFieldTemplate = ({
                     readonly={readonly}
                     onAddClick={onAddClick}
                     options={options}
+                    compact={formContext.compact}
                   />
                 )}
               </Col>
             )}
           </Row>
         </Col>
-        {items && items.length > 0 && canAdd && !readonly && (
-          <Col span={24} style={{ marginTop: "10px" }}>
+        {(!formContext.compact || uiSchema["ui:label"] === false) && (
+          <Col
+            span={24}
+            style={{ marginTop: formContext.compact ? "4px" : "10px" }}
+          >
             <Row gutter={rowGutter} justify="end">
-              <Col style={{ padding: 0 }}>
-                <Button
-                  block
-                  disabled={disabled || readonly}
-                  onClick={onAddClick}
-                  type="primary"
-                  // This is needed since for some reason this particular button doesn't use the root
-                  // styles (it has a different CSS hash className). This is the only solution that worked.
-                  // FIXME: Check eventually if this can be fixed with a new @rjsf/antd or antd version.
-                  style={{
-                    borderRadius: token.borderRadius,
-                    backgroundColor: token.colorPrimary,
-                    fontFamily: token.fontFamily,
-                  }}
-                  data-cy="addItemButton"
-                >
-                  <PlusCircleOutlined /> Add{" "}
-                  {options && options.addLabel ? options.addLabel : `Item`}
-                </Button>
-              </Col>
+              <Col style={{ padding: 0 }}>{renderAddItemButton()}</Col>
             </Row>
           </Col>
         )}

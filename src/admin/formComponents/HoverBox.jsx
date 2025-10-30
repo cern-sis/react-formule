@@ -55,7 +55,7 @@ const HoverBox = ({
 
 HoverBox.propTypes = {
   children: PropTypes.element,
-  path: PropTypes.array,
+  path: PropTypes.object,
   addProperty: PropTypes.func,
   propKey: PropTypes.string,
   shouldHideChildren: PropTypes.bool,

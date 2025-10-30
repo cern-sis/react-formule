@@ -20,7 +20,9 @@ export const _filterTabs = (tabs, options, properties) => {
     return options.tabs;
   }
   return properties.filter(
-    (item) => !_checkIfHidden(item.name) && item.name !== "analysis_reuse_mode",
+    (item) =>
+      !_checkIfHidden(item.name, item?.content?.props?.uiSchema) &&
+      item.name !== "analysis_reuse_mode",
   );
 };
 

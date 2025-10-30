@@ -7,6 +7,8 @@ import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import CustomizationContext from "../../contexts/CustomizationContext";
 
 const FormPreview = ({ liveValidate, hideAnchors }) => {
+  // const { compactAlgorithm } = theme;
+
   const schema = useSelector((state) => state.schemaWizard.current.schema);
   const uiSchema = useSelector((state) => state.schemaWizard.current.uiSchema);
   const formData = useSelector((state) => state.schemaWizard.formData);
@@ -41,29 +43,40 @@ const FormPreview = ({ liveValidate, hideAnchors }) => {
       </Row>
       <div
         style={{
-          padding: "0 25px",
+          position: "relative",
           flex: 1,
           overflowY: "auto",
           overflowX: "hidden",
         }}
       >
-        {segment === "editable" ? (
-          <EditablePreview
-            hideTitle
-            liveValidate={liveValidate}
-            schema={schema}
-            uiSchema={uiSchema}
-            formData={formData}
-          />
-        ) : (
-          <Form
-            schema={customizationContext.transformSchema(schema)}
-            uiSchema={uiSchema}
-            formData={formData}
-            hideAnchors={hideAnchors}
-            isPublished
-          />
-        )}
+        <div
+          style={{
+            padding: "0 25px 20px 25px",
+            minHeight: "100%",
+            boxSizing: "border-box",
+          }}
+        >
+          {/* TODO: this should be set dynamically based on the compact prop from root ui settings */}
+          {/* <ConfigProvider theme={{ algorithm: compactAlgorithm }}> */}
+          {segment === "editable" ? (
+            <EditablePreview
+              hideTitle
+              liveValidate={liveValidate}
+              schema={customizationContext.transformSchema(schema)}
+              uiSchema={uiSchema}
+              formData={formData}
+            />
+          ) : (
+            <Form
+              schema={customizationContext.transformSchema(schema)}
+              uiSchema={uiSchema}
+              formData={formData}
+              hideAnchors={hideAnchors}
+              isPublished
+            />
+          )}
+          {/* </ConfigProvider> */}
+        </div>
       </div>
     </div>
   );

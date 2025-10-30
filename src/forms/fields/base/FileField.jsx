@@ -174,7 +174,7 @@ const FileField = ({
   const uploadButton = (
     <div>
       <UploadOutlined />
-      <div style={{ marginTop: 8 }}>Upload</div>
+      <div style={{ marginTop: formContext.compact ? 0 : 8 }}>Upload</div>
     </div>
   );
 
@@ -201,7 +201,7 @@ const FileField = ({
       {files.length === 0 && isDisabled && (
         <Empty
           image={Empty.PRESENTED_IMAGE_SIMPLE}
-          imageStyle={{ height: 30 }}
+          styles={{ image: { height: 30 } }}
           style={{ margin: 5 }}
           description="No files uploaded"
         />

@@ -51,6 +51,10 @@
     .nestedObject
     .nestedObject {
     background-color: #f0f2f5;
+    // .ant-form-item-label {
+    //   background-color: #ddeafe;
+    //   color: slategray;
+    // }
   }
 
   .nestedObject .nestedObject,
@@ -180,7 +184,142 @@
       margin-bottom: 0;
     }
   }
+
+  .ant-form-item-label > label::after {
+    display: none; // Remove uselss spacing originally used for colon
+  }
+
+  &.compact {
+    // @compact-font-size: 10pt; // TODO: Or 13px?
+    // font-size: 50%; // All child elements' font sizes are halved
+    .ant-form-item {
+      // padding-top: 0px;
+      margin-bottom: 1px;
+      // margin-bottom: 6px;    // TODO: check if needed
+      // padding-top: 0;
+      // padding-bottom: 0;
+      // background-color: #ff4d4f;
+    }
+    .ant-form-item-label {
+      padding-bottom: 0px;
+    }
+
+    .formItemTitle {
+      background-color: #bfdfff;
+    }
+
+    .formItemTitle,
+    .ant-form-item label {
+      background-color: #bfdfff;
+    }
+
+    // fieldset {   // TODO: this ruins a bit the layout making arrays overflow left and right slightly...
+    //   padding: 0;
+    //   margin: 0;
+    // }
+
+    // .ant-input,
+    // .ant-picker,
+    // .ant-input-number-input {
+    //   min-height: 28px; // TODO: needed?
+    //   padding: 0 8px;
+    //   font-size: @compact-font-size;
+    // }
+
+    // .tagsField .ant-input {
+    //   min-height: unset;
+    // }
+
+    // .ant-picker-input > input {
+    //   font-size: @compact-font-size;
+    // }
+
+    // .ant-form-item-label > label {
+    // font-size: 13px;
+    // padding: 0;
+    // }
+    // .ant-form-item-control-input {
+    // min-height: 28px;
+    // }
+    .ant-input-suffix {
+      // TODO: can be replaced by size="small" in uri buttons, but it's a pixel too big
+      // height: 28px; // TODO: verify if we need it, in priciple it causes alignment issues
+      // padding: 0;
+      .ant-btn {
+        height: 20px;
+        width: 20px;
+        // font-size: @compact-font-size;
+      }
+    }
+    // .ant-input-suffix {
+    //   margin-right: 2px;
+    // }
+
+    // .ant-switch {
+    //   min-width: 32px;
+    //   height: 18px;
+    //   // line-height: 18px;
+    //   .ant-switch-handle {
+    //     width: 14px;
+    //     height: 14px;
+    //     // top: 2px;
+    //     // left: 2px;
+    //   }
+    //   &.ant-switch-checked .ant-switch-handle {
+    //     left: calc(100% - 16px);
+    //   }
+    //   .ant-switch-inner {
+    //     font-size: 12px;
+    //     padding: 0 4px;
+    //   }
+    // }
+
+    .ant-collapse-content-box {
+      padding: 1px 8px !important;
+    }
+
+    // .ant-btn {
+    //   height: 28px;
+    //   font-size: @compact-font-size;
+    // }
+
+    .ant-upload-list {
+      .ant-upload {
+        padding: 0;
+        margin: 0;
+        height: 60px !important;
+        width: 60px !important;
+      }
+      .ant-upload-list-item-container {
+        width: 60px !important;
+        height: 60px !important;
+        .ant-upload-list-item-thumbnail {
+          height: 45px !important;
+        }
+        .ant-upload-list-item-name {
+          display: none !important;
+        }
+      }
+    }
+
+    .ant-steps-item-content {
+      margin-top: 2px;
+    }
+
+    .ant-menu-item {
+      height: 28px !important;
+      padding: 8px !important;
+    }
+  }
 }
+
+// .ant-tooltip code {
+//   background-color: lightblue;
+//   color: black;
+//   padding: 1px 2px;
+//   border-radius: 2px;
+//   // border: 1px solid darkblue;
+// }
 
 .tabItemError {
   background-color: @field-error-bg-color !important;
@@ -188,7 +327,7 @@
 }
 
 .scrollableTabs .ant-tabs-content-holder {
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .gradientBorder:hover {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import PropertyKeyEditorForm from "./PropKeyEditorForm";
 
-import { Radio, Space, Tabs, Typography } from "antd";
+import { Radio, Space, Switch, Tabs, Typography } from "antd";
 import { SIZE_OPTIONS } from "../utils";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -70,6 +70,20 @@ const Customize = () => {
     );
   };
 
+  const compactChange = (checked) => {
+    let { "ui:options": uiOptions = {}, ...rest } = uiSchema;
+
+    dispatch(
+      updateUiSchemaByPath({
+        path: uiPath,
+        value: {
+          ...rest,
+          "ui:options": { ...uiOptions, compact: checked },
+        },
+      }),
+    );
+  };
+
   return (
     <Tabs
       className="scrollableTabs"
@@ -116,10 +130,18 @@ const Customize = () => {
                   block
                   onChange={(e) => sizeChange(e.target.value)}
                   value={size}
-                  style={{ paddingBottom: "15px" }}
+                  style={{
+                    paddingBottom: "15px",
+                    display: "flex",
+                    flexWrap: "wrap",
+                  }}
                 >
                   {Object.keys(SIZE_OPTIONS).map((size) => (
-                    <Radio.Button key={size} value={size}>
+                    <Radio.Button
+                      key={size}
+                      value={size}
+                      style={{ flex: "none" }}
+                    >
                       {size}
                     </Radio.Button>
                   ))}
@@ -130,13 +152,27 @@ const Customize = () => {
                   block
                   onChange={(e) => alignChange(e.target.value)}
                   value={justify}
+                  style={{
+                    paddingBottom: "15px",
+                    display: "flex",
+                    flexWrap: "wrap",
+                  }}
                 >
                   {JUSTIFY_OPTIONS.map((justify) => (
-                    <Radio.Button key={justify} value={justify}>
+                    <Radio.Button
+                      key={justify}
+                      value={justify}
+                      style={{ flex: "none" }}
+                    >
                       {justify}
                     </Radio.Button>
                   ))}
                 </Radio.Group>
+                <Typography.Text>Compact mode</Typography.Text>
+                <Switch
+                  checked={uiSchema?.["ui:options"]?.compact ?? false}
+                  onChange={compactChange}
+                />
               </Space>
             ),
         },
