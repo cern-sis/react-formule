@@ -16,9 +16,11 @@ const FieldTemplate = (props) => {
     uiSchema = {},
     rawErrors = [],
     children,
-    formContext,
+    registry,
     id,
   } = props;
+
+  const { formContext } = registry;
 
   const dispatch = useDispatch();
 
@@ -27,11 +29,11 @@ const FieldTemplate = (props) => {
   let path = {
     schema: [
       ...formContext.schema,
-      ...(rawErrors.find((e) => typeof e === "object").schema || []),
+      ...(rawErrors.find((e) => typeof e === "object")?.schema || []),
     ],
     uiSchema: [
       ...formContext.uiSchema,
-      ...(rawErrors.find((e) => typeof e === "object").uiSchema || []),
+      ...(rawErrors.find((e) => typeof e === "object")?.uiSchema || []),
     ],
   };
 
@@ -127,7 +129,7 @@ const FieldTemplate = (props) => {
 FieldTemplate.propTypes = {
   id: PropTypes.string,
   children: PropTypes.element,
-  formContext: PropTypes.object,
+  registry: PropTypes.object,
   rawErrors: PropTypes.array,
   uiSchema: PropTypes.object,
   schema: PropTypes.object,

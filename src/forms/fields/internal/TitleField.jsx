@@ -9,7 +9,6 @@ import {
 import Markdown from "../../../partials/Markdown/Markdown";
 
 const TitleField = ({
-  formContext = {},
   id,
   fieldId,
   prefixCls,
@@ -26,16 +25,10 @@ const TitleField = ({
   isObject,
   hideAnchors,
 }) => {
-  const { colon = true } = formContext;
-
   let labelChildren = title;
-  if (colon && typeof title === "string" && title.trim() !== "") {
-    labelChildren = title.replace(/[：:]\s*$/, "");
-  }
 
   const labelClassName = classNames({
     [`${prefixCls}-item-required`]: required,
-    [`${prefixCls}-item-no-colon`]: !colon,
     formItemTitle: true,
   });
 
@@ -117,7 +110,6 @@ const TitleField = ({
 };
 
 TitleField.propTypes = {
-  formContext: PropTypes.object,
   id: PropTypes.string,
   prefixCls: PropTypes.string,
   required: PropTypes.bool,

@@ -3,7 +3,7 @@ import { _filterTabs, isFieldContainsError } from "./utils";
 import { useContext, useEffect, useRef, useState } from "react";
 import CustomizationContext from "../../contexts/CustomizationContext";
 
-const StepsField = ({ uiSchema, properties, idSchema }) => {
+const StepsField = ({ uiSchema, properties, fieldPathId }) => {
   const options = uiSchema["ui:options"] || {};
 
   const tabs = _filterTabs(options.tabs, options, properties);
@@ -40,7 +40,7 @@ const StepsField = ({ uiSchema, properties, idSchema }) => {
     if (anchor) {
       const items = anchor.split(customizationContext.separator);
       items.forEach((item, index) => {
-        if (idSchema.$id.includes(item)) {
+        if (fieldPathId.$id.includes(item)) {
           const tabName = items[index + 1];
           const activeIndex = tabs.findIndex((tab) => tab.name === tabName);
           if (activeIndex > -1) {

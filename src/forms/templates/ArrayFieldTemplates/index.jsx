@@ -17,9 +17,8 @@ const ArrayFieldTemplate = ({
   canAdd,
   className,
   disabled,
-  formContext,
   formData,
-  idSchema,
+  fieldPathId,
   items,
   label,
   name,
@@ -48,8 +47,8 @@ const ArrayFieldTemplate = ({
       <Widget
         autofocus={autofocus}
         disabled={disabled}
-        formContext={formContext}
-        id={idSchema && idSchema.$id}
+        registry={registry}
+        id={fieldPathId && fieldPathId.$id}
         multiple
         onBlur={onBlur}
         onChange={onChange}
@@ -78,8 +77,7 @@ const ArrayFieldTemplate = ({
       <Widget
         autofocus={autofocus}
         disabled={disabled}
-        formContext={formContext}
-        id={idSchema && idSchema.$id}
+        id={fieldPathId && fieldPathId.$id}
         label={label}
         multiple
         onBlur={onBlur}
@@ -100,7 +98,7 @@ const ArrayFieldTemplate = ({
   if (!Object.prototype.hasOwnProperty.call(schema, "items")) {
     return (
       <UnsupportedField
-        idSchema={idSchema}
+        fieldPathId={fieldPathId}
         reason="Missing items definition"
         schema={schema}
       />
@@ -114,9 +112,8 @@ const ArrayFieldTemplate = ({
         canAdd={canAdd}
         className={className}
         disabled={disabled}
-        formContext={formContext}
         formData={formData}
-        idSchema={idSchema}
+        fieldPathId={fieldPathId}
         items={items}
         onAddClick={onAddClick}
         options={options}
@@ -143,9 +140,8 @@ const ArrayFieldTemplate = ({
       canAdd={canAdd}
       className={className}
       disabled={disabled}
-      formContext={formContext}
       formData={formData}
-      idSchema={idSchema}
+      fieldPathId={fieldPathId}
       items={items}
       options={options}
       onAddClick={onAddClick}
@@ -163,9 +159,8 @@ ArrayFieldTemplate.propTypes = {
   canAdd: PropTypes.bool,
   className: PropTypes.string,
   disabled: PropTypes.bool,
-  formContext: PropTypes.object,
   formData: PropTypes.object,
-  idSchema: PropTypes.object,
+  fieldPathId: PropTypes.object,
   items: PropTypes.array,
   label: PropTypes.string,
   name: PropTypes.string,

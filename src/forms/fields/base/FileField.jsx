@@ -11,7 +11,7 @@ import {
 
 const FileField = ({
   disabled,
-  formContext,
+  registry,
   id,
   onBlur,
   onChange,
@@ -20,6 +20,7 @@ const FileField = ({
   formData,
   schema,
 }) => {
+  const { formContext } = registry;
   const { readonlyAsDisabled = true } = formContext;
   const isDisabled = disabled || (readonlyAsDisabled && readonly);
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -201,8 +202,8 @@ const FileField = ({
       {files.length === 0 && isDisabled && (
         <Empty
           image={Empty.PRESENTED_IMAGE_SIMPLE}
-          imageStyle={{ height: 30 }}
           style={{ margin: 5 }}
+          styles={{ image: { height: 30 } }}
           description="No files uploaded"
         />
       )}

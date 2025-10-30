@@ -3,7 +3,7 @@ import { Collapse } from "antd";
 import ArrayFieldTemplateItem from "./ArrayFieldTemplateItem";
 import { isFieldContainsError } from "../utils";
 
-const AccordionArrayFieldTemplate = ({ items = [], formContext, id }) => {
+const AccordionArrayFieldTemplate = ({ items = [], id }) => {
   if (items.length < 1) return null;
 
   return (
@@ -12,13 +12,7 @@ const AccordionArrayFieldTemplate = ({ items = [], formContext, id }) => {
       items={items.map((item, index) => ({
         key: index,
         label: `Item #${index + 1}`,
-        children: (
-          <ArrayFieldTemplateItem
-            key={id + index}
-            {...item}
-            formContext={formContext}
-          />
-        ),
+        children: <ArrayFieldTemplateItem key={id + index} {...item} />,
         className: isFieldContainsError(item) && "collapseItemError",
       }))}
     />
@@ -27,7 +21,6 @@ const AccordionArrayFieldTemplate = ({ items = [], formContext, id }) => {
 
 AccordionArrayFieldTemplate.propTypes = {
   items: PropTypes.array,
-  formContext: PropTypes.object,
   id: PropTypes.string,
 };
 

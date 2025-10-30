@@ -8,25 +8,28 @@ import { _validate } from "../utils";
 import DropArea from "./DropArea";
 
 const ArrayFieldTemplate = (props) => {
+  const { rawErrors, registry, schema, uiSchema } = props;
+  const { formContext } = registry;
+
   const [display, setDisplay] = useState(false);
 
   let schemaPath = [];
   let uiSchemaPath = [];
-  if (props.rawErrors) {
-    let _rawErrors = props.rawErrors.filter((i) => (i.schema ? i : false));
+  if (rawErrors) {
+    let _rawErrors = rawErrors.filter((i) => (i.schema ? i : false));
     let { schema, uiSchema } = _rawErrors[0];
     schemaPath = schema;
     uiSchemaPath = uiSchema;
   }
 
   let _path = {
-    schema: [...props.formContext.schema, ...schemaPath, "items"],
-    uiSchema: [...props.formContext.uiSchema, ...uiSchemaPath, "items"],
+    schema: [formContext.schema, ...schemaPath, "items"],
+    uiSchema: [formContext.uiSchema, ...uiSchemaPath, "items"],
   };
 
   let __path = {
-    schema: [...props.formContext.schema, ...schemaPath],
-    uiSchema: [...props.formContext.uiSchema, ...uiSchemaPath],
+    schema: [formContext.schema, ...schemaPath],
+    uiSchema: [formContext.uiSchema, ...uiSchemaPath],
   };
 
   return (
@@ -41,13 +44,13 @@ const ArrayFieldTemplate = (props) => {
 
       {display && (
         <div style={{ marginLeft: "10px" }}>
-          {Object.keys(props.schema.items).length == 0 ? (
+          {Object.keys(schema.items).length == 0 ? (
             <DropArea />
           ) : (
             <>
               <Form
-                schema={props.schema.items}
-                uiSchema={props.uiSchema.items}
+                schema={schema.items}
+                uiSchema={uiSchema.items}
                 formData={{}}
                 tagName="div"
                 showErrorList={false}
@@ -62,7 +65,7 @@ const ArrayFieldTemplate = (props) => {
               >
                 <span />
               </Form>
-              {!props.schema.items.properties && <DropArea />}
+              {!schema.items.properties && <DropArea />}
             </>
           )}
         </div>
@@ -73,7 +76,7 @@ const ArrayFieldTemplate = (props) => {
 
 ArrayFieldTemplate.propTypes = {
   rawErrors: PropTypes.array,
-  formContext: PropTypes.object,
+  registry: PropTypes.object,
   addProperty: PropTypes.func,
   schema: PropTypes.object,
   uiSchema: PropTypes.object,

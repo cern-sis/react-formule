@@ -3,7 +3,7 @@ import { Switch } from "antd";
 const SwitchWidget = ({
   autofocus,
   disabled,
-  formContext,
+  registry,
   id,
   label,
   onBlur,
@@ -13,6 +13,7 @@ const SwitchWidget = ({
   value,
   schema,
 }) => {
+  const { formContext } = registry;
   const { readonlyAsDisabled = true } = formContext;
 
   const handleChange = (checked) => {

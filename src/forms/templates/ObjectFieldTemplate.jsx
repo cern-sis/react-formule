@@ -11,18 +11,18 @@ import StepsField from "./StepsField";
 const ObjectFieldTemplate = ({
   description,
   disabled,
-  formContext,
+  registry,
   formData,
-  idSchema,
+  fieldPathId,
   onAddClick,
   prefixCls,
   properties,
   readonly,
-  // required,
   schema,
   title,
   uiSchema,
 }) => {
+  const { formContext } = registry;
   const {
     colSpan = 24,
     labelAlign = "right",
@@ -83,7 +83,7 @@ const ObjectFieldTemplate = ({
       <TabField
         uiSchema={uiSchema}
         properties={properties}
-        idSchema={idSchema}
+        fieldPathId={fieldPathId}
       />
     );
   if (uiSchema["ui:object"] == "stepsView")
@@ -91,7 +91,7 @@ const ObjectFieldTemplate = ({
       <StepsField
         uiSchema={uiSchema}
         properties={properties}
-        idSchema={idSchema}
+        fieldPathId={fieldPathId}
       />
     );
   return (
@@ -101,7 +101,7 @@ const ObjectFieldTemplate = ({
           ? { padding: uiSchema["ui:padding"] }
           : undefined
       }
-      id={idSchema.$id}
+      id={fieldPathId.$id}
     >
       <Row gutter={rowGutter} style={{ margin: 0 }}>
         {(uiSchema["ui:label"] || title) && (
@@ -118,7 +118,7 @@ const ObjectFieldTemplate = ({
               isObject
               description={uiSchema["ui:description"] || description}
               uiSchema={uiSchema}
-              idSchema={idSchema}
+              fieldPathId={fieldPathId}
               hideAnchors={hideAnchors}
             />
           </Col>
@@ -170,14 +170,14 @@ const ObjectFieldTemplate = ({
 
 ObjectFieldTemplate.propTypes = {
   disabled: PropTypes.bool,
-  formContext: PropTypes.object,
+  registry: PropTypes.object,
   onAddClick: PropTypes.func,
   description: PropTypes.string,
   readonly: PropTypes.bool,
   required: PropTypes.bool,
   schema: PropTypes.object,
   formData: PropTypes.object,
-  idSchema: PropTypes.object,
+  fieldPathId: PropTypes.object,
   prefixCls: PropTypes.string,
   title: PropTypes.string,
   uiSchema: PropTypes.object,

@@ -18,7 +18,7 @@ const FieldTemplate = ({
   classNames,
   disabled,
   displayLabel,
-  formContext,
+  registry,
   help,
   hidden,
   id,
@@ -33,6 +33,7 @@ const FieldTemplate = ({
   uiSchema = {},
   rawDescription,
 }) => {
+  const { formContext } = registry;
   const {
     colon,
     labelCol = VERTICAL_LABEL_COL,
@@ -62,7 +63,7 @@ const FieldTemplate = ({
       label={label}
       description={rawDescription}
       uiSchema={uiSchema}
-      idSchema={{ $id: id }}
+      fieldPathId={{ $id: id }}
       hideAnchors={hideAnchors}
     />
   );
@@ -90,7 +91,7 @@ const FieldTemplate = ({
     <WrapIfAdditional
       classNames={classNames}
       disabled={disabled}
-      formContext={formContext}
+      registry={registry}
       id={id}
       label={label}
       onDropPropertyClick={onDropPropertyClick}
@@ -154,7 +155,7 @@ FieldTemplate.propTypes = {
   displayLabel: PropTypes.bool,
   classNames: PropTypes.string,
   disabled: PropTypes.bool,
-  formContext: PropTypes.object,
+  registry: PropTypes.object,
   rawErrors: PropTypes.array,
   onDropPropertyClick: PropTypes.func,
   onKeyChange: PropTypes.func,

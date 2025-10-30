@@ -17,7 +17,7 @@ const DATE_TIME_ISO_FORMAT = "YYYY-MM-DD HH:mm:ss";
 const DateWidget = ({
   autofocus,
   disabled,
-  formContext,
+  registry,
   id,
   onBlur,
   onChange,
@@ -26,6 +26,7 @@ const DateWidget = ({
   value,
   schema,
 }) => {
+  const { formContext } = registry;
   const { readonlyAsDisabled = true } = formContext;
 
   const [isoFormat, setIsoFormat] = useState();

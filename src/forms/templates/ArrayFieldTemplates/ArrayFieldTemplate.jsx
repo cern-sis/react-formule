@@ -24,8 +24,8 @@ const ArrayFieldTemplate = ({
   canAdd,
   className,
   disabled,
-  formContext,
-  idSchema,
+  registry,
+  fieldPathId,
   items,
   options,
   onAddClick,
@@ -37,6 +37,7 @@ const ArrayFieldTemplate = ({
   formData,
 }) => {
   const { useToken } = theme;
+  const { formContext } = registry;
   const { rowGutter = 24, hideAnchors } = formContext;
 
   const [latexData, setLatexData] = useState(null);
@@ -71,21 +72,21 @@ const ArrayFieldTemplate = ({
         <LayerArrayFieldTemplate
           items={items}
           uiSchema={uiSchema}
-          id={idSchema.$id}
+          id={fieldPathId.$id}
         />
       ),
       accordion: (
         <AccordionArrayFieldTemplate
           items={items}
-          formContext={formContext}
-          id={idSchema.$id}
+          registry={registry}
+          id={fieldPathId.$id}
         />
       ),
       default: items.map((itemProps, index) => (
         <ArrayFieldTemplateItem
-          key={idSchema.$id + index}
+          key={fieldPathId.$id + index}
           {...itemProps}
-          formContext={formContext}
+          registry={registry}
         />
       )),
     };
@@ -140,7 +141,7 @@ const ArrayFieldTemplate = ({
   }, [emailModal]);
 
   return (
-    <fieldset className={className} id={idSchema.$id}>
+    <fieldset className={className} id={fieldPathId.$id}>
       {uiLatex && (
         <Modal
           destroyOnClose
@@ -247,9 +248,9 @@ const ArrayFieldTemplate = ({
             <FieldHeader
               titleField={
                 <TitleField
-                  id={`${idSchema.$id}-title`}
-                  fieldId={idSchema.$id}
-                  key={`array-field-title-${idSchema.$id}`}
+                  id={`${fieldPathId.$id}-title`}
+                  fieldId={fieldPathId.$id}
+                  key={`array-field-title-${fieldPathId.$id}`}
                   required={required}
                   title={uiSchema["ui:title"] || title}
                   uiImport={uiImport}
@@ -264,8 +265,8 @@ const ArrayFieldTemplate = ({
               }
               description={uiSchema["ui:description"] || schema.description}
               uiSchema={uiSchema}
-              key={`array-field-header-${idSchema.$id}`}
-              idSchema={idSchema}
+              key={`array-field-header-${fieldPathId.$id}`}
+              fieldPathId={fieldPathId}
             />
           </div>
         )}
@@ -330,8 +331,8 @@ ArrayFieldTemplate.propTypes = {
   canAdd: PropTypes.bool,
   className: PropTypes.string,
   disabled: PropTypes.bool,
-  formContext: PropTypes.object,
-  idSchema: PropTypes.object,
+  registry: PropTypes.object,
+  fieldPathId: PropTypes.object,
   items: PropTypes.array,
   onAddClick: PropTypes.func,
   prefixCls: PropTypes.string,
