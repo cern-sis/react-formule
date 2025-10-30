@@ -16,7 +16,7 @@ import isString from "lodash-es";
 const SelectWidget = ({
   autofocus,
   disabled,
-  formContext = {},
+  registry,
   id,
   multiple,
   onBlur,
@@ -27,6 +27,7 @@ const SelectWidget = ({
   readonly,
   value,
 }) => {
+  const { formContext } = registry;
   const { readonlyAsDisabled = true } = formContext;
 
   const { enumOptions, enumDisabled, suggestions, params, emptyValue } =
@@ -147,7 +148,7 @@ const SelectWidget = ({
 SelectWidget.propTypes = {
   disabled: PropTypes.bool,
   autofocus: PropTypes.bool,
-  formContext: PropTypes.object,
+  registry: PropTypes.object,
   id: PropTypes.string,
   multiple: PropTypes.string,
   placeholder: PropTypes.string,

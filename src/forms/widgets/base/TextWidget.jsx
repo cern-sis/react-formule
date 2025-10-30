@@ -15,7 +15,7 @@ const INPUT_STYLE = {
 
 const TextWidget = ({
   disabled,
-  formContext,
+  registry,
   id,
   onBlur,
   onChange,
@@ -26,6 +26,7 @@ const TextWidget = ({
   schema,
   value,
 }) => {
+  const { formContext } = registry;
   const { readonlyAsDisabled = true } = formContext;
 
   const { autofill_from, autofill_on, convertToUppercase, mask } = options;
@@ -213,7 +214,7 @@ const TextWidget = ({
 
 TextWidget.propTypes = {
   disabled: PropTypes.bool,
-  formContext: PropTypes.object,
+  registry: PropTypes.object,
   id: PropTypes.string,
   placeholder: PropTypes.string,
   readonly: PropTypes.bool,

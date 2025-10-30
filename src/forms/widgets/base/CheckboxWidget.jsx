@@ -3,7 +3,7 @@ import { Checkbox } from "antd";
 const CheckboxWidget = ({
   autofocus,
   disabled,
-  formContext,
+  registry,
   id,
   label,
   onBlur,
@@ -14,6 +14,7 @@ const CheckboxWidget = ({
   options,
   schema,
 }) => {
+  const { formContext } = registry;
   const { readonlyAsDisabled = true } = formContext;
 
   const handleChange = (event) => {

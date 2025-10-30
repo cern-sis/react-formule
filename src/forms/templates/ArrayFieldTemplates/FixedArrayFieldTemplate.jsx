@@ -8,8 +8,8 @@ const FixedArrayFieldTemplate = ({
   canAdd,
   className,
   disabled,
-  formContext,
-  idSchema,
+  registry,
+  fieldPathId,
   items,
   options,
   onAddClick,
@@ -18,16 +18,17 @@ const FixedArrayFieldTemplate = ({
   title,
   uiSchema,
 }) => {
+  const { formContext } = registry;
   const { rowGutter = 24 } = formContext;
 
   return (
-    <fieldset className={className} id={idSchema.$id}>
+    <fieldset className={className} id={fieldPathId.$id}>
       <Row gutter={rowGutter}>
         <FieldHeader
           label={uiSchema["ui:title"] || title}
           description={uiSchema["ui:description"] || schema.description}
           uiSchema={uiSchema}
-          idSchema={idSchema}
+          fieldPathId={fieldPathId}
         />
 
         <Col span={24} style={{ marginTop: "5px" }} className="nestedObject">
@@ -36,9 +37,9 @@ const FixedArrayFieldTemplate = ({
               {items &&
                 items.map((itemProps, index) => (
                   <ArrayFieldTemplateItem
-                    key={idSchema.$id + index}
+                    key={fieldPathId.$id + index}
                     {...itemProps}
-                    formContext={formContext}
+                    registry={registry}
                   />
                 ))}
             </Col>
@@ -72,8 +73,8 @@ FixedArrayFieldTemplate.propTypes = {
   canAdd: PropTypes.bool,
   className: PropTypes.string,
   disabled: PropTypes.bool,
-  formContext: PropTypes.object,
-  idSchema: PropTypes.object,
+  registry: PropTypes.object,
+  fieldPathId: PropTypes.object,
   items: PropTypes.array,
   onAddClick: PropTypes.func,
   prefixCls: PropTypes.string,

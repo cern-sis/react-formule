@@ -23,7 +23,7 @@ const RJSFForm = ({
   formData,
   extraErrors,
   onChange,
-  formContext,
+  formContext, // TODO: Change to registry and pass formContext inside?
   readonly,
   className,
   ObjectFieldTemplate: Objects,

@@ -5,7 +5,7 @@ import { URL_REGEX } from "../../../utils";
 const UriWidget = ({
   autofocus,
   disabled,
-  formContext,
+  registry,
   id,
   onBlur,
   onChange,
@@ -13,6 +13,7 @@ const UriWidget = ({
   readonly,
   value,
 }) => {
+  const { formContext } = registry;
   const { readonlyAsDisabled = true } = formContext;
 
   const handleBlur = ({ target }) => onBlur(id, target.value);

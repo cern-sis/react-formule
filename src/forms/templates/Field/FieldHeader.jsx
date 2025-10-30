@@ -8,7 +8,7 @@ const FieldHeader = ({
   description,
   uiSchema,
   isObject,
-  idSchema,
+  fieldPathId,
   titleField,
   hideAnchors,
 }) => {
@@ -24,13 +24,13 @@ const FieldHeader = ({
                 uiSchema["ui:options"] && uiSchema["ui:options"].titleIsMarkdown
               }
               isObject={isObject}
-              id={`${idSchema.$id}-title`}
-              fieldId={idSchema.$id}
+              id={`${fieldPathId.$id}-title`}
+              fieldId={fieldPathId.$id}
               hideAnchors={hideAnchors}
             />
           )}
       {description && (
-        <Typography.Text type="secondary" id={`${idSchema.$id}-description`}>
+        <Typography.Text type="secondary" id={`${fieldPathId.$id}-description`}>
           <Markdown
             text={description}
             style={{
@@ -53,7 +53,7 @@ FieldHeader.propTypes = {
   uiSchema: PropTypes.object,
   description: PropTypes.node,
   isObject: PropTypes.bool,
-  idSchema: PropTypes.object,
+  fieldPathId: PropTypes.object,
   titleField: PropTypes.element,
 };
 

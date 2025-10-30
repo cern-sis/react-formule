@@ -14,7 +14,7 @@ const WrapIfAdditional = ({
   children,
   classNames,
   disabled,
-  formContext,
+  registry,
   id,
   label,
   onDropPropertyClick,
@@ -24,6 +24,7 @@ const WrapIfAdditional = ({
   schema,
   isTabView,
 }) => {
+  const { formContext } = registry;
   const {
     colon,
     labelCol = VERTICAL_LABEL_COL,
@@ -101,7 +102,7 @@ const WrapIfAdditional = ({
 WrapIfAdditional.propTypes = {
   classNames: PropTypes.string,
   disabled: PropTypes.bool,
-  formContext: PropTypes.object,
+  registry: PropTypes.object,
   onDropPropertyClick: PropTypes.func,
   onKeyChange: PropTypes.func,
   readonly: PropTypes.bool,

@@ -8,9 +8,11 @@ import { theme } from "antd";
 const ObjectFieldTemplate = ({
   properties,
   uiSchema,
-  formContext,
-  idSchema,
+  registry,
+  fieldPathId,
 }) => {
+  const { formContext } = registry;
+
   const [visualItems, setVisualItems] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
 
@@ -53,7 +55,7 @@ const ObjectFieldTemplate = ({
     setVisualItems(null);
   }, [dispatch, displayedItems, formContext.uiSchema, uiSchema]);
 
-  if (idSchema.$id === "root") {
+  if (fieldPathId.$id === "root") {
     return (
       <div
         style={{
@@ -85,9 +87,9 @@ const ObjectFieldTemplate = ({
 };
 
 ObjectFieldTemplate.propTypes = {
-  idSchema: PropTypes.object,
+  fieldPathId: PropTypes.object,
   properties: PropTypes.array,
-  formContext: PropTypes.object,
+  registry: PropTypes.object,
   onUiSchemaChange: PropTypes.func,
   uiSchema: PropTypes.object,
 };

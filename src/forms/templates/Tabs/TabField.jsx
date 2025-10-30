@@ -14,7 +14,7 @@ import TabFieldMenu from "./TabFieldMenu";
 import { _filterTabs, isFieldContainsError } from "../utils";
 import CustomizationContext from "../../../contexts/CustomizationContext";
 
-const TabField = ({ uiSchema, properties, idSchema }) => {
+const TabField = ({ uiSchema, properties, fieldPathId }) => {
   const { useBreakpoint } = Grid;
   const screens = useBreakpoint();
   const customizationContext = useContext(CustomizationContext);
@@ -76,7 +76,7 @@ const TabField = ({ uiSchema, properties, idSchema }) => {
     if (anchor) {
       const items = anchor.split(customizationContext.separator);
       items.forEach((item, index) => {
-        if (idSchema.$id.includes(item)) {
+        if (fieldPathId.$id.includes(item)) {
           const tabName = items[index + 1];
           const activeTab = tabs.filter((tab) => tab.name === tabName);
           if (activeTab && activeTab != active) {
@@ -163,7 +163,7 @@ const TabField = ({ uiSchema, properties, idSchema }) => {
 TabField.propTypes = {
   uiSchema: PropTypes.object,
   properties: PropTypes.object,
-  idSchema: PropTypes.array,
+  fieldPathId: PropTypes.array,
 };
 
 export default TabField;

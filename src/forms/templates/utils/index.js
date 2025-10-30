@@ -14,7 +14,7 @@ export const _filterTabs = (tabs, options, properties) => {
       tab.idsList = [];
       properties.map((item) => {
         if (tab.content.includes(item.name)) {
-          tab.idsList.push(item.content.props.idSchema.$id);
+          tab.idsList.push(item.content.props.fieldPathId.$id);
         }
       });
     });
