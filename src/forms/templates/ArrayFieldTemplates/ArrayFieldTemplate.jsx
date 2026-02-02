@@ -83,8 +83,8 @@ const ArrayFieldTemplate = ({
       ),
       default: items.map((itemProps, index) => (
         <ArrayFieldTemplateItem
-          key={idSchema.$id + index}
           {...itemProps}
+          key={idSchema.$id + index}
           formContext={formContext}
         />
       )),
@@ -341,6 +341,7 @@ ArrayFieldTemplate.propTypes = {
   title: PropTypes.string,
   uiSchema: PropTypes.object,
   formData: PropTypes.object,
+  onChange: PropTypes.func,
 };
 
 export default ArrayFieldTemplate;

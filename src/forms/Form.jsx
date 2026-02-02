@@ -16,6 +16,9 @@ import { Provider } from "react-redux";
 import store from "../store/configureStore";
 import FormErrorBoundary from "./FormErrorBoundary";
 
+import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
+ModuleRegistry.registerModules([AllCommunityModule]);
+
 const RJSFForm = ({
   formRef,
   schema,

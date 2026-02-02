@@ -106,20 +106,20 @@ const PropertyEditor = () => {
             "Root"
           ) : (
             <Space wrap={false}>
-              {screens.xl && fieldSpec.title}
+              {screens.xl && fieldSpec?.title}
               <Tooltip
                 title={
                   <>
                     {!screens.xl && (
                       <div style={{ fontWeight: "bold" }}>
-                        {fieldSpec.title}
+                        {fieldSpec?.title}
                       </div>
                     )}
-                    <div>{fieldSpec.description}</div>
+                    <div>{fieldSpec?.description}</div>
                   </>
                 }
               >
-                {fieldSpec.icon || <QuestionOutlined />}
+                {fieldSpec?.icon || <QuestionOutlined />}
               </Tooltip>
             </Space>
           )
