@@ -48,13 +48,13 @@ const SchemaTree = () => {
   // Memoize transformed schema - only recompute when schema changes
   const transformedSchema = useMemo(
     () => customizationContext.transformSchema(schema),
-    [customizationContext, schema],
+    [customizationContext, schema]
   );
 
   // Memoize cleaned uiSchema - only recompute when uiSchema changes
   const cleanedUiSchema = useMemo(
     () => removeUiWidget(uiSchema),
-    [removeUiWidget, uiSchema],
+    [removeUiWidget, uiSchema]
   );
 
   return (
