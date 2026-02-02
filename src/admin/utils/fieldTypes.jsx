@@ -301,6 +301,92 @@ const collections = {
       uiSchema: {},
     },
   },
+  TableArrayFieldTemplate: {
+    title: "Table",
+    icon: <UnorderedListOutlined />,
+    description: "List of fields supporting addition, deletion and reordering",
+    className: "tour-list-field",
+    child: {},
+    optionsSchema: {
+      type: "object",
+      title: "Array Schema",
+      properties: {
+        ...common.optionsSchema,
+      },
+    },
+    optionsSchemaUiSchema: {
+      ...common.optionsSchemaUiSchema,
+    },
+    optionsUiSchema: {
+      type: "object",
+      title: "UI Schema",
+      properties: {
+        "ui:options": {
+          type: "object",
+          title: "UI Options",
+          properties: {
+            ...common.optionsUiSchema.properties["ui:options"].properties,
+            itemsDisplayTitle: {
+              type: "string",
+              title: "Items Display Title",
+              description:
+                "You can set a fixed value or you can reference child fields by id between `{{` and `}}`",
+              tooltip:
+                "You can easily copy the field id by right-clicking the desired field in the tree",
+            },
+          },
+        },
+        "ui:label": common.optionsUiSchema.properties["ui:label"],
+      },
+    },
+    optionsUiSchemaUiSchema: {
+      ...common.optionsUiSchemaUiSchema,
+      "ui:options": {
+        ...common.optionsUiSchemaUiSchema["ui:options"],
+        itemsDisplayTitle: {
+          "ui:options": {
+            descriptionIsMarkdown: true,
+            showAsModal: true,
+            modal: {
+              buttonInNewLine: true,
+            },
+            codeEditor: {
+              minimal: true,
+              language: "jinja",
+              extraExtensions: [
+                placeholder("Path: {{item_123}} - Type: {{item_456}}"),
+              ],
+              height: "200px",
+            },
+          },
+          "ui:field": "codeEditor",
+        },
+      },
+    },
+
+    default: {
+      schema: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            col1: {
+              type: "string",
+              title: "Column 1",
+            },
+            col2: {
+              type: "number",
+              title: "Number Col",
+            },
+          },
+        },
+      },
+      uiSchema: {
+        "ui:widget": "table",
+      },
+    },
+  },
+
   accordion: {
     title: "Accordion",
     icon: <BorderTopOutlined />,

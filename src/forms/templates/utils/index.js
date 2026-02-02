@@ -8,6 +8,79 @@ const _checkIfHidden = (name, uiSchema) => {
   );
 };
 
+export function getByPath(obj, path) {
+  if (!obj || !path) return undefined;
+  console.log(obj, path);
+  return path
+    .split(".")
+    .reduce((acc, key) => (acc == null ? acc : acc[key]), obj);
+}
+
+function _getByPath(obj, path) {
+  let cur = obj;
+  for (const key of path) {
+    if (cur == null) return undefined;
+    cur = cur[key];
+  }
+  return cur;
+}
+function _setByPath(obj, path, value) {
+  if (!path.length) return obj;
+
+  let cur = obj;
+  for (let i = 0; i < path.length - 1; i++) {
+    const k = path[i];
+    if (!isPlainObject(cur[k])) cur[k] = {};
+    cur = cur[k];
+  }
+  cur[path[path.length - 1]] = value;
+  return obj;
+}
+
+function isPlainObject(v) {
+  return v !== null && typeof v === "object" && !Array.isArray(v);
+}
+
+function _deepMerge(target, source) {
+  if (!isPlainObject(source)) return target;
+  if (!isPlainObject(target)) target = {};
+
+  for (const [k, v] of Object.entries(source)) {
+    if (isPlainObject(v)) {
+      target[k] = _deepMerge(target[k], v);
+    } else {
+      target[k] = v;
+    }
+  }
+  return target;
+}
+
+export function applyPathMappings(mappings, results, destination, opts = {}) {
+  const { skipUndefined = true } = opts;
+
+  for (const [sourcePath, destPath] of mappings) {
+    const value = _getByPath(results, sourcePath);
+
+    if (value === undefined && skipUndefined) continue;
+
+    const existing = _getByPath(destination, destPath);
+
+    if (isPlainObject(value) && isPlainObject(existing)) {
+      // merge objects
+      const merged = _deepMerge({ ...existing }, value);
+      _setByPath(destination, destPath, merged);
+    } else if (isPlainObject(value) && existing === undefined) {
+      // write object (clone to avoid accidental shared refs)
+      _setByPath(destination, destPath, _deepMerge({}, value));
+    } else {
+      // overwrite primitives/arrays/null/whatever
+      _setByPath(destination, destPath, value);
+    }
+  }
+
+  return destination;
+}
+
 export const _filterTabs = (tabs, options, properties) => {
   if (tabs) {
     options.tabs.map((tab) => {

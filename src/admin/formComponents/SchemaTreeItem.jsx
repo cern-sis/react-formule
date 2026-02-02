@@ -75,7 +75,7 @@ const SchemaTreeItem = ({
         <Row gutter={8} onClick={handleClick} align="middle" wrap={false}>
           <Col flex="none">
             {getFieldSpec(schema, uiSchema, customizationContext.allFieldTypes)
-              .icon || <QuestionOutlined />}
+              ?.icon || <QuestionOutlined />}
           </Col>
           <Col flex="auto">
             <Row
