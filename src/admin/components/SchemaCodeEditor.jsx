@@ -5,7 +5,13 @@ import {
 import { useDispatch } from "react-redux";
 import CodeEditor from "../../utils/CodeEditor";
 
-const SchemaCodeEditor = ({ valueType, value, height, lang, isReadOnly }) => {
+const SchemaCodeEditor = ({
+  valueType = "json",
+  value = "",
+  height = "320px",
+  lang = "json",
+  isReadOnly = true,
+}) => {
   const dispatch = useDispatch();
 
   const _onSchemaChange = (data) => {
