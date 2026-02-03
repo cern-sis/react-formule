@@ -32,6 +32,6 @@ jobs:
 
       - name: Publish
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT_FIRE_EVENTS_ON_CERN_SIS_KUBERNETES }}
+          GITHUB_TOKEN: ${{ secrets.CERN_SIS_BOT }}
           NPM_TOKEN: ${{ secrets.CERN_SIS_NPM }}
         run: HUSKY=0 npx semantic-release ${{ inputs.semanticReleaseParams }}
