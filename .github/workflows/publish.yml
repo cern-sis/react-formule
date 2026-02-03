@@ -32,6 +32,6 @@ jobs:
 
       - name: Publish
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.CERN_SIS_BOT }}
           NPM_TOKEN: ${{ secrets.CERN_SIS_NPM }}
         run: HUSKY=0 npx semantic-release ${{ inputs.semanticReleaseParams }}
