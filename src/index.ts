@@ -7,6 +7,7 @@ export { deleteFromLocalStorage } from "./exposed";
 export { loadFromLocalStorage } from "./exposed";
 export { isUnsaved } from "./exposed";
 export { FormuleForm } from "./exposed";
+export { RJSFForm } from "./exposed";
 
 export { default as PropertyEditor } from "./admin/components/PropertyEditor";
 export { default as SelectFieldType } from "./admin/components/SelectFieldType";
