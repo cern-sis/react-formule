@@ -11,8 +11,8 @@ import AutosuggestField from "./AutosuggestField";
 import { isArray } from "lodash-es";
 
 // AG Grid styles
-// import "ag-grid-community/styles/ag-grid.css";
-// import "ag-grid-community/styles/ag-theme-alpine.css";
+import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-theme-alpine.css";
 
 /**
  * Minimal JSON Schema typing for the features we support
